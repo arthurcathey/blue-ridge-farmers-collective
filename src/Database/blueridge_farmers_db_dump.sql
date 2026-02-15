@@ -24,9 +24,6 @@ INSERT INTO `account_acc` VALUES (1,'superadmin','superadmin@example.com','$2y$1
 /*!40000 ALTER TABLE `account_acc` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `account_session_ase`
---
 
 DROP TABLE IF EXISTS `account_session_ase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -48,18 +45,12 @@ CREATE TABLE `account_session_ase` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `account_session_ase`
---
 
 LOCK TABLES `account_session_ase` WRITE;
 /*!40000 ALTER TABLE `account_session_ase` DISABLE KEYS */;
 /*!40000 ALTER TABLE `account_session_ase` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `account_vendor_accven`
---
 
 DROP TABLE IF EXISTS `account_vendor_accven`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -77,18 +68,12 @@ CREATE TABLE `account_vendor_accven` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `account_vendor_accven`
---
 
 LOCK TABLES `account_vendor_accven` WRITE;
 /*!40000 ALTER TABLE `account_vendor_accven` DISABLE KEYS */;
 /*!40000 ALTER TABLE `account_vendor_accven` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `announcement_ann`
---
 
 DROP TABLE IF EXISTS `announcement_ann`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -116,18 +101,12 @@ CREATE TABLE `announcement_ann` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `announcement_ann`
---
 
 LOCK TABLES `announcement_ann` WRITE;
 /*!40000 ALTER TABLE `announcement_ann` DISABLE KEYS */;
 /*!40000 ALTER TABLE `announcement_ann` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `audit_log_aud`
---
 
 DROP TABLE IF EXISTS `audit_log_aud`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -149,18 +128,12 @@ CREATE TABLE `audit_log_aud` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `audit_log_aud`
---
 
 LOCK TABLES `audit_log_aud` WRITE;
 /*!40000 ALTER TABLE `audit_log_aud` DISABLE KEYS */;
 /*!40000 ALTER TABLE `audit_log_aud` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `booth_assignment_bas`
---
 
 DROP TABLE IF EXISTS `booth_assignment_bas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -185,18 +158,12 @@ CREATE TABLE `booth_assignment_bas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `booth_assignment_bas`
---
 
 LOCK TABLES `booth_assignment_bas` WRITE;
 /*!40000 ALTER TABLE `booth_assignment_bas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `booth_assignment_bas` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `booth_location_blo`
---
 
 DROP TABLE IF EXISTS `booth_location_blo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -217,18 +184,12 @@ CREATE TABLE `booth_location_blo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `booth_location_blo`
---
 
 LOCK TABLES `booth_location_blo` WRITE;
 /*!40000 ALTER TABLE `booth_location_blo` DISABLE KEYS */;
 /*!40000 ALTER TABLE `booth_location_blo` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `email_queue_emq`
---
 
 DROP TABLE IF EXISTS `email_queue_emq`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -253,18 +214,12 @@ CREATE TABLE `email_queue_emq` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `email_queue_emq`
---
 
 LOCK TABLES `email_queue_emq` WRITE;
 /*!40000 ALTER TABLE `email_queue_emq` DISABLE KEYS */;
 /*!40000 ALTER TABLE `email_queue_emq` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `email_template_etm`
---
 
 DROP TABLE IF EXISTS `email_template_etm`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -283,18 +238,12 @@ CREATE TABLE `email_template_etm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `email_template_etm`
---
 
 LOCK TABLES `email_template_etm` WRITE;
 /*!40000 ALTER TABLE `email_template_etm` DISABLE KEYS */;
 /*!40000 ALTER TABLE `email_template_etm` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `email_verification_token_evt`
---
 
 DROP TABLE IF EXISTS `email_verification_token_evt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -313,18 +262,12 @@ CREATE TABLE `email_verification_token_evt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `email_verification_token_evt`
---
 
 LOCK TABLES `email_verification_token_evt` WRITE;
 /*!40000 ALTER TABLE `email_verification_token_evt` DISABLE KEYS */;
 /*!40000 ALTER TABLE `email_verification_token_evt` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `market_administrator_mad`
---
 
 DROP TABLE IF EXISTS `market_administrator_mad`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -348,18 +291,12 @@ CREATE TABLE `market_administrator_mad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `market_administrator_mad`
---
 
 LOCK TABLES `market_administrator_mad` WRITE;
 /*!40000 ALTER TABLE `market_administrator_mad` DISABLE KEYS */;
 /*!40000 ALTER TABLE `market_administrator_mad` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `market_date_mda`
---
 
 DROP TABLE IF EXISTS `market_date_mda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -382,18 +319,12 @@ CREATE TABLE `market_date_mda` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `market_date_mda`
---
 
 LOCK TABLES `market_date_mda` WRITE;
 /*!40000 ALTER TABLE `market_date_mda` DISABLE KEYS */;
 /*!40000 ALTER TABLE `market_date_mda` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `market_layout_mla`
---
 
 DROP TABLE IF EXISTS `market_layout_mla`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -413,18 +344,12 @@ CREATE TABLE `market_layout_mla` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `market_layout_mla`
---
 
 LOCK TABLES `market_layout_mla` WRITE;
 /*!40000 ALTER TABLE `market_layout_mla` DISABLE KEYS */;
 /*!40000 ALTER TABLE `market_layout_mla` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `market_mkt`
---
 
 DROP TABLE IF EXISTS `market_mkt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -455,9 +380,6 @@ CREATE TABLE `market_mkt` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `market_mkt`
---
 
 LOCK TABLES `market_mkt` WRITE;
 /*!40000 ALTER TABLE `market_mkt` DISABLE KEYS */;
@@ -465,9 +387,6 @@ INSERT INTO `market_mkt` VALUES (1,'Asheville City Market','asheville-city-marke
 /*!40000 ALTER TABLE `market_mkt` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `market_search_log_msl`
---
 
 DROP TABLE IF EXISTS `market_search_log_msl`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -490,18 +409,12 @@ CREATE TABLE `market_search_log_msl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `market_search_log_msl`
---
 
 LOCK TABLES `market_search_log_msl` WRITE;
 /*!40000 ALTER TABLE `market_search_log_msl` DISABLE KEYS */;
 /*!40000 ALTER TABLE `market_search_log_msl` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `network_analytics_nan`
---
 
 DROP TABLE IF EXISTS `network_analytics_nan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -523,18 +436,12 @@ CREATE TABLE `network_analytics_nan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `network_analytics_nan`
---
 
 LOCK TABLES `network_analytics_nan` WRITE;
 /*!40000 ALTER TABLE `network_analytics_nan` DISABLE KEYS */;
 /*!40000 ALTER TABLE `network_analytics_nan` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `notification_preference_ntp`
---
 
 DROP TABLE IF EXISTS `notification_preference_ntp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -555,18 +462,12 @@ CREATE TABLE `notification_preference_ntp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `notification_preference_ntp`
---
 
 LOCK TABLES `notification_preference_ntp` WRITE;
 /*!40000 ALTER TABLE `notification_preference_ntp` DISABLE KEYS */;
 /*!40000 ALTER TABLE `notification_preference_ntp` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `notification_queue_ntq`
---
 
 DROP TABLE IF EXISTS `notification_queue_ntq`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -585,18 +486,12 @@ CREATE TABLE `notification_queue_ntq` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `notification_queue_ntq`
---
 
 LOCK TABLES `notification_queue_ntq` WRITE;
 /*!40000 ALTER TABLE `notification_queue_ntq` DISABLE KEYS */;
 /*!40000 ALTER TABLE `notification_queue_ntq` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `password_reset_token_prt`
---
 
 DROP TABLE IF EXISTS `password_reset_token_prt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -616,18 +511,12 @@ CREATE TABLE `password_reset_token_prt` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `password_reset_token_prt`
---
 
 LOCK TABLES `password_reset_token_prt` WRITE;
 /*!40000 ALTER TABLE `password_reset_token_prt` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_reset_token_prt` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `product_category_pct`
---
 
 DROP TABLE IF EXISTS `product_category_pct`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -644,9 +533,6 @@ CREATE TABLE `product_category_pct` (
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product_category_pct`
---
 
 LOCK TABLES `product_category_pct` WRITE;
 /*!40000 ALTER TABLE `product_category_pct` DISABLE KEYS */;
@@ -654,9 +540,6 @@ INSERT INTO `product_category_pct` VALUES (1,'Produce',NULL,'#22C55E',1,NULL),(2
 /*!40000 ALTER TABLE `product_category_pct` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `product_prd`
---
 
 DROP TABLE IF EXISTS `product_prd`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -679,9 +562,6 @@ CREATE TABLE `product_prd` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product_prd`
---
 
 LOCK TABLES `product_prd` WRITE;
 /*!40000 ALTER TABLE `product_prd` DISABLE KEYS */;
@@ -689,9 +569,6 @@ INSERT INTO `product_prd` VALUES (1,1,1,'Heirloom Tomatoes','Fresh Cherokee Purp
 /*!40000 ALTER TABLE `product_prd` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `product_search_index_psi`
---
 
 DROP TABLE IF EXISTS `product_search_index_psi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -711,18 +588,12 @@ CREATE TABLE `product_search_index_psi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product_search_index_psi`
---
 
 LOCK TABLES `product_search_index_psi` WRITE;
 /*!40000 ALTER TABLE `product_search_index_psi` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_search_index_psi` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `product_search_log_psl`
---
 
 DROP TABLE IF EXISTS `product_search_log_psl`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -741,18 +612,12 @@ CREATE TABLE `product_search_log_psl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product_search_log_psl`
---
 
 LOCK TABLES `product_search_log_psl` WRITE;
 /*!40000 ALTER TABLE `product_search_log_psl` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_search_log_psl` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `product_search_result_psr`
---
 
 DROP TABLE IF EXISTS `product_search_result_psr`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -774,18 +639,12 @@ CREATE TABLE `product_search_result_psr` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product_search_result_psr`
---
 
 LOCK TABLES `product_search_result_psr` WRITE;
 /*!40000 ALTER TABLE `product_search_result_psr` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_search_result_psr` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `product_seasonality_pse`
---
 
 DROP TABLE IF EXISTS `product_seasonality_pse`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -801,18 +660,12 @@ CREATE TABLE `product_seasonality_pse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product_seasonality_pse`
---
 
 LOCK TABLES `product_seasonality_pse` WRITE;
 /*!40000 ALTER TABLE `product_seasonality_pse` DISABLE KEYS */;
 /*!40000 ALTER TABLE `product_seasonality_pse` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `review_response_rre`
---
 
 DROP TABLE IF EXISTS `review_response_rre`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -832,18 +685,12 @@ CREATE TABLE `review_response_rre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `review_response_rre`
---
 
 LOCK TABLES `review_response_rre` WRITE;
 /*!40000 ALTER TABLE `review_response_rre` DISABLE KEYS */;
 /*!40000 ALTER TABLE `review_response_rre` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `role_rol`
---
 
 DROP TABLE IF EXISTS `role_rol`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -858,9 +705,6 @@ CREATE TABLE `role_rol` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `role_rol`
---
 
 LOCK TABLES `role_rol` WRITE;
 /*!40000 ALTER TABLE `role_rol` DISABLE KEYS */;
@@ -868,9 +712,6 @@ INSERT INTO `role_rol` VALUES (1,'public','Public user',1),(2,'vendor','Vendor a
 /*!40000 ALTER TABLE `role_rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `site_setting_sse`
---
 
 DROP TABLE IF EXISTS `site_setting_sse`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -893,18 +734,12 @@ CREATE TABLE `site_setting_sse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `site_setting_sse`
---
 
 LOCK TABLES `site_setting_sse` WRITE;
 /*!40000 ALTER TABLE `site_setting_sse` DISABLE KEYS */;
 /*!40000 ALTER TABLE `site_setting_sse` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `vendor_attendance_vat`
---
 
 DROP TABLE IF EXISTS `vendor_attendance_vat`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -926,18 +761,12 @@ CREATE TABLE `vendor_attendance_vat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `vendor_attendance_vat`
---
 
 LOCK TABLES `vendor_attendance_vat` WRITE;
 /*!40000 ALTER TABLE `vendor_attendance_vat` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vendor_attendance_vat` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `vendor_market_venmkt`
---
 
 DROP TABLE IF EXISTS `vendor_market_venmkt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -970,9 +799,6 @@ CREATE TABLE `vendor_market_venmkt` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `vendor_market_venmkt`
---
 
 LOCK TABLES `vendor_market_venmkt` WRITE;
 /*!40000 ALTER TABLE `vendor_market_venmkt` DISABLE KEYS */;
@@ -980,9 +806,6 @@ INSERT INTO `vendor_market_venmkt` VALUES (1,1,1,'approved','2026-02-15 22:21:13
 /*!40000 ALTER TABLE `vendor_market_venmkt` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `vendor_profile_view_vpv`
---
 
 DROP TABLE IF EXISTS `vendor_profile_view_vpv`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1003,18 +826,12 @@ CREATE TABLE `vendor_profile_view_vpv` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `vendor_profile_view_vpv`
---
 
 LOCK TABLES `vendor_profile_view_vpv` WRITE;
 /*!40000 ALTER TABLE `vendor_profile_view_vpv` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vendor_profile_view_vpv` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `vendor_review_vre`
---
 
 DROP TABLE IF EXISTS `vendor_review_vre`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1041,18 +858,12 @@ CREATE TABLE `vendor_review_vre` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `vendor_review_vre`
---
 
 LOCK TABLES `vendor_review_vre` WRITE;
 /*!40000 ALTER TABLE `vendor_review_vre` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vendor_review_vre` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `vendor_transfer_request_vtr`
---
 
 DROP TABLE IF EXISTS `vendor_transfer_request_vtr`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1080,18 +891,12 @@ CREATE TABLE `vendor_transfer_request_vtr` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `vendor_transfer_request_vtr`
---
 
 LOCK TABLES `vendor_transfer_request_vtr` WRITE;
 /*!40000 ALTER TABLE `vendor_transfer_request_vtr` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vendor_transfer_request_vtr` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `vendor_ven`
---
 
 DROP TABLE IF EXISTS `vendor_ven`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1127,9 +932,6 @@ CREATE TABLE `vendor_ven` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `vendor_ven`
---
 
 LOCK TABLES `vendor_ven` WRITE;
 /*!40000 ALTER TABLE `vendor_ven` DISABLE KEYS */;
@@ -1137,9 +939,6 @@ INSERT INTO `vendor_ven` VALUES (1,3,'Mountain Valley Farm','Organic vegetables 
 /*!40000 ALTER TABLE `vendor_ven` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `weather_cache_wca`
---
 
 DROP TABLE IF EXISTS `weather_cache_wca`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -1164,9 +963,6 @@ CREATE TABLE `weather_cache_wca` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `weather_cache_wca`
---
 
 LOCK TABLES `weather_cache_wca` WRITE;
 /*!40000 ALTER TABLE `weather_cache_wca` DISABLE KEYS */;
@@ -1182,4 +978,3 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-02-15 17:21:23
