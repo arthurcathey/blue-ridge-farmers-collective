@@ -9,7 +9,6 @@
 declare(strict_types=1);
 
 try {
-  // Load environment and connect to database
   require_once dirname(__DIR__) . '/config/env.php';
   $pdo = require_once dirname(__DIR__) . '/config/database-connection.php';
 
@@ -28,7 +27,7 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Database Connection Proof - Blue Ridge Farmers Collective</title>
+  <title>Blue Ridge Farmers Collective</title>
   <style>
     * {
       margin: 0;
@@ -196,7 +195,6 @@ try {
           <?= htmlspecialchars($error) ?>
         </div>
       <?php else: ?>
-        <!-- Connection Info Section -->
         <div class="section">
           <h2>Connection Information</h2>
           <div class="info-box">
@@ -207,7 +205,6 @@ try {
           </div>
         </div>
 
-        <!-- Roles Data Section -->
         <div class="section">
           <h2>User Roles</h2>
           <?php
@@ -229,10 +226,10 @@ try {
                 <tbody>
                   <?php foreach ($roles as $role): ?>
                     <tr>
-                      <td><?= htmlspecialchars($role['id_rol']) ?></td>
+                      <td><?= htmlspecialchars((string)$role['id_rol']) ?></td>
                       <td><strong><?= htmlspecialchars($role['name_rol']) ?></strong></td>
                       <td><?= htmlspecialchars($role['description_rol'] ?? 'N/A') ?></td>
-                      <td><?= htmlspecialchars($role['permission_level_rol']) ?></td>
+                      <td><?= htmlspecialchars((string)$role['permission_level_rol']) ?></td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
@@ -246,7 +243,6 @@ try {
           ?>
         </div>
 
-        <!-- Vendors Data Section -->
         <div class="section">
           <h2>Vendors</h2>
           <?php
@@ -274,7 +270,7 @@ try {
                 <tbody>
                   <?php foreach ($vendors as $vendor): ?>
                     <tr>
-                      <td><?= htmlspecialchars($vendor['id_ven']) ?></td>
+                      <td><?= htmlspecialchars((string)$vendor['id_ven']) ?></td>
                       <td><strong><?= htmlspecialchars($vendor['farm_name_ven']) ?></strong></td>
                       <td><?= htmlspecialchars($vendor['city_ven']) ?>, <?= htmlspecialchars($vendor['state_ven']) ?></td>
                       <td>
@@ -296,7 +292,6 @@ try {
           ?>
         </div>
 
-        <!-- Products Data Section -->
         <div class="section">
           <h2>Products</h2>
           <?php
@@ -327,7 +322,7 @@ try {
                 <tbody>
                   <?php foreach ($products as $product): ?>
                     <tr>
-                      <td><?= htmlspecialchars($product['id_prd']) ?></td>
+                      <td><?= htmlspecialchars((string)$product['id_prd']) ?></td>
                       <td><strong><?= htmlspecialchars($product['name_prd']) ?></strong></td>
                       <td><?= htmlspecialchars($product['farm_name_ven']) ?></td>
                       <td><?= htmlspecialchars($product['name_pct']) ?></td>
@@ -350,7 +345,6 @@ try {
           ?>
         </div>
 
-        <!-- Markets Data Section -->
         <div class="section">
           <h2>Markets</h2>
           <?php
@@ -378,7 +372,7 @@ try {
                 <tbody>
                   <?php foreach ($markets as $market): ?>
                     <tr>
-                      <td><?= htmlspecialchars($market['id_mkt']) ?></td>
+                      <td><?= htmlspecialchars((string)$market['id_mkt']) ?></td>
                       <td><strong><?= htmlspecialchars($market['name_mkt']) ?></strong></td>
                       <td><?= htmlspecialchars($market['city_mkt']) ?>, <?= htmlspecialchars($market['state_mkt']) ?></td>
                       <td>
