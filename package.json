@@ -1,0 +1,12 @@
+{
+  "name": "blue-ridge-farmers-collective",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "tailwind:build": "tailwindcss -i ./src/assets/tailwind.css -o ./public/css/tailwind.css --minify",
+    "tailwind:watch": "tailwindcss -i ./src/assets/tailwind.css -o ./public/css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

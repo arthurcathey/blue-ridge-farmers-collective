@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /blue_ridge_farmers_collective/
+
+# Redirect all traffic to /public within this project
+RewriteCond %{REQUEST_URI} !^/blue_ridge_farmers_collective/public/
+RewriteRule ^(.*)$ public/$1 [L,QSA]

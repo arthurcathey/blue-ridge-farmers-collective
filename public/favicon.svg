@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Sky gradient background -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8F4F8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E5C8A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="256" height="256" fill="url(#skyGradient)" />
+
+  <!-- Mountains - Blue Ridge rolling peaks -->
+  <!-- Far mountains (lighter) -->
+  <path d="M 0 140 Q 32 100 64 140 T 128 140 T 192 140 T 256 140 L 256 256 L 0 256 Z" 
+        fill="#5BA3D0" opacity="0.6" />
+  
+  <!-- Mid mountains -->
+  <path d="M 0 120 Q 28 70 56 120 T 112 120 T 168 120 T 224 120 L 256 140 L 256 256 L 0 256 Z" 
+        fill="#4A90E2" opacity="0.8" />
+  
+  <!-- Front mountains (darker, more defined) -->
+  <path d="M 0 100 L 40 60 L 80 100 L 120 50 L 160 100 L 200 65 L 240 105 L 256 120 L 256 256 L 0 256 Z" 
+        fill="url(#mountainGradient)" />
+
+  <!-- Agricultural fields/crops below mountains -->
+  <!-- Field rows with varying greens -->
+  <g opacity="0.9">
+    <!-- Row 1 - darker green -->
+    <rect x="0" y="150" width="256" height="20" fill="#2D5016" />
+    
+    <!-- Row 2 - medium green -->
+    <rect x="0" y="170" width="256" height="20" fill="#3D7321" />
+    
+    <!-- Row 3 - lighter green -->
+    <rect x="0" y="190" width="256" height="20" fill="#52A84A" />
+    
+    <!-- Row 4 - medium green -->
+    <rect x="0" y="210" width="256" height="20" fill="#3D7321" />
+    
+    <!-- Row 5 - dark green -->
+    <rect x="0" y="230" width="256" height="20" fill="#1F4D0A" />
+  </g>
+
+  <!-- Small crop detail marks for texture -->
+  <g stroke="#1F4D0A" stroke-width="0.5" opacity="0.4">
+    <!-- Left field marks -->
+    <line x1="20" y1="155" x2="20" y2="185" />
+    <line x1="40" y1="155" x2="40" y2="185" />
+    <line x1="60" y1="155" x2="60" y2="185" />
+    
+    <!-- Right field marks -->
+    <line x1="200" y1="195" x2="200" y2="225" />
+    <line x1="220" y1="195" x2="220" y2="225" />
+    <line x1="240" y1="195" x2="240" y2="225" />
+  </g>
+
+  <!-- Sun/glow element (subtle) -->
+  <circle cx="220" cy="40" r="18" fill="#FFD700" opacity="0.3" />
+  <circle cx="220" cy="40" r="12" fill="#FFA500" opacity="0.2" />
+</svg>
