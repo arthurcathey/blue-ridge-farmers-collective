@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
+// PRODUCTION: Hide errors from users (logs go to server error_log)
+ini_set('display_errors', '0');
 error_reporting(E_ALL);
-ini_set('display_errors', '1');
+// LOCAL DEV: Uncomment below to display errors during development
+// error_reporting(E_ALL);
+// ini_set('display_errors', '1');
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
