@@ -8,13 +8,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "-05:00";
 
-DROP DATABASE IF EXISTS blueridge_farmers_db;
-
-CREATE DATABASE blueridge_farmers_db
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE blueridge_farmers_db;
+USE hqkmwgmy_blueridge_farmers_db;
 
 CREATE TABLE `role_rol` (
   `id_rol` INT NOT NULL AUTO_INCREMENT,
