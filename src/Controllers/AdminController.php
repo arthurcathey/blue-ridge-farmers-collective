@@ -281,7 +281,7 @@ class AdminController extends BaseController
 
     $returnTo = (string) ($_POST['return_to'] ?? '');
     $redirectPath = '/admin/vendor-applications';
-    if ($returnTo !== '' && str_starts_with($returnTo, '/admin/vendor-application')) {
+    if ($returnTo !== '' && strpos($returnTo, '/admin/vendor-application') === 0) {
       $redirectPath = $returnTo;
     }
 

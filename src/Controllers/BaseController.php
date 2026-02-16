@@ -58,7 +58,7 @@ class BaseController
   {
     $target = $path;
 
-    if (str_starts_with($path, '/')) {
+    if (strpos($path, '/') === 0) {
       $target = url($path);
     }
 
