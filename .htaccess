@@ -1,9 +1,11 @@
-# DISABLED: .htaccess rewrite rules cause 500 errors on Bluehost
-# Use /blueridgefarmerscollective/public/ URLs instead
-# <IfModule mod_rewrite.c>
-# RewriteEngine On
-# RewriteBase /blueridgefarmerscollective/
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteRule ^(.*)$ public/index.php [QSA,L]
-# </IfModule>
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /blueridgefarmerscollective/
+  
+  # Skip rewriting real files and directories
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  
+  # Route all other requests to public/index.php
+  RewriteRule ^(.*)$ public/index.php [L]
+</IfModule>
