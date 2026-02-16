@@ -3,7 +3,7 @@
 /**
  * File cache helper
  */
-function cache_get(string $key): mixed
+function cache_get(string $key)
 {
   $file = __DIR__ . '/../../storage/cache/' . md5($key) . '.cache';
   if (!file_exists($file)) return null;
@@ -17,7 +17,7 @@ function cache_get(string $key): mixed
   return $payload['value'] ?? null;
 }
 
-function cache_set(string $key, mixed $value, int $ttl = 300): void
+function cache_set(string $key, $value, int $ttl = 300): void
 {
   $file = __DIR__ . '/../../storage/cache/' . md5($key) . '.cache';
   $payload = [
