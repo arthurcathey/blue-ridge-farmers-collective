@@ -45,6 +45,11 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $path = rtrim($path, '/') ?: '/';
 
+// Fallback: if rewrite failed, check for _route query parameter
+if (isset($_GET['_route'])) {
+  $path = '/' . ltrim($_GET['_route'], '/');
+}
+
 $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
 $baseUrl = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
 

@@ -1,1 +1,2 @@
-<?php header("Location: /public/"); exit;
+<?php header("Location: /public/");
+exit;
