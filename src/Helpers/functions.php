@@ -76,7 +76,18 @@ if (!function_exists('url')) {
       $path = '/' . $path;
     }
 
-    return app_base() . $path;
+    $base = app_base();
+    
+    // On Bluehost, we need to route through /public/index.php?_route=
+    // Check if we're in production (not localhost)
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    if (strpos($host, 'localhost') === false && strpos($host, '127.0.0.1') === false) {
+      // Production - use query parameter routing
+      return '/public/index.php?_route=' . ltrim($path, '/');
+    }
+    
+    // Development - use normal routing
+    return $base . $path;
   }
 }
 

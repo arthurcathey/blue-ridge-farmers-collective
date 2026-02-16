@@ -1,9 +1,0 @@
-# DISABLED: mod_rewrite rewrite rules cause 500 errors on Bluehost
-# Root domain redirects via index.php to /public/
-# <IfModule mod_rewrite.c>
-#   RewriteEngine On
-#   RewriteBase /blueridgefarmerscollective/
-#   RewriteCond %{REQUEST_FILENAME} !-f
-#   RewriteCond %{REQUEST_FILENAME} !-d
-#   RewriteRule ^(.*)$ public/index.php [L]
-# </IfModule>
