@@ -1,6 +1,10 @@
 RewriteEngine On
-RewriteBase /blue_ridge_farmers_collective/
+RewriteBase /
 
-# Redirect all traffic to /public within this project
-RewriteCond %{REQUEST_URI} !^/blue_ridge_farmers_collective/public/
-RewriteRule ^(.*)$ public/$1 [L,QSA]
+# Allow real files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Rewrite everything else to public/index.php
+RewriteRule ^(.*)$ public/index.php [QSA,L]

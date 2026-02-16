@@ -1,7 +1,11 @@
-RewriteEngine On
-RewriteBase /blue_ridge_farmers_collective/public/
-
-# Redirect all requests to front controller
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Allow real files and directories
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  
+  # Rewrite everything to index.php
+  RewriteRule ^ index.php [QSA,L]
+</IfModule>
