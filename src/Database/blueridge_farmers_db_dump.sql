@@ -1,3 +1,5 @@
+-- Disable foreign key checks for clean import
+SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `account_acc`;
 
@@ -978,3 +980,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Re-enable foreign key checks after import
+SET FOREIGN_KEY_CHECKS=1;
