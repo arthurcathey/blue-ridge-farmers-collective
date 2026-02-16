@@ -1,2 +1,1 @@
-<?php header("Location: /blueridgefarmerscollective/public/");
-exit;
+<?php header("Location: /public/"); exit;

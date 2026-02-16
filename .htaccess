@@ -1,11 +1,9 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /blueridgefarmerscollective/
-  
-  # Skip rewriting real files and directories
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  
-  # Route all other requests to public/index.php
-  RewriteRule ^(.*)$ public/index.php [L]
-</IfModule>
+# DISABLED: mod_rewrite rewrite rules cause 500 errors on Bluehost
+# Root domain redirects via index.php to /public/
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteBase /blueridgefarmerscollective/
+#   RewriteCond %{REQUEST_FILENAME} !-f
+#   RewriteCond %{REQUEST_FILENAME} !-d
+#   RewriteRule ^(.*)$ public/index.php [L]
+# </IfModule>
