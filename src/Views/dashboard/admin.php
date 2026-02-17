@@ -3,49 +3,38 @@
   <p class="text-muted">Welcome <?= h($user['display_name'] ?? $user['username']) ?>. System overview:</p>
 
   <?php if (isset($dataRefreshedAt)): ?>
-    <p class="text-small text-muted text-xs -mt-2.5">
+    <p class="text-small text-muted -mt-2.5 text-xs">
       Data last refreshed: <?= $dataRefreshedAt->format('M d, Y g:i A') ?>
     </p>
   <?php endif; ?>
 
-  <!-- Key Metrics Row 1 -->
   <div class="metrics-grid">
-    <!-- Pending Vendors Card -->
     <div class="metric-card metric-card-pending-vendor">
       <div>
         <p class="metric-label">Pending Vendors</p>
-        <p class="metric-value">
-          <?= h((string) ($metrics['pending_vendors'] ?? 0)) ?>
-        </p>
+        <p class="metric-value"><?= h((string) ($metrics['pending_vendors'] ?? 0)) ?></p>
       </div>
       <a href="<?= url('/admin/vendor-applications') ?>" class="btn-metric">Review</a>
     </div>
 
-    <!-- Pending Market Apps Card -->
     <div class="metric-card metric-card-pending-market">
       <div>
         <p class="metric-label">Pending Markets</p>
-        <p class="metric-value">
-          <?= h((string) ($metrics['pending_market_apps'] ?? 0)) ?>
-        </p>
+        <p class="metric-value"><?= h((string) ($metrics['pending_market_apps'] ?? 0)) ?></p>
       </div>
       <a href="<?= url('/admin/market-applications') ?>" class="btn-metric">Review</a>
     </div>
 
-    <!-- Active Vendors Card -->
     <div class="metric-card metric-card-active-vendor">
       <div>
         <p class="metric-label">Active Vendors</p>
-        <p class="metric-value">
-          <?= h((string) ($metrics['active_vendors'] ?? 0)) ?>
-        </p>
+        <p class="metric-value"><?= h((string) ($metrics['active_vendors'] ?? 0)) ?></p>
         <?php if ($vendorTrend > 0): ?>
           <p class="dashboard-trend-indicator">+<?= h((string) $vendorTrend) ?> this month</p>
         <?php endif; ?>
       </div>
     </div>
 
-    <!-- Active Products Card -->
     <div class="metric-card metric-card-active-product">
       <div>
         <p class="metric-label">Active Products</p>
@@ -56,9 +45,7 @@
     </div>
   </div>
 
-  <!-- Key Metrics Row 2 -->
   <div class="metrics-grid">
-    <!-- Markets Card -->
     <div class="metric-card metric-card-active-market">
       <div>
         <p class="metric-label">Active Markets</p>
@@ -68,7 +55,6 @@
       </div>
     </div>
 
-    <!-- Market Issues Card -->
     <div class="metric-card metric-card-inactive-market">
       <div>
         <p class="metric-label">Inactive Markets</p>
@@ -78,7 +64,6 @@
       </div>
     </div>
 
-    <!-- New Signups Card (30-day) -->
     <div class="metric-card metric-card-secondary">
       <div>
         <p class="metric-label">New Signups (30d)</p>
@@ -88,7 +73,6 @@
       </div>
     </div>
 
-    <!-- Weekly Signups Card -->
     <div class="metric-card metric-card-success">
       <div>
         <p class="metric-label">New Signups (7d)</p>
@@ -102,12 +86,10 @@
     </div>
   </div>
 
-  <!-- Pending Applications Section -->
   <div class="dashboard-section-divider">
     <h2 class="dashboard-header">Pending Applications</h2>
 
     <div class="dashboard-grid-2col">
-      <!-- Pending Vendors List -->
       <div class="dashboard-data-box">
         <h3 class="dashboard-h3">Vendor Applications (<?= count($pendingVendors) ?>)</h3>
         <?php if (!empty($pendingVendors)): ?>
@@ -118,8 +100,7 @@
                   <p class="dashboard-list-item-title">
                     <?= h($vendor['farm_name_ven']) ?>
                   </p>
-                  <p class="dashboard-list-item-subtitle">
-                    📍 <?= h($vendor['city_ven'] ?? '') ?><?= !empty($vendor['city_ven']) && !empty($vendor['state_ven']) ? ', ' : '' ?><?= h($vendor['state_ven'] ?? '') ?>
+                  <p class="dashboard-list-item-subtitle"><?= h($vendor['city_ven'] ?? '') ?><?= !empty($vendor['city_ven']) && !empty($vendor['state_ven']) ? ', ' : '' ?><?= h($vendor['state_ven'] ?? '') ?>
                   </p>
                   <p class="dashboard-list-item-meta">
                     Applied: <?= date('M d, Y', strtotime($vendor['applied_date_ven'])) ?>
@@ -133,8 +114,6 @@
           <p class="dashboard-empty-message">No pending vendor applications</p>
         <?php endif; ?>
       </div>
-
-      <!-- Pending Market Apps List -->
       <div class="dashboard-data-box">
         <h3 class="dashboard-h3">Market Applications (<?= count($pendingMarketApps) ?>)</h3>
         <?php if (!empty($pendingMarketApps)): ?>
@@ -163,9 +142,7 @@
     </div>
   </div>
 
-  <!-- Content Row: Recent Products & Category Breakdown -->
   <div class="dashboard-grid-2col">
-    <!-- Vendor Growth Trend -->
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Vendor Growth (Last 4 weeks)</h3>
       <?php if (!empty($vendorGrowthTrend)): ?>
@@ -188,7 +165,6 @@
       <?php endif; ?>
     </div>
 
-    <!-- Weekly Signup Trend -->
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Weekly Signups (Last 4 weeks)</h3>
       <?php if (!empty($weeklySignups)): ?>
@@ -212,9 +188,7 @@
     </div>
   </div>
 
-  <!-- Content Row: Recent Products -->
   <div class="dashboard-grid-2col">
-    <!-- Recent Products -->
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Recent Products (<?= count($recentProducts) ?>)</h3>
       <?php if (!empty($recentProducts)): ?>
@@ -243,7 +217,6 @@
       <?php endif; ?>
     </div>
 
-    <!-- Product Breakdown by Category -->
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Products by Category</h3>
       <?php if (!empty($categoryBreakdown)): ?>
@@ -268,9 +241,7 @@
     </div>
   </div>
 
-  <!-- Content Row: Market Stats & Top Searches -->
   <div class="dashboard-grid-2col">
-    <!-- Market Statistics -->
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Markets (Vendors attending)</h3>
       <?php if (!empty($marketStats)): ?>
@@ -296,7 +267,6 @@
       <?php endif; ?>
     </div>
 
-    <!-- Top Searches -->
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Top Searches (Last 7 days)</h3>
       <?php if (!empty($topSearches)): ?>
@@ -316,22 +286,13 @@
     </div>
   </div>
 
-  <!-- Quick Actions -->
   <div class="dashboard-quick-actions">
     <h3 class="dashboard-h3">Quick Actions</h3>
     <div class="dashboard-quick-actions-grid">
-      <a href="<?= url('/admin/vendor-applications') ?>" class="btn-action-blue">
-        👥 Review Vendors
-      </a>
-      <a href="<?= url('/admin/market-applications') ?>" class="btn-action-purple">
-        🎪 Review Markets
-      </a>
-      <a href="<?= url('/admin/manage-markets') ?>" class="btn-action-pink">
-        ➕ Add Market
-      </a>
-      <a href="<?= url('/admin/manage-admins') ?>" class="btn-action-green">
-        🔐 Manage Admins
-      </a>
+      <a href="<?= url('/admin/vendor-applications') ?>" class="btn-action-blue">Review Vendors</a>
+      <a href="<?= url('/admin/market-applications') ?>" class="btn-action-purple">Review Markets</a>
+      <a href="<?= url('/admin/manage-markets') ?>" class="btn-action-pink">Add Market</a>
+      <a href="<?= url('/admin/manage-admins') ?>" class="btn-action-green">Manage Admins</a>
     </div>
   </div>
 </section>

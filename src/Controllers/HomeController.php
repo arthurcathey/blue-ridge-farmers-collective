@@ -58,28 +58,24 @@ class HomeController extends BaseController
     ]);
   }
 
-  public function dbTest(): string
+  public function faq(): string
   {
-    $status = 'ok';
-    $message = 'Database connection successful.';
-    $sample = null;
+    return $this->render('home/faq', [
+      'title' => 'Frequently Asked Questions',
+    ]);
+  }
 
-    try {
-      $db = \App\Models\BaseModel::connection();
-      $db->query('SELECT 1');
+  public function privacy(): string
+  {
+    return $this->render('home/privacy', [
+      'title' => 'Privacy Policy',
+    ]);
+  }
 
-      $stmt = $db->query('SELECT COUNT(*) AS count FROM market_mkt');
-      $sample = $stmt ? $stmt->fetch() : null;
-    } catch (\Throwable $e) {
-      $status = 'error';
-      $message = $e->getMessage();
-    }
-
-    return $this->render('home/db-test', [
-      'title' => 'Database Test',
-      'status' => $status,
-      'message' => $message,
-      'sample' => $sample,
+  public function terms(): string
+  {
+    return $this->render('home/terms', [
+      'title' => 'Terms of Service',
     ]);
   }
 }

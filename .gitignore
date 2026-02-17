@@ -3,10 +3,6 @@
 .env.local
 .env.*.local
 
-# Database credentials (use dump file instead)
-config/database.php
-config/database-connection.php
-
 # Sensitive files
 .htpasswd
 *.key

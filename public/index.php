@@ -45,13 +45,10 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Use query parameter for routing on Bluehost
 if (isset($_GET['_route'])) {
-  // LiteSpeed .htaccess passes as _route
   $path = '/' . ltrim($_GET['_route'], '/');
 } elseif (isset($_GET['page'])) {
-  // Manual routing with ?page=
   $path = '/' . ltrim($_GET['page'], '/');
 } else {
-  // Fallback to REQUEST_URI parsing (if .htaccess worked without query params)
   $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
   $path = rtrim($path, '/') ?: '/';
 }
@@ -70,11 +67,6 @@ if ($baseUrl !== '' && $baseUrl !== '/') {
     $path = substr($path, strlen($baseUrl));
   }
 
-  $path = $path === '' ? '/' : $path;
-}
-
-if ($publiclessBaseUrl !== '' && $publiclessBaseUrl !== '/' && strpos($path, $publiclessBaseUrl) === 0) {
-  $path = substr($path, strlen($publiclessBaseUrl));
   $path = $path === '' ? '/' : $path;
 }
 

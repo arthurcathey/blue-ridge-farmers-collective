@@ -133,26 +133,8 @@ if (!function_exists('url')) {
       $path = '/' . $path;
     }
 
-    $base = app_base();
-
-    // On Bluehost, we need to route through /public/index.php?_route=
-    // Check if we're in production (not localhost)
-    $host = $_SERVER['HTTP_HOST'] ?? '';
-    if (strpos($host, 'localhost') === false && strpos($host, '127.0.0.1') === false) {
-      // Production - use query parameter routing
-      // Parse path and query params separately
-      $pathParts = explode('?', $path, 2);
-      $pathOnly = $pathParts[0];
-      $existingParams = $pathParts[1] ?? '';
-
-      $url = '/public/index.php?_route=' . ltrim($pathOnly, '/');
-      if ($existingParams !== '') {
-        $url .= '&' . $existingParams;
-      }
-      return $url;
-    }
-
-    // Development - use normal routing
+    // Use asset_base() since it correctly includes /public
+    $base = asset_base();
     return $base . $path;
   }
 }

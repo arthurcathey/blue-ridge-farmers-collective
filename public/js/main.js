@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * FORM VALIDATION MODULE
-   * Provides real-time validation for all form fields
+   * Provides real time validation for all form fields
    * Supports email, URL, phone, password, text, and textarea inputs
    */
   const forms = document.querySelectorAll("form");
@@ -152,12 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputs = form.querySelectorAll("input, textarea, select");
 
     inputs.forEach((input) => {
-      // Validate on blur (when field loses focus)
       input.addEventListener("blur", () => {
         validateField(input);
       });
 
-      // Validate on input (real-time for some fields)
       if (input.type === "email" || input.type === "url" || input.type === "password") {
         input.addEventListener("input", () => {
           validateField(input);
@@ -165,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Validate entire form on submission
     form.addEventListener("submit", (event) => {
       let isValid = true;
       inputs.forEach((input) => {
@@ -176,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!isValid) {
         event.preventDefault();
-        // Focus on first invalid field
         const firstInvalid = form.querySelector("[aria-invalid='true']");
         if (firstInvalid) {
           firstInvalid.focus();
@@ -194,12 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const value = field.value.trim();
     const errors = [];
 
-    // Skip validation for file inputs (handled server-side)
     if (field.type === "file") {
       return true;
     }
 
-    // Check required fields
     if (field.hasAttribute("required") && !value) {
       errors.push("This field is required");
     }
@@ -547,6 +541,40 @@ document.addEventListener("DOMContentLoaded", () => {
         siteHeader.classList.add('is-scrolled');
       } else {
         siteHeader.classList.remove('is-scrolled');
+      }
+    });
+  }
+
+  /**
+   * Back to Top Button
+   * Shows button when user scrolls down, hides when at top
+   * Smoothly scrolls to top when clicked
+   */
+  const backToTopButton = document.getElementById('back-to-top');
+  
+  if (backToTopButton) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopButton.classList.add('show');
+      } else {
+        backToTopButton.classList.remove('show');
+      }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    backToTopButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       }
     });
   }

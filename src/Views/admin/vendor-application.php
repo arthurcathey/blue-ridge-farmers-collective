@@ -26,11 +26,9 @@ $status = (string) ($application['application_status_ven'] ?? '');
       <p><?= h((string) $application['farm_description_ven']) ?></p>
     <?php endif; ?>
     <?php if (!empty($application['address_ven']) || !empty($application['city_ven']) || !empty($application['state_ven'])): ?>
-      <p>
-        <?= h((string) ($application['address_ven'] ?? '')) ?>
+      <p><?= h((string) ($application['address_ven'] ?? '')) ?>
         <?= h(trim((string) ($application['city_ven'] ?? ''))) ?>
-        <?= !empty($application['state_ven']) ? ', ' . h((string) $application['state_ven']) : '' ?>
-      </p>
+        <?= !empty($application['state_ven']) ? ', ' . h((string) $application['state_ven']) : '' ?></p>
     <?php endif; ?>
     <?php if (!empty($application['phone_ven'])): ?>
       <p>Phone: <?= h((string) $application['phone_ven']) ?></p>
@@ -53,7 +51,7 @@ $status = (string) ($application['application_status_ven'] ?? '');
     <?php if (!empty($application['photo_path_ven'])): ?>
       <div class="mt-3">
         <p class="m-0 mb-2 font-semibold">Vendor Photo:</p>
-        <img src="<?= asset_url((string) $application['photo_path_ven']) ?>" alt="<?= h((string) $application['farm_name_ven']) ?> photo" class="max-w-sm h-auto rounded-lg border border-gray-200">
+        <img src="<?= asset_url((string) $application['photo_path_ven']) ?>" alt="<?= h((string) $application['farm_name_ven']) ?> photo" class="h-auto max-w-sm rounded-lg border border-gray-200">
         <br>
         <a href="<?= asset_url((string) $application['photo_path_ven']) ?>" target="_blank" rel="noopener" class="text-sm" aria-label="View vendor photo full size (opens in new window)">View full size</a>
       </div>

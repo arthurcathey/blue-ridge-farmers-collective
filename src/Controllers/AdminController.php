@@ -50,7 +50,6 @@ class AdminController extends BaseController
       $stmt = $db->query("SELECT COUNT(*) FROM vendor_ven WHERE application_status_ven = 'approved' AND applied_date_ven >= DATE_SUB(NOW(), INTERVAL 30 DAY)");
       $vendorTrend = $stmt ? (int) $stmt->fetchColumn() : 0;
 
-      // Weekly signup breakdown for chart
       $stmt = $db->query('
         SELECT 
           WEEK(created_at_acc) AS week_num,
@@ -63,7 +62,6 @@ class AdminController extends BaseController
       ');
       $weeklySignups = $stmt ? $stmt->fetchAll() : [];
 
-      // Vendor growth trend (weekly)
       $stmt = $db->query('
         SELECT 
           DATE_FORMAT(MIN(applied_date_ven), "%b %d") AS date_label,

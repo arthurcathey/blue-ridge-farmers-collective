@@ -59,10 +59,13 @@ class DashboardController extends BaseController
     $view = 'dashboard/member';
     $title = ($role === 'vendor') ? 'Vendor Dashboard' : 'Member Dashboard';
 
+    $warning = $this->flash('warning');
+
     return $this->render($view, [
       'title' => $title,
       'user' => $user,
       'metrics' => $metrics,
+      'warning' => $warning,
     ]);
   }
 }

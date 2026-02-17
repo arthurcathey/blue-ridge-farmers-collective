@@ -16,7 +16,10 @@ $exploreLinks = [
 $accountLinks = [];
 
 if ($user) {
-  $accountLinks[] = ['label' => 'Dashboard', 'href' => url('/dashboard')];
+  // Show Dashboard only for non-admin users
+  if (!in_array($user['role'] ?? '', ['admin', 'super_admin'])) {
+    $accountLinks[] = ['label' => 'Dashboard', 'href' => url('/dashboard')];
+  }
 
   if (($user['role'] ?? '') === 'admin') {
     $accountLinks[] = ['label' => 'Admin', 'href' => url('/admin')];
@@ -80,7 +83,7 @@ if ($user) {
       </div>
     </nav>
     <button class="nav-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
-      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>

@@ -34,8 +34,8 @@
     --text: #1e293b;
     --text-dark: #1e293b;
     --text-gray: #475569;
-    --text-gray-2: #9b7b6d;
-    --text-gray-3: #b8a89f;
+    --text-gray-2: #7a6657;
+    --text-gray-3: #8d7a6e;
     --text-gray-4: #5a5a5a;
     --muted: #475569;
     --bg-light-1: #f5f3ef;
@@ -179,6 +179,14 @@
   }
   .alert-error {
     @apply rounded border border-red-200 bg-red-50 p-3 text-red-700;
+    @apply mb-4 text-sm;
+  }
+  .alert-warning {
+    @apply rounded border border-yellow-200 bg-yellow-50 p-3 text-yellow-700;
+    @apply mb-4 text-sm;
+  }
+  .alert-info {
+    @apply rounded border border-blue-200 bg-blue-50 p-3 text-blue-700;
     @apply mb-4 text-sm;
   }
   .grid {
@@ -392,7 +400,7 @@
     @apply border-b border-gray-200 bg-white/90 backdrop-blur-sm;
   }
   .site-header.is-scrolled {
-    @apply bg-[#a68a5e]/80 border-[#a68a5e];
+    @apply bg-[#8b6f47]/90 border-[#8b6f47];
   }
   .site-header.is-scrolled > .container > div:first-child,
   .site-header.is-scrolled .nav-links a,
