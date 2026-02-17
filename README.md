@@ -89,8 +89,8 @@ The database features 35+ tables with a well-structured relational design:
    ```
 
 6. **Verify Database Connection**
-   - Visit `http://localhost/blue_ridge_farmers_collective/public/database_proof.php`
-   - Should display database content successfully
+   - Visit `http://localhost/blue_ridge_farmers_collective/public/`
+   - Home page should display live database statistics (markets, vendors, products)
 
 ## 🔑 Default Test Accounts
 
@@ -111,8 +111,7 @@ blue_ridge_farmers_collective/
 ├── public/              # Web root (index.php, images, CSS, JS)
 │   ├── css/
 │   ├── js/
-│   ├── uploads/
-│   └── database_proof.php  # Database verification page
+│   └── uploads/
 ├── src/
 │   ├── Controllers/     # Application controllers
 │   ├── Database/        # Schema and dump files
@@ -169,14 +168,13 @@ DECIMAL(8,2) precision for booth/market locations:
 ## 🧪 Testing
 
 To test database connectivity:
-1. Visit `/public/database_proof.php` in your browser
-2. Should display:
-   - Connection status (Connected/Failed)
-   - List of all roles in system
-   - Sample vendors from database
-   - Sample products by category
-   - Available markets
-3. All data queries should execute without errors
+1. Visit the home page at `/public/` in your browser
+2. The page displays live database content:
+   - Total active markets count
+   - Total vendors count
+   - Total products count
+   - Featured markets list
+3. If data displays correctly, your database connection is working
 
 ## 📝 License
 
