@@ -6,14 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= h($title ?? 'Blue Ridge Farmers Collective') ?></title>
   <?php
-  $tailwindVersion = (string) (@filemtime(__DIR__ . '/../../../public/css/tailwind.css') ?: time());
-  $mainCssVersion = (string) (@filemtime(__DIR__ . '/../../../public/css/main.css') ?: time());
-  $mainJsVersion = (string) (@filemtime(__DIR__ . '/../../../public/js/main.js') ?: time());
+  $tailwindPath = '/css/tailwind.css';
+  $mainCssPath = '/css/main.css';
+  $mainJsPath = '/js/main.js';
+
+  $tailwindFile = __DIR__ . '/../../../public' . $tailwindPath;
+  $mainCssFile = __DIR__ . '/../../../public' . $mainCssPath;
+  $mainJsFile = __DIR__ . '/../../../public' . $mainJsPath;
+
+  $tailwindVersion = (string) (@filemtime($tailwindFile) ?: time());
+  $mainCssVersion = (string) (@filemtime($mainCssFile) ?: time());
+  $mainJsVersion = (string) (@filemtime($mainJsFile) ?: time());
+
+  $tailwindSrc = asset_url($tailwindPath . '?v=' . rawurlencode($tailwindVersion));
+  $mainCssSrc = asset_url($mainCssPath . '?v=' . rawurlencode($mainCssVersion));
+  $mainJsSrc = asset_url($mainJsPath . '?v=' . rawurlencode($mainJsVersion));
   ?>
   <link rel="icon" type="image/svg+xml" href="<?= asset_url('/favicon.svg') ?>">
-  <link rel="stylesheet" href="<?= asset_url('/css/tailwind.css?v=' . rawurlencode($tailwindVersion)) ?>">
-  <link rel="stylesheet" href="<?= asset_url('/css/main.css?v=' . rawurlencode($mainCssVersion)) ?>">
-  <script src="<?= asset_url('/js/main.js?v=' . rawurlencode($mainJsVersion)) ?>" defer></script>
+  <link rel="stylesheet" href="<?= $tailwindSrc ?>">
+  <link rel="stylesheet" href="<?= $mainCssSrc ?>">
+  <script src="<?= $mainJsSrc ?>" defer></script>
 </head>
 
 <body>

@@ -1,7 +1,47 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(16px, 2.2vw, 28px);
+  padding: 0.5rem;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: wrap;
+  width: calc(100% - 3rem);
+}
+
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.site-nav .nav-links[data-mobile-open] {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .site-nav {
+    flex-wrap: nowrap;
+    width: auto;
+    gap: 1rem;
+  }
 }
 
 /* Back to Top Button */
@@ -83,5 +123,39 @@
 @media (prefers-reduced-motion: reduce) {
   .back-to-top {
     transition: none;
+  }
+}
+
+/* Hamburger Menu Toggle */
+.nav-toggle {
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1f6b45;
+  transition: color 0.3s ease;
+}
+
+.nav-toggle:hover {
+  color: #185437;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid #1f6b45;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Hide on tablet and up */
+@media (min-width: 768px) {
+  .nav-toggle {
+    display: none;
   }
 }

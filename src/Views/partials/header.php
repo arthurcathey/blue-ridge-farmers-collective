@@ -1,5 +1,9 @@
 <?php
 $user = $_SESSION['user'] ?? null;
+$headerLogoPath = '/images/banners/logo.png';
+$headerLogoFile = __DIR__ . '/../../../public' . $headerLogoPath;
+$headerLogoVersion = (string) (@filemtime($headerLogoFile) ?: time());
+$headerLogoSrc = asset_url($headerLogoPath . '?v=' . rawurlencode($headerLogoVersion));
 
 $primaryLinks = [
   ['label' => 'Home', 'href' => url('/')],
@@ -51,33 +55,35 @@ if ($user) {
 ?>
 <header class="site-header">
   <div class="container">
-    <a href="<?= url('/') ?>" class="no-underline">
-      <strong class="text-brand-primary">Blue Ridge Farmers Collective</strong>
-    </a>
-    <nav class="nav-links" data-nav>
-      <?php foreach ($primaryLinks as $link): ?>
-        <a class="nav-link" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
-      <?php endforeach; ?>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="<?= url('/') ?>" class="nav-brand no-underline" aria-label="Blue Ridge Farmers Collective home">
+        <img src="<?= $headerLogoSrc ?>" alt="Blue Ridge Farmers Collective" class="nav-logo h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[280px] md:h-16 md:max-w-[320px]" />
+      </a>
+      <div class="nav-links" data-nav>
+        <?php foreach ($primaryLinks as $link): ?>
+          <a class="nav-link" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
+        <?php endforeach; ?>
 
-      <div class="nav-item" data-dropdown="explore">
-        <button class="nav-link nav-trigger" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
-          Explore <span class="nav-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div id="nav-menu-explore" class="nav-menu" data-menu="explore" hidden role="menu" aria-label="Explore">
-          <?php foreach ($exploreLinks as $link): ?>
-            <a class="nav-menu-link" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
-          <?php endforeach; ?>
+        <div class="nav-item" data-dropdown="explore">
+          <button class="nav-link nav-trigger" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
+            Explore <span class="nav-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div id="nav-menu-explore" class="nav-menu" data-menu="explore" hidden role="menu" aria-label="Explore">
+            <?php foreach ($exploreLinks as $link): ?>
+              <a class="nav-menu-link" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
+            <?php endforeach; ?>
+          </div>
         </div>
-      </div>
 
-      <div class="nav-item" data-dropdown="account">
-        <button class="nav-link nav-trigger" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
-          Account <span class="nav-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
-          <?php foreach ($accountLinks as $link): ?>
-            <a class="nav-menu-link" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
-          <?php endforeach; ?>
+        <div class="nav-item" data-dropdown="account">
+          <button class="nav-link nav-trigger" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
+            Account <span class="nav-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
+            <?php foreach ($accountLinks as $link): ?>
+              <a class="nav-menu-link" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
+            <?php endforeach; ?>
+          </div>
         </div>
       </div>
     </nav>

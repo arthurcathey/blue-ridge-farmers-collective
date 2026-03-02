@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "scripts": {
     "tailwind:build": "tailwindcss -i ./src/assets/tailwind.css -o ./public/css/tailwind.css --minify",
-    "tailwind:watch": "tailwindcss -i ./src/assets/tailwind.css -o ./public/css/tailwind.css --watch"
+    "tailwind:watch": "tailwindcss -i ./src/assets/tailwind.css -o ./public/css/tailwind.css --watch",
+    "dev": "php -S localhost:8000 -t public/",
+    "deploy": "npm run tailwind:build && echo 'Ready to deploy. See DEPLOYMENT.md for upload instructions.'"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17"
