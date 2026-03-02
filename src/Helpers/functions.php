@@ -176,36 +176,7 @@ if (!function_exists('request_method')) {
   }
 }
 
-if (!function_exists('is_post')) {
-  /**
-   * Check if the request method is POST
-   * 
-   * Convenience function for checking POST requests.
-   * 
-   * @return bool True if request method is POST
-   */
-  function is_post(): bool
-  {
-    return request_method() === 'POST';
-  }
-}
 
-if (!function_exists('redirect_to')) {
-  /**
-   * Redirect to a URL and exit
-   * 
-   * Sends an HTTP redirect response and terminates script execution.
-   * Uses the url() helper to generate the appropriate redirect URL.
-   * 
-   * @param string $path The application path to redirect to
-   * @return void Never returns (calls exit)
-   */
-  function redirect_to(string $path): void
-  {
-    header('Location: ' . url($path));
-    exit;
-  }
-}
 
 if (!function_exists('dd')) {
   /**

@@ -6,7 +6,6 @@ return [
   'GET' => [
     '/' => ['App\\Controllers\\HomeController', 'index'],
     '/about' => ['App\\Controllers\\HomeController', 'about'],
-    '/home/about' => ['App\\Controllers\\HomeController', 'about'],
     '/contact' => ['App\\Controllers\\HomeController', 'contact'],
     '/faq' => ['App\\Controllers\\HomeController', 'faq'],
     '/privacy' => ['App\\Controllers\\HomeController', 'privacy'],
