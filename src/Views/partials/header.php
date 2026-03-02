@@ -65,7 +65,7 @@ if ($user) {
         <?php endforeach; ?>
 
         <div class="nav-item" data-dropdown="explore">
-          <button class="nav-link nav-trigger" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
+          <button type="button" class="nav-link nav-trigger" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
             Explore <span class="nav-chevron" aria-hidden="true">▾</span>
           </button>
           <div id="nav-menu-explore" class="nav-menu" data-menu="explore" hidden role="menu" aria-label="Explore">
@@ -76,7 +76,7 @@ if ($user) {
         </div>
 
         <div class="nav-item" data-dropdown="account">
-          <button class="nav-link nav-trigger" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
+          <button type="button" class="nav-link nav-trigger" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
             Account <span class="nav-chevron" aria-hidden="true">▾</span>
           </button>
           <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
@@ -87,7 +87,7 @@ if ($user) {
         </div>
       </div>
     </nav>
-    <button class="nav-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
+    <button type="button" class="nav-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
