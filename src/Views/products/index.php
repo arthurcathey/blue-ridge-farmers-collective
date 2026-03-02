@@ -116,7 +116,7 @@
         <div class="product-card">
           <div class="product-image-container">
             <?php if (!empty($product['photo'])): ?>
-              <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="product-image">
+              <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="product-image" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
             <?php else: ?>
               <div class="product-image-placeholder">
                 No image

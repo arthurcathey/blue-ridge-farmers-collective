@@ -6,7 +6,7 @@
   <div class="two-column">
     <div>
       <?php if (!empty($vendor['photo'])): ?>
-        <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?>" class="detail-image detail-image-md" />
+        <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?>" class="detail-image detail-image-md" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?> farm photo" />
       <?php else: ?>
         <div class="placeholder-image placeholder-image-md">
           <p>No image available</p>
@@ -70,7 +70,7 @@
             <!-- Product Photo -->
             <div class="card-image-container">
               <?php if (!empty($product['photo'])): ?>
-                <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="card-image">
+                <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="card-image" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
               <?php else: ?>
                 <div class="card-image-placeholder">No image</div>
               <?php endif; ?>

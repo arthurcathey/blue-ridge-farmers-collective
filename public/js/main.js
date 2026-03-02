@@ -682,4 +682,81 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  /**
+   * Lightbox Image Gallery
+   * Click images to view full-size with keyboard navigation
+   */
+  const galleryImages = document.querySelectorAll('[data-lightbox]');
+  if (galleryImages.length > 0) {
+    let currentIndex = 0;
+    const images = Array.from(galleryImages);
+
+    // Create lightbox overlay
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `
+      <div class="lightbox-overlay" data-close></div>
+      <div class="lightbox-content">
+        <button type="button" class="lightbox-close" data-close aria-label="Close image gallery">&times;</button>
+        <button type="button" class="lightbox-prev" data-prev aria-label="Previous image">‹</button>
+        <img class="lightbox-image" src="" alt="">
+        <button type="button" class="lightbox-next" data-next aria-label="Next image">›</button>
+        <div class="lightbox-caption"></div>
+      </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    const lightboxImg = lightbox.querySelector('.lightbox-image');
+    const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+
+    function showImage(index) {
+      currentIndex = (index + images.length) % images.length;
+      const img = images[currentIndex];
+      lightboxImg.src = img.dataset.lightbox || img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = img.dataset.caption || img.alt;
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    // Attach click events
+    images.forEach((img, index) => {
+      img.addEventListener('click', () => showImage(index));
+      img.style.cursor = 'pointer';
+      img.setAttribute('role', 'button');
+      img.setAttribute('tabindex', '0');
+    });
+
+    // Keyboard support for image click
+    images.forEach((img, index) => {
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          showImage(index);
+        }
+      });
+    });
+
+    // Navigation
+    lightbox.querySelector('[data-prev]').addEventListener('click', () => showImage(currentIndex - 1));
+    lightbox.querySelector('[data-next]').addEventListener('click', () => showImage(currentIndex + 1));
+    lightbox.querySelectorAll('[data-close]').forEach(el => {
+      el.addEventListener('click', closeLightbox);
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+
+      if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+      if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+  }
 });

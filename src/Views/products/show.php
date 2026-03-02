@@ -6,7 +6,7 @@
   <div class="two-column">
     <div>
       <?php if (!empty($product['photo'])): ?>
-        <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="detail-image detail-image-lg" />
+        <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="detail-image detail-image-lg" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
       <?php else: ?>
         <div class="placeholder-image placeholder-image-lg">
           <p>No image available</p>

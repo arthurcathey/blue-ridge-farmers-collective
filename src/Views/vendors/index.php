@@ -7,7 +7,7 @@
         <div class="card card-grid-hover">
           <div class="card-image-container">
             <?php if (!empty($vendor['photo'])): ?>
-              <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?> farm photo" class="card-image">
+              <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?> farm photo" class="card-image" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?>" />
             <?php else: ?>
               <div class="card-image-placeholder">
                 No photo
