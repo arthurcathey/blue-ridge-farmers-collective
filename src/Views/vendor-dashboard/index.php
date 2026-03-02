@@ -1,6 +1,16 @@
 <section class="card">
   <h1><?= h($title ?? 'Vendor Dashboard') ?></h1>
   <p>Welcome <?= h($user['display_name'] ?? $user['username']) ?>. Here is your onboarding checklist.</p>
+</section>
+
+<section class="card mt-6">
+  <h2>Upcoming Market Dates</h2>
+  <p class="mb-4 text-sm text-neutral-medium">View market events calendar</p>
+  <div data-market-calendar></div>
+</section>
+
+<section class="card mt-6">
+  <h1>Onboarding Checklist</h1>
 
   <?php if (empty($vendor)): ?>
     <div class="alert-error form-section">

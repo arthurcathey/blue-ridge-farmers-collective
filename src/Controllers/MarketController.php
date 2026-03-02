@@ -226,4 +226,74 @@ class MarketController extends BaseController
       'marketDates' => $marketDates ?? [],
     ]);
   }
+
+  public function marketCalendarApi(): string
+  {
+    header('Content-Type: application/json');
+
+    $year = (int) ($_GET['year'] ?? date('Y'));
+    $month = (int) ($_GET['month'] ?? date('n'));
+
+    // Validate year and month
+    if ($month < 1 || $month > 12) {
+      $month = (int) date('n');
+    }
+    if ($year < 2020 || $year > 2030) {
+      $year = (int) date('Y');
+    }
+
+    try {
+      $db = $this->db();
+
+      // Get first and last day of month
+      $firstDay = "$year-" . str_pad((string) $month, 2, '0', STR_PAD_LEFT) . '-01';
+      $lastDay = date('Y-m-t', strtotime($firstDay));
+
+      // Query market dates for this month
+      $stmt = $db->prepare('
+        SELECT 
+          DATE(mda.date_mda) as date,
+          COUNT(DISTINCT mda.id_mda) as event_count,
+          GROUP_CONCAT(DISTINCT m.name_mkt SEPARATOR ", ") as market_names
+        FROM market_date_mda mda
+        JOIN market_mkt m ON m.id_mkt = mda.id_mkt_mda
+        WHERE mda.date_mda >= :start 
+          AND mda.date_mda <= :end
+          AND m.is_active_mkt = 1
+          AND mda.status_mda != "cancelled"
+        GROUP BY DATE(mda.date_mda)
+        ORDER BY mda.date_mda ASC
+      ');
+
+      $stmt->execute([
+        ':start' => $firstDay,
+        ':end' => $lastDay,
+      ]);
+
+      $results = $stmt->fetchAll();
+      $marketDates = [];
+
+      foreach ($results as $row) {
+        $marketDates[$row['date']] = [
+          'date' => $row['date'],
+          'event_count' => (int) $row['event_count'],
+          'market_names' => $row['market_names'],
+        ];
+      }
+
+      echo json_encode([
+        'year' => $year,
+        'month' => $month,
+        'dates' => $marketDates,
+      ]);
+
+      return '';
+    } catch (\Throwable $e) {
+      http_response_code(500);
+      echo json_encode([
+        'error' => 'Failed to load calendar data',
+      ]);
+      return '';
+    }
+  }
 }

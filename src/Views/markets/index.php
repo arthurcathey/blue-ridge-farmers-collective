@@ -1,6 +1,16 @@
 <section class="card">
   <h1><?= h($title ?? 'Markets') ?></h1>
   <p>Find a market near you.</p>
+</section>
+
+<section class="card mt-6">
+  <h2>Market Calendar</h2>
+  <p class="mb-4 text-sm text-neutral-medium">Click a date to see market events</p>
+  <div data-market-calendar></div>
+</section>
+
+<section class="card mt-6">
+  <h2>All Markets</h2>
   <div class="mt-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] md:gap-6">
     <?php foreach (($markets ?? []) as $market): ?>
       <a href="<?= url('/markets?view=' . urlencode($market['slug_mkt'])) ?>" class="card-link" aria-label="View <?= h($market['name_mkt']) ?> market details">

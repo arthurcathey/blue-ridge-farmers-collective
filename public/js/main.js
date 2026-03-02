@@ -906,4 +906,114 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem(storageKey);
     });
   });
+
+  /**
+   * Interactive Market Date Calendar
+   * Shows market dates for current/selected month with click-to-view functionality
+   */
+  const calendarContainer = document.querySelector('[data-market-calendar]');
+  if (calendarContainer) {
+    let currentDate = new Date();
+
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth() + 1;
+
+      // Fetch market dates for this month
+      fetch(`/api/markets/calendar?year=${year}&month=${month}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const firstDate = new Date(year, month - 1, 1);
+          const lastDate = new Date(year, month, 0);
+          const prevDate = new Date(year, month - 1, 0);
+
+          let html = '<div class="calendar-header">';
+          html +=
+            '<button type="button" class="calendar-nav-btn" data-prev-month aria-label="Previous month">❮</button>';
+          html += `<h3 class="calendar-title">${firstDate.toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric',
+          })}</h3>`;
+          html +=
+            '<button type="button" class="calendar-nav-btn" data-next-month aria-label="Next month">❯</button>';
+          html += '</div>';
+
+          html += '<div class="calendar-weekdays">';
+          ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((day) => {
+            html += `<div class="calendar-weekday">${day}</div>`;
+          });
+          html += '</div>';
+
+          html += '<div class="calendar-days">';
+
+          // Empty cells for days before month starts
+          const startDay = firstDate.getDay();
+          for (let i = 0; i < startDay; i++) {
+            const day = prevDate.getDate() - (startDay - i - 1);
+            html += '<div class="calendar-day calendar-day-other"></div>';
+          }
+
+          // Days of current month
+          for (let day = 1; day <= lastDate.getDate(); day++) {
+            const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(
+              day
+            ).padStart(2, '0')}`;
+            const hasEvent = data.dates && data.dates[dateStr];
+            const isToday =
+              new Date().toDateString() === new Date(dateStr).toDateString();
+
+            html += `<button type="button" class="calendar-day ${
+              hasEvent ? 'calendar-day-has-event' : ''
+            } ${isToday ? 'calendar-day-today' : ''}" data-date="${dateStr}" ${
+              hasEvent
+                ? `title="${hasEvent.event_count} market(s)"`
+                : ''
+            }>${day}`;
+
+            if (hasEvent) {
+              html += '<span class="calendar-day-indicator"></span>';
+            }
+
+            html += '</button>';
+          }
+
+          html += '</div>';
+
+          calendarContainer.innerHTML = html;
+
+          // Attach event listeners
+          calendarContainer
+            .querySelector('[data-prev-month]')
+            ?.addEventListener('click', () => {
+              currentDate.setMonth(currentDate.getMonth() - 1);
+              renderCalendar();
+            });
+
+          calendarContainer
+            .querySelector('[data-next-month]')
+            ?.addEventListener('click', () => {
+              currentDate.setMonth(currentDate.getMonth() + 1);
+              renderCalendar();
+            });
+
+          // Date click handlers
+          calendarContainer.querySelectorAll('[data-date]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const dateStr = btn.dataset.date;
+              if (calendarContainer.dataset.onDateSelect) {
+                // Custom handler if provided
+                eval(calendarContainer.dataset.onDateSelect);
+              }
+            });
+          });
+        })
+        .catch((err) => {
+          console.error('Failed to load calendar:', err);
+          calendarContainer.innerHTML =
+            '<p class="calendar-error">Failed to load calendar</p>';
+        });
+    }
+
+    renderCalendar();
+  }
 });

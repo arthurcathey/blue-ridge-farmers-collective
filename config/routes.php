@@ -38,6 +38,7 @@ return [
     '/admin/reviews' => ['App\\Controllers\\AdminController', 'reviewManagement'],
     '/vendors' => ['App\\Controllers\\VendorController', 'index'],
     '/api/products/search' => ['App\\Controllers\\ProductController', 'searchApi'],
+    '/api/markets/calendar' => ['App\\Controllers\\MarketController', 'marketCalendarApi'],
     '/products' => ['App\\Controllers\\ProductController', 'index'],
     '/markets' => ['App\\Controllers\\MarketController', 'index'],
   ],
