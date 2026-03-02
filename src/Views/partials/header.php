@@ -66,7 +66,7 @@ if ($user) {
 
         <div class="nav-item" data-dropdown="explore">
           <button type="button" class="nav-link nav-trigger" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
-            Explore <span class="nav-chevron" aria-hidden="true">▾</span>
+            Explore
           </button>
           <div id="nav-menu-explore" class="nav-menu" data-menu="explore" hidden role="menu" aria-label="Explore">
             <?php foreach ($exploreLinks as $link): ?>
@@ -77,7 +77,7 @@ if ($user) {
 
         <div class="nav-item" data-dropdown="account">
           <button type="button" class="nav-link nav-trigger" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
-            Account <span class="nav-chevron" aria-hidden="true">▾</span>
+            Account
           </button>
           <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
             <?php foreach ($accountLinks as $link): ?>
