@@ -482,7 +482,8 @@
     @apply right-0;
   }
   .nav-item.is-open .nav-menu {
-    @apply block;
+    @apply block !important;
+    display: block !important;
   }
   @media (max-width: 767px) {
     .nav-item {

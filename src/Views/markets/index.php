@@ -11,7 +11,7 @@
 
 <section class="card mt-6">
   <h2>All Markets</h2>
-  <div class="mt-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] md:gap-6">
+  <div class="mt-4 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
     <?php foreach (($markets ?? []) as $market): ?>
       <a href="<?= url('/markets?view=' . urlencode($market['slug_mkt'])) ?>" class="card-link" aria-label="View <?= h($market['name_mkt']) ?> market details">
         <div class="card">
