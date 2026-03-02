@@ -199,13 +199,15 @@
   margin: 0 auto;
 }
 
+/* Mobile-first image sizing */
 .lightbox-image {
   max-width: 100%;
-  max-height: 85vh;
+  max-height: 70vh;
   object-fit: contain;
   border-radius: 4px;
 }
 
+/* Mobile-first button styling */
 .lightbox-close,
 .lightbox-prev,
 .lightbox-next {
@@ -215,7 +217,6 @@
   color: white;
   cursor: pointer;
   padding: 0.5rem;
-  font-size: 2rem;
   z-index: 2002;
   transition: color 0.3s ease;
 }
@@ -234,28 +235,30 @@
   border-radius: 4px;
 }
 
+/* Close button - mobile size first */
 .lightbox-close {
   top: 0.5rem;
   right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* Prev/Next buttons - mobile size first */
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
   width: 2.5rem;
   height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  line-height: 1;
-}
-
-.lightbox-prev,
-.lightbox-next {
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3rem;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .lightbox-prev {
@@ -280,23 +283,23 @@
   word-break: break-word;
 }
 
-/* Mobile adjustments */
-@media (max-width: 640px) {
+/* Tablet and up - increase button sizes */
+@media (min-width: 640px) {
   .lightbox-image {
-    max-height: 70vh;
+    max-height: 85vh;
   }
 
   .lightbox-close {
-    width: 2rem;
-    height: 2rem;
-    font-size: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 2.5rem;
   }
 
   .lightbox-prev,
   .lightbox-next {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 2rem;
   }
 }
 
