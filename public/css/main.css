@@ -74,10 +74,10 @@
 }
 
 .back-to-top:focus-visible {
-  outline: 3px solid #ffffff;
+  outline: 3px solid #1f6b45;
   outline-offset: 2px;
   box-shadow:
-    0 0 0 3px #1f6b45,
+    0 0 0 3px #ffffff,
     0 4px 6px rgba(0, 0, 0, 0.1),
     0 2px 4px rgba(0, 0, 0, 0.06);
 }
@@ -131,6 +131,8 @@
   position: fixed;
   right: 1rem;
   top: 1rem;
+  min-width: 44px;
+  min-height: 44px;
   background: transparent;
   border: none;
   padding: 0.5rem;
