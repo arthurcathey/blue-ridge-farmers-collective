@@ -760,4 +760,71 @@ class ProductController extends BaseController
       'product' => $product,
     ]);
   }
+
+  public function searchApi(): string
+  {
+    header('Content-Type: application/json');
+
+    $rawSearchTerm = trim((string) ($_GET['q'] ?? ''));
+
+    if (empty($rawSearchTerm) || strlen($rawSearchTerm) < 2) {
+      echo json_encode(['products' => [], 'message' => 'Search query too short']);
+      return '';
+    }
+
+    $searchTerm = $this->validateSearchInput($rawSearchTerm);
+
+    if (empty($searchTerm)) {
+      echo json_encode(['products' => [], 'message' => 'Invalid search term']);
+      return '';
+    }
+
+    if ($this->isRateLimited()) {
+      http_response_code(429);
+      echo json_encode(['products' => [], 'message' => 'Too many searches. Please wait a moment.']);
+      return '';
+    }
+
+    try {
+      $db = $this->db();
+
+      $query = 'SELECT p.id_prd, p.name_prd, p.photo_path_prd, v.farm_name_ven AS vendor_name
+        FROM product_prd p 
+        JOIN vendor_ven v ON v.id_ven = p.id_ven_prd 
+        LEFT JOIN product_search_index_psi psi ON psi.id_prd_psi = p.id_prd
+        WHERE p.is_active_prd = 1 
+        AND (COALESCE(MATCH(psi.search_text_psi) AGAINST(:search IN BOOLEAN MODE), 0) 
+          OR p.name_prd LIKE :like_search 
+          OR p.description_prd LIKE :like_search 
+          OR v.farm_name_ven LIKE :like_search)
+        ORDER BY p.name_prd ASC
+        LIMIT 8';
+
+      $stmt = $db->prepare($query);
+      $stmt->execute([
+        ':search' => $searchTerm . '*',
+        ':like_search' => '%' . $searchTerm . '%',
+      ]);
+
+      $rows = $stmt->fetchAll();
+      $products = array_map(function ($row) {
+        return [
+          'id' => (int) $row['id_prd'],
+          'name' => $row['name_prd'],
+          'photo' => $row['photo_path_prd'] ?? '/images/placeholder.jpg',
+          'vendor_name' => $row['vendor_name'] ?? 'Unknown Vendor',
+        ];
+      }, $rows);
+
+      // Log the search
+      $this->logSearch($searchTerm, count($products));
+
+      echo json_encode(['products' => $products]);
+      return '';
+    } catch (\Throwable $e) {
+      http_response_code(500);
+      echo json_encode(['products' => [], 'message' => 'Error searching products']);
+      return '';
+    }
+  }
 }

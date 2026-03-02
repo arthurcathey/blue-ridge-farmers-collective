@@ -20,7 +20,12 @@
           name="search"
           placeholder="Search by product name..."
           value="<?= h($_GET['search'] ?? '') ?>"
-          class="search-form-input" />
+          class="search-form-input"
+          data-search-input />
+        <div class="live-search-loading hidden" data-search-loading>
+          <span class="live-search-spinner"></span> Searching...
+        </div>
+        <div class="live-search-results" data-search-results></div>
       </div>
 
       <div class="search-form-filters">

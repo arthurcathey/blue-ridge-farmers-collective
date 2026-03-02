@@ -37,6 +37,7 @@ return [
     '/admin/market-dates/edit' => ['App\\Controllers\\AdminController', 'showEditMarketDate'],
     '/admin/reviews' => ['App\\Controllers\\AdminController', 'reviewManagement'],
     '/vendors' => ['App\\Controllers\\VendorController', 'index'],
+    '/api/products/search' => ['App\\Controllers\\ProductController', 'searchApi'],
     '/products' => ['App\\Controllers\\ProductController', 'index'],
     '/markets' => ['App\\Controllers\\MarketController', 'index'],
   ],

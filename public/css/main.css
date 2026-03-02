@@ -311,3 +311,133 @@
     transition: none;
   }
 }
+
+/* Live Search Results */
+.live-search-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #666;
+  background-color: #f9fafb;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.live-search-loading.hidden {
+  display: none;
+}
+
+.live-search-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #e5e7eb;
+  border-top-color: #1f6b45;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.live-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 50;
+  margin-top: -4px;
+  padding: 0;
+}
+
+.live-search-result {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+.live-search-result:last-child {
+  border-bottom: none;
+}
+
+.live-search-result:hover {
+  background-color: #f9fafb;
+  color: #1f6b45;
+}
+
+.live-search-result:focus-visible {
+  outline: 2px solid #1f6b45;
+  outline-offset: -2px;
+}
+
+.live-search-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.live-search-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.live-search-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.live-search-vendor {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0.25rem 0 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.live-search-empty,
+.live-search-error {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.live-search-empty {
+  color: #666;
+}
+
+.live-search-error {
+  color: #dc2626;
+}
+
+/* Ensure search wrapper is relative for absolute positioning */
+.search-form-grid > div:first-child {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-search-spinner {
+    animation: none;
+  }
+}

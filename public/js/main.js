@@ -759,4 +759,77 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === 'Escape') closeLightbox();
     });
   }
+
+  /**
+   * Live Product Search with Debouncing
+   * Updates results in real-time as user types, with AJAX fetch
+   */
+  const searchInput = document.querySelector('[data-search-input]');
+  const resultsContainer = document.querySelector('[data-search-results]');
+  const loadingIndicator = document.querySelector('[data-search-loading]');
+
+  if (searchInput && resultsContainer) {
+    // Debounce function to limit API calls
+    function debounce(func, delay) {
+      let timeoutId;
+      return function (...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+      };
+    }
+
+    // Fetch and display search results
+    async function searchProducts(query) {
+      query = query.trim();
+
+      if (query.length < 2) {
+        resultsContainer.innerHTML = '';
+        return;
+      }
+
+      // Show loading state
+      if (loadingIndicator) {
+        loadingIndicator.classList.remove('hidden');
+      }
+
+      try {
+        const response = await fetch(
+          `/api/products/search?q=${encodeURIComponent(query)}`
+        );
+        const data = await response.json();
+
+        if (data.products.length === 0) {
+          resultsContainer.innerHTML =
+            '<p class="live-search-empty">No products found</p>';
+        } else {
+          resultsContainer.innerHTML = data.products
+            .map(
+              (product) => `
+            <a href="/products?view=${encodeURIComponent(product.name)}" class="live-search-result" data-product-id="${product.id}">
+              <img src="${product.photo}" alt="${product.name}" class="live-search-image" loading="lazy">
+              <div class="live-search-content">
+                <h3 class="live-search-name">${product.name}</h3>
+                <p class="live-search-vendor">${product.vendor_name}</p>
+              </div>
+            </a>
+          `
+            )
+            .join('');
+        }
+      } catch (error) {
+        resultsContainer.innerHTML =
+          '<p class="live-search-error">Error loading results. Please try again.</p>';
+      } finally {
+        if (loadingIndicator) {
+          loadingIndicator.classList.add('hidden');
+        }
+      }
+    }
+
+    // Attach debounced search to input
+    const debouncedSearch = debounce(searchProducts, 300);
+    searchInput.addEventListener('input', (e) => {
+      debouncedSearch(e.target.value.trim());
+    });
+  }
 });
