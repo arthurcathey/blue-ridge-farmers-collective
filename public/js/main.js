@@ -33,6 +33,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelector('[data-nav]');
   const dropdowns = Array.from(document.querySelectorAll("[data-dropdown]"));
 
+  const closeMobileMenu = () => {
+    if (navLinks) {
+      navLinks.removeAttribute('data-mobile-open');
+    }
+    if (menuToggle) {
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  };
+
   const closeAllDropdowns = () => {
     dropdowns.forEach((item) => {
       item.classList.remove("is-open");
@@ -77,8 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     menuToggle.addEventListener('click', () => {
       const isOpen = navLinks.hasAttribute('data-mobile-open');
       if (isOpen) {
-        navLinks.removeAttribute('data-mobile-open');
-        menuToggle.setAttribute('aria-expanded', 'false');
+        closeMobileMenu();
         closeAllDropdowns();
       } else {
         navLinks.setAttribute('data-mobile-open', '');
@@ -206,8 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     if (target.closest('.nav-menu-link') && window.matchMedia('(max-width: 767px)').matches) {
-      navLinks.removeAttribute('data-mobile-open');
-      menuToggle.setAttribute('aria-expanded', 'false');
+      closeMobileMenu();
       closeAllDropdowns();
     }
   });
@@ -217,8 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     if (window.innerWidth >= 768) {
-      navLinks.removeAttribute('data-mobile-open');
-      menuToggle.setAttribute('aria-expanded', 'false');
+      closeMobileMenu();
       closeAllDropdowns();
     }
   });
@@ -361,8 +367,8 @@ document.addEventListener("DOMContentLoaded", () => {
    * @returns {boolean} True if phone format is valid
    */
   function isValidPhone(phone) {
-    const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
-    return phoneRegex.test(phone.replace(/\D/g, "").length >= 10 ? phone : "");
+    const digitCount = phone.replace(/\D/g, "").length;
+    return digitCount >= 10;
   }
 
   /**
@@ -515,25 +521,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const productCards = productGrid ? Array.from(productGrid.querySelectorAll(".product-card")) : [];
 
   if (productCards.length > 0 && (searchInput || categoryFilter || vendorFilter || marketFilter || sortSelect)) {
-    const productsData = productCards.map((card) => ({
-      element: card,
-      name: card.querySelector(".product-title")?.textContent.toLowerCase() || "",
-      category: card.getAttribute("data-category") || card.querySelector(".product-category-tag")?.textContent.toLowerCase() || "",
-      vendor: card.getAttribute("data-vendor") || card.querySelector(".product-vendor-link")?.textContent.toLowerCase() || "",
-      market: card.getAttribute("data-market") || "",
-      createdAt: card.getAttribute("data-created") || 0,
-    }));
-
-    productCards.forEach((card) => {
+    const productsData = productCards.map((card) => {
       const categoryTag = card.querySelector(".product-category-tag");
       const vendorLink = card.querySelector(".product-vendor-link");
       
-      if (categoryTag) {
-        card.setAttribute("data-category", categoryTag.textContent.toLowerCase());
-      }
-      if (vendorLink) {
-        card.setAttribute("data-vendor", vendorLink.textContent.toLowerCase());
-      }
+      return {
+        element: card,
+        name: card.querySelector(".product-title")?.textContent.toLowerCase() || "",
+        category: (categoryTag?.textContent || card.getAttribute("data-category") || "").toLowerCase(),
+        vendor: (vendorLink?.textContent || card.getAttribute("data-vendor") || "").toLowerCase(),
+        market: card.getAttribute("data-market") || "",
+        createdAt: parseInt(card.getAttribute("data-created") || "0"),
+      };
     });
 
     function filterProducts() {
@@ -545,9 +544,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let filtered = productsData.filter((product) => {
         const matchesSearch = product.name.includes(searchTerm);
-        const matchesCategory = !selectedCategory || product.category.toLowerCase().includes(selectedCategory.toLowerCase()) || product.element.querySelector(".product-category-tag")?.textContent === selectedCategory;
-        const matchesVendor = !selectedVendor || product.vendor.includes(selectedVendor) || product.element.querySelector(`[data-vendor="${selectedVendor}"]`);
-        const matchesMarket = !selectedMarket || product.market.includes(selectedMarket) || product.element.getAttribute("data-market") === selectedMarket;
+        const matchesCategory = !selectedCategory || product.category.includes(selectedCategory.toLowerCase());
+        const matchesVendor = !selectedVendor || product.vendor.includes(selectedVendor.toLowerCase());
+        const matchesMarket = !selectedMarket || product.market.includes(selectedMarket);
 
         return matchesSearch && matchesCategory && matchesVendor && matchesMarket;
       });
@@ -630,30 +629,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * Sticky header scroll effect
-   * Changes header background color when user scrolls
+   * Sticky header and back-to-top button scroll effects
+   * Updates header styling and shows/hides back-to-top button on scroll
    */
   const siteHeader = document.querySelector('.site-header');
-  if (siteHeader) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 0) {
+  const backToTopButton = document.getElementById('back-to-top');
+  
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    
+    if (siteHeader) {
+      if (scrollY > 0) {
         siteHeader.classList.add('is-scrolled');
       } else {
         siteHeader.classList.remove('is-scrolled');
       }
-    });
-  }
-
-  /**
-   * Back to Top Button
-   * Shows button when user scrolls down, hides when at top
-   * Smoothly scrolls to top when clicked
-   */
-  const backToTopButton = document.getElementById('back-to-top');
-  
-  if (backToTopButton) {
-    const toggleBackToTopVisibility = () => {
-      const shouldShow = window.scrollY > 300;
+    }
+    
+    if (backToTopButton) {
+      const shouldShow = scrollY > 300;
       backToTopButton.classList.toggle('show', shouldShow);
       backToTopButton.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       if (shouldShow) {
@@ -661,27 +655,30 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         backToTopButton.setAttribute('tabindex', '-1');
       }
-    };
-
-    window.addEventListener('scroll', toggleBackToTopVisibility, { passive: true });
-    toggleBackToTopVisibility();
-
+    }
+  };
+  
+  if (siteHeader || backToTopButton) {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+  }
+  
+  if (backToTopButton) {
     const scrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 
-    backToTopButton.addEventListener('click', () => {
+    const scrollToTop = () => {
       window.scrollTo({
         top: 0,
         behavior: scrollBehavior
       });
-    });
+    };
+
+    backToTopButton.addEventListener('click', scrollToTop);
 
     backToTopButton.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        window.scrollTo({
-          top: 0,
-          behavior: scrollBehavior
-        });
+        scrollToTop();
       }
     });
   }
