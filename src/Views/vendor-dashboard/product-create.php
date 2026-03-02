@@ -7,7 +7,7 @@
     </div>
   <?php endif; ?>
 
-  <form method="post" action="<?= url('/vendor/products') ?>" enctype="multipart/form-data">
+  <form method="post" action="<?= url('/vendor/products') ?>" enctype="multipart/form-data" data-autosave="product-create">
     <?= csrf_field() ?>
     <div class="field">
       <label for="name">Product name</label>

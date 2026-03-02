@@ -832,4 +832,78 @@ document.addEventListener("DOMContentLoaded", () => {
       debouncedSearch(e.target.value.trim());
     });
   }
+
+  /**
+   * Auto-save form data to localStorage
+   * Prevents data loss on accidental navigation
+   */
+  const autosaveForms = document.querySelectorAll('[data-autosave]');
+
+  autosaveForms.forEach((form) => {
+    const formId = form.dataset.autosave;
+    const storageKey = `form_${formId}`;
+
+    // Utility: Debounce function
+    function debounce(func, delay) {
+      let timeoutId;
+      return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func(...args), delay);
+      };
+    }
+
+    // Restore saved data on page load
+    const savedData = localStorage.getItem(storageKey);
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        Object.keys(data).forEach((name) => {
+          const field = form.querySelector(`[name="${name}"]`);
+          if (field && field.type !== 'password') {
+            if (field.type === 'checkbox' || field.type === 'radio') {
+              field.checked = data[name] === 'true' || data[name] === true;
+            } else {
+              field.value = data[name];
+            }
+          }
+        });
+
+        // Show draft restoration notice
+        const notice = document.createElement('div');
+        notice.className = 'alert-info mb-4';
+        notice.innerHTML =
+          '✓ Draft restored. <button type="button" class="text-sm underline ml-2" data-clear-draft>Clear draft</button>';
+        form.insertAdjacentElement('afterbegin', notice);
+
+        notice.querySelector('[data-clear-draft]')?.addEventListener('click', () => {
+          localStorage.removeItem(storageKey);
+          notice.remove();
+          form.reset();
+        });
+      } catch (e) {
+        console.error('Failed to restore form data:', e);
+      }
+    }
+
+    // Save data on input (debounced)
+    const saveData = debounce(() => {
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => {
+        // Don't save passwords or CSRF tokens
+        if (!key.includes('password') && key !== 'csrf_token') {
+          data[key] = value;
+        }
+      });
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    }, 500);
+
+    form.addEventListener('input', saveData);
+    form.addEventListener('change', saveData);
+
+    // Clear on successful submit
+    form.addEventListener('submit', () => {
+      localStorage.removeItem(storageKey);
+    });
+  });
 });

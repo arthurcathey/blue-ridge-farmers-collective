@@ -83,7 +83,7 @@ if (!is_array($selectedMethods)) {
   <?php endif; ?>
 
   <?php if ($canApply || $isApproved): ?>
-    <form method="post" action="<?= url('/vendor/apply') ?>" enctype="multipart/form-data">
+    <form method="post" action="<?= url('/vendor/apply') ?>" enctype="multipart/form-data" data-autosave="vendor-apply">
       <?= csrf_field() ?>
 
       <?php

@@ -480,3 +480,31 @@
     animation: none;
   }
 }
+
+/* Auto-save Form Draft Notice */
+.alert-info {
+  padding: 0.75rem 1rem;
+  background-color: #dbeafe;
+  border: 1px solid #a5d6fd;
+  border-left: 4px solid #1f6b45;
+  color: #0c4a6e;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.alert-info button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1f6b45;
+  padding: 0;
+}
+
+.alert-info button:hover {
+  color: #185437;
+}
+
+.alert-info button:focus-visible {
+  outline: 2px solid #1f6b45;
+  outline-offset: 2px;
+}
