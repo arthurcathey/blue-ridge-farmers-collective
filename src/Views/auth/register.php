@@ -55,6 +55,6 @@
 
   <div class="mt-6 text-center text-sm text-neutral-medium">
     Already have an account?
-    <a href="<?= url('/login') ?>" class="text-primary-600 hover:text-primary-700">Sign in</a>
+    <a href="<?= url('/login') ?>" class="text-brand-primary hover:text-brand-primary-hover">Sign in</a>
   </div>
 </section>

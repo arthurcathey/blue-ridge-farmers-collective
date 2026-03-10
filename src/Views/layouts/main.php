@@ -29,7 +29,7 @@
 </head>
 
 <body>
-  <a href="#main-content" class="skip-to-main-content">Skip to main content</a>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <?php require __DIR__ . '/../partials/header.php'; ?>
   <main id="main-content" tabindex="-1" class="container">
     <?= $content ?>
@@ -37,7 +37,7 @@
   <?php require __DIR__ . '/../partials/footer.php'; ?>
 
   <button id="back-to-top" class="back-to-top" type="button" aria-label="Back to top" title="Back to top" aria-hidden="true" tabindex="-1">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
   </button>

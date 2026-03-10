@@ -59,7 +59,9 @@
     @apply focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-brand-primary;
   }
   .btn-metric {
-    @apply btn inline-block;
+    @apply btn inline-block whitespace-nowrap;
+    @apply min-h-[44px];
+    @apply px-4 py-2;
   }
   .btn-secondary {
     @apply inline-block w-full rounded px-4 py-3 text-center text-base font-semibold text-white no-underline;
@@ -72,7 +74,8 @@
   .btn-action-purple,
   .btn-action-orange,
   .btn-action-pink,
-  .btn-action-red {
+  .btn-action-red,
+  .btn-action-teal {
     @apply inline-block w-full rounded px-4 py-3 text-center text-base font-semibold text-white no-underline;
     @apply min-h-[44px] sm:w-auto sm:py-2 sm:text-sm;
     @apply transition-colors duration-200;
@@ -97,22 +100,57 @@
     @apply bg-red-600 hover:bg-red-700;
     @apply focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-red-600;
   }
+  .btn-action-teal {
+    @apply bg-teal-600 hover:bg-teal-700;
+    @apply focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-teal-600;
+  }
   .link-primary {
     @apply font-semibold text-brand-primary underline hover:text-brand-primary-hover;
     @apply transition-colors duration-200;
     @apply focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-brand-primary;
   }
-  .text-primary-600 {
-    @apply text-brand-primary;
+  /* Category badges for product categorization */
+  .badge-category {
+    @apply inline-flex items-center rounded px-2 py-1 text-xs font-semibold text-white;
   }
-  .text-primary-700 {
-    @apply text-brand-primary-hover;
+  .badge-category-produce {
+    @apply bg-category-produce;
   }
-  .hover\:text-primary-700:hover {
-    @apply text-brand-primary-hover;
+  .badge-category-dairy {
+    @apply bg-category-dairy;
   }
-  .border-primary-500 {
-    @apply border-brand-primary;
+  .badge-category-baked {
+    @apply bg-category-baked;
+  }
+  .badge-category-meat {
+    @apply bg-category-meat;
+  }
+  .badge-category-seafood {
+    @apply bg-category-seafood;
+  }
+  .badge-category-pantry {
+    @apply bg-category-pantry;
+  }
+  .badge-category-beverages {
+    @apply bg-category-beverages;
+  }
+  .badge-category-flowers {
+    @apply bg-category-flowers;
+  }
+  .badge-category-prepared {
+    @apply bg-category-prepared;
+  }
+  .badge-category-honey {
+    @apply bg-category-honey;
+  }
+  .badge-category-grains {
+    @apply bg-category-grains;
+  }
+  .badge-category-herbs {
+    @apply bg-category-herbs;
+  }
+  .badge-category-specialty {
+    @apply bg-category-specialty;
   }
   .field {
     @apply mb-5;
@@ -120,6 +158,9 @@
   .field label {
     @apply mb-2 block text-base font-semibold text-gray-800 sm:text-lg;
   }
+  .form-input,
+  .form-select,
+  .form-textarea,
   .field input[type='text'],
   .field input[type='email'],
   .field input[type='password'],
@@ -129,56 +170,12 @@
   .field input[type='time'],
   .field input[type='file'],
   .field select,
-  .field textarea,
-  .form-control {
-    @apply w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base text-gray-900;
+  .field textarea {
+    @apply w-full px-3 py-2 text-base;
+    @apply rounded-lg border border-gray-300 bg-white text-gray-900;
     @apply transition-colors duration-200;
     @apply focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary;
-  }
-  .field textarea,
-  .form-control textarea,
-  textarea.form-control {
-    @apply min-h-[8rem];
-  }
-  .field input[type='checkbox'],
-  .field input[type='radio'] {
-    @apply h-4 w-4 accent-brand-primary;
-  }
-  .error-message {
-    @apply mt-1 block text-sm font-medium text-red-600;
-  }
-  .form-field {
-    @apply mb-5;
-  }
-  .form-label {
-    @apply mb-2 block text-base font-semibold sm:text-lg;
-    @apply text-gray-800;
-  }
-  .form-input {
-    @apply w-full px-3 py-2;
-    @apply text-base;
-    @apply rounded-lg border border-gray-300;
-    @apply transition-colors duration-200;
-    @apply focus:border-brand-primary focus:ring-2 focus:ring-brand-primary;
     @apply disabled:cursor-not-allowed disabled:bg-gray-100;
-  }
-  .form-select {
-    @apply w-full px-3 py-2;
-    @apply text-base;
-    @apply rounded-lg border border-gray-300;
-    @apply transition-colors duration-200;
-    @apply focus:border-brand-primary focus:ring-2 focus:ring-brand-primary;
-    @apply disabled:cursor-not-allowed disabled:bg-gray-100;
-  }
-  .form-textarea {
-    @apply w-full px-3 py-2;
-    @apply text-base;
-    @apply font-sans;
-    @apply rounded-lg border border-gray-300;
-    @apply transition-colors duration-200;
-    @apply focus:border-brand-primary focus:ring-2 focus:ring-brand-primary;
-    @apply disabled:cursor-not-allowed disabled:bg-gray-100;
-    @apply min-h-32 resize;
   }
   .form-error {
     @apply mt-1 block text-sm text-red-600;
@@ -247,18 +244,79 @@
     @apply h-full w-full object-cover;
   }
   .metric-card {
-    @apply rounded-lg border border-gray-200 bg-white;
-    @apply p-5 md:p-6;
-    @apply flex flex-col items-start gap-4 sm:flex-row sm:items-start sm:justify-between;
+    @apply rounded-lg border-2 bg-white;
+    @apply p-4 sm:p-5 md:p-6;
+    @apply flex flex-col gap-4;
     @apply shadow-sm;
+    @apply min-h-full;
+    @apply overflow-hidden;
   }
+  .metric-card > div {
+    @apply flex-1;
+    @apply min-w-0;
+  }
+  .metric-card .btn-metric {
+    @apply mt-auto;
+    @apply text-sm font-bold sm:text-base;
+    @apply transition-all duration-200;
+    @apply px-3 py-2 sm:px-4;
+    @apply w-full sm:w-auto;
+    @apply text-center sm:text-center;
+  }
+
+  /* Metric cards with large values use horizontal layout */
+  .metric-card .metric-value {
+    @apply mt-1 text-4xl font-bold md:text-5xl;
+  }
+
+  /* Cards with metric values can be horizontal */
+  .metric-card:has(.metric-value) {
+    @apply sm:flex-row sm:items-center sm:justify-between sm:gap-6;
+  }
+
+  .metric-card:has(.metric-value) .btn-metric {
+    @apply sm:mt-0 sm:w-auto;
+  }
+  .metric-card-pending-vendor,
+  .metric-card-pending-market,
+  .metric-card-pending-review {
+    @apply rounded-lg border-2 bg-white;
+  }
+
   .metric-card-pending-vendor {
-    @apply bg-gradient-to-br from-amber-400 to-amber-700 text-white;
-    @apply border-amber-400;
+    @apply border-category-produce;
   }
+  .metric-card-pending-vendor .metric-label,
+  .metric-card-pending-vendor .metric-value,
+  .metric-card-pending-vendor p {
+    @apply text-category-produce;
+  }
+  .metric-card-pending-vendor .btn-metric {
+    @apply bg-category-produce text-white hover:bg-opacity-90 focus:outline-4 focus:outline-category-produce;
+  }
+
   .metric-card-pending-market {
-    @apply bg-gradient-to-br from-brand-primary to-brand-primary-light text-white;
-    @apply border-brand-primary;
+    @apply border-category-seafood;
+  }
+  .metric-card-pending-market .metric-label,
+  .metric-card-pending-market .metric-value,
+  .metric-card-pending-market p {
+    @apply text-category-seafood;
+  }
+  .metric-card-pending-market .btn-metric {
+    @apply bg-category-seafood text-white hover:bg-opacity-90 focus:outline-4 focus:outline-category-seafood;
+  }
+
+  .metric-card-pending-review {
+    @apply border-category-flowers;
+  }
+  .metric-card-pending-review .metric-label,
+  .metric-card-pending-review .metric-value,
+  .metric-card-pending-review p {
+    @apply text-category-flowers;
+  }
+  .metric-card-pending-review .btn-metric {
+    @apply bg-category-flowers text-white hover:bg-opacity-90 focus:outline-4 focus:outline-category-flowers;
   }
   .metric-card-active-vendor {
     @apply bg-gradient-to-br from-green-300 to-brand-primary-light text-white;
@@ -277,10 +335,10 @@
     @apply border-red-400;
   }
   .metric-label {
-    @apply m-0 text-xs font-bold uppercase tracking-widest sm:text-sm;
+    @apply m-0 text-base font-bold uppercase tracking-widest;
   }
   .metric-value {
-    @apply mt-2 text-2xl font-bold sm:text-4xl;
+    @apply mt-1 text-4xl font-bold md:text-5xl;
   }
   .badge {
     @apply inline-flex items-center gap-1.5 px-3 py-1;
@@ -308,18 +366,15 @@
     @apply inline-block text-brand-primary hover:text-brand-primary-hover;
     @apply mb-4 text-base font-medium;
     @apply transition-colors duration-200;
-    @apply focus:outline-4 focus:outline-brand-primary;
+    @apply focus-visible:outline-4 focus-visible:outline-brand-primary;
+  }
+  .dashboard-product-edit-link {
+    @apply font-semibold text-brand-primary underline hover:text-brand-primary-hover;
+    @apply transition-colors duration-200;
+    @apply focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-brand-primary;
   }
   .two-column {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  @media (min-width: 768px) {
-    .two-column {
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
+    @apply grid gap-8 md:grid-cols-2 md:gap-12;
   }
   .detail-image {
     @apply h-auto w-full rounded-lg object-cover;
@@ -368,11 +423,8 @@
     @apply mb-8 rounded-lg text-white;
     @apply px-4 py-12 sm:py-16 md:py-20;
     @apply flex flex-col justify-center;
-    min-height: 400px;
-    background: url('../images/backgrounds/flowers.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    @apply min-h-[400px] bg-cover bg-center bg-no-repeat;
+    background-image: url('../images/backgrounds/flowers.jpg');
   }
   .hero h1 {
     @apply mb-3 text-2xl font-bold sm:text-4xl;
@@ -385,11 +437,8 @@
     @apply mb-8 rounded-lg text-white;
     @apply px-4 py-12 sm:py-16 md:py-20;
     @apply flex flex-col justify-center;
-    min-height: 400px;
-    background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('../images/backgrounds/ducks.jpg');
-    background-size: cover;
-    background-position: top center;
-    background-repeat: no-repeat;
+    @apply min-h-[400px] bg-cover bg-top bg-no-repeat;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('../images/backgrounds/ducks.jpg');
   }
   .about-hero h1 {
     @apply mb-4 text-3xl font-bold sm:text-5xl md:text-6xl;
@@ -399,32 +448,45 @@
     @apply text-lg sm:text-2xl md:text-3xl;
   }
   .site-header {
-    @apply sticky top-0 z-50;
-    @apply border-b border-gray-200 bg-white/90 backdrop-blur-sm;
+    @apply bg-white/98 sticky top-0 z-50 w-full border-b border-gray-200;
+  }
+  .site-header > .container > a,
+  .site-header > .container > a strong,
+  .site-header > .container > div:first-child,
+  .site-header > .container > div:first-child strong,
+  .site-header .nav-links a,
+  .site-header [data-menu-toggle],
+  .site-header .nav-trigger {
+    @apply text-brand-primary;
+    color: #0d3d24 !important;
+  }
+  .site-header .nav-menu {
+    @apply border-t-2 border-brand-primary bg-white;
+  }
+  .site-header .nav-menu-link {
+    @apply text-brand-secondary !important;
+  }
+  .site-header .nav-menu-link:hover {
+    @apply text-brand-primary !important;
   }
   .site-header.is-scrolled {
-    @apply bg-[#8b6f47]/90 border-[#8b6f47];
+    background-color: rgba(139, 111, 71, 0.95);
+    border-color: #8b6f47;
   }
+  .site-header.is-scrolled > .container > a:not(.nav-menu-link),
+  .site-header.is-scrolled > .container > a:not(.nav-menu-link) strong,
   .site-header.is-scrolled > .container > div:first-child,
-  .site-header.is-scrolled .nav-links a,
+  .site-header.is-scrolled > .container > div:first-child strong,
+  .site-header.is-scrolled .nav-links > a,
   .site-header.is-scrolled [data-menu-toggle],
   .site-header.is-scrolled .nav-trigger {
-    @apply text-white;
-  }
-  .site-header.is-scrolled > .container > div:first-child {
-    color: white !important;
-  }
-  .site-header.is-scrolled > .container > a,
-  .site-header.is-scrolled > .container > a strong,
-  .site-header.is-scrolled > .container > div:first-child strong,
-  .site-header.is-scrolled strong {
     color: white !important;
   }
   .site-header.is-scrolled .nav-menu-link {
-    @apply text-brand-primary !important;
+    @apply text-brand-secondary !important;
   }
   .site-header.is-scrolled .nav-menu-link:hover {
-    @apply text-brand-primary-hover !important;
+    @apply text-brand-primary !important;
   }
   .site-header .container {
     @apply flex items-center justify-between gap-4;
@@ -433,8 +495,7 @@
   .site-header > .container > a,
   .site-header > .container > a strong {
     @apply font-bold text-brand-primary no-underline;
-    font-size: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);
-    line-height: 1.4;
+    @apply text-lg sm:text-xl;
   }
   .nav-links {
     @apply hidden items-center gap-6 md:flex;
@@ -443,18 +504,17 @@
   }
   @media (max-width: 767px) {
     .nav-links[data-mobile-open] {
-      @apply flex w-full flex-col gap-3 pb-3 pt-2;
+      @apply flex w-full flex-col gap-4 pb-4 pt-2;
     }
   }
   .nav-link {
-    @apply font-medium text-gray-700 hover:text-brand-primary hover:underline;
+    @apply font-medium text-gray-700 hover:text-brand-primary;
+    @apply text-lg sm:text-xl;
     @apply transition-colors duration-200;
     @apply focus:outline-4 focus:outline-brand-primary;
-    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
-    line-height: 1.5;
   }
   .nav-trigger {
-    @apply relative hover:underline;
+    @apply relative;
   }
   .nav-chevron {
     @apply ml-2 inline-block text-sm;
@@ -512,12 +572,10 @@
   }
   .nav-menu-link {
     @apply block px-4 py-2.5;
-    @apply text-gray-700;
+    @apply font-medium text-gray-700;
     @apply hover:bg-gray-100 hover:text-brand-primary;
     @apply transition-colors duration-150;
     @apply no-underline;
-    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1rem);
-    line-height: 1.5;
   }
   .nav-menu-link:focus-visible {
     @apply outline-4 outline-brand-primary;
@@ -542,20 +600,19 @@
   }
   .footer-section h2 {
     @apply mb-4 font-semibold text-white;
-    font-size: clamp(1.125rem, 1rem + 0.625vw, 1.375rem);
-    line-height: 1.4;
+    @apply text-lg sm:text-xl;
   }
   .footer-section ul {
     @apply space-y-2.5;
   }
   .footer-link {
     @apply text-gray-100 no-underline transition-colors hover:text-white;
-    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+    @apply text-base sm:text-lg;
     line-height: 1.55;
   }
   .footer-description {
     @apply mb-4 text-gray-200;
-    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1rem);
+    @apply text-base sm:text-lg;
     line-height: 1.6;
   }
   .social-links {
@@ -566,8 +623,7 @@
     @apply bg-white text-brand-primary transition-all;
     @apply hover:bg-gray-100 hover:text-brand-primary-hover;
     @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
-    font-size: 1.5rem;
-    text-decoration: none;
+    @apply text-2xl no-underline;
   }
   .social-icon:hover {
     text-decoration: none;
@@ -575,7 +631,7 @@
   .footer-bottom {
     @apply border-t border-brand-primary-light pt-6;
     @apply text-center text-gray-200;
-    font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1rem);
+    @apply text-sm;
     line-height: 1.6;
   }
   .footer-bottom p {
@@ -583,7 +639,7 @@
   }
   .footer-tagline {
     @apply font-semibold text-white;
-    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+    @apply text-base sm:text-lg;
     line-height: 1.5;
   }
   .pagination-wrapper {
@@ -629,24 +685,27 @@
   .vendor-location {
     @apply mb-2 text-base text-gray-500;
   }
-  .skip-to-main-content {
-    @apply absolute -left-[9999px] top-auto h-px w-px overflow-hidden;
+  .skip-link {
+    @apply absolute -left-[9999px] top-auto h-px w-px overflow-hidden whitespace-nowrap;
+    @apply bg-brand-primary px-4 py-3 font-semibold text-white no-underline;
   }
-  .skip-to-main-content:focus,
-  .skip-to-main-content:focus-visible {
-    @apply fixed left-2 top-2 z-[1000] h-auto w-auto overflow-visible rounded bg-brand-primary px-4 py-3 shadow-lg;
-    @apply font-semibold text-white no-underline;
-    @apply outline outline-2 outline-white outline-offset-2;
-    @apply transition-none;
-    filter: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    @apply fixed left-2 top-2 z-[1000] h-auto w-auto overflow-visible rounded;
+    @apply outline outline-2 outline-offset-2 outline-white;
+    @apply shadow-lg;
   }
-  @media (max-width: 767px) {
-    .skip-to-main-content:focus,
-    .skip-to-main-content:focus-visible {
-      @apply left-3 top-3 px-5 py-4 text-base;
-    }
+  .back-to-top {
+    @apply fixed bottom-6 right-6 z-40;
+    @apply flex h-12 w-12 items-center justify-center rounded-full;
+    @apply bg-brand-primary text-white shadow-lg;
+    @apply transition-all duration-300;
+    @apply hover:bg-brand-primary-hover;
+    @apply outline-2 outline-offset-2 outline-brand-primary focus-visible:outline;
+    @apply invisible opacity-0;
+  }
+  .back-to-top.show {
+    @apply visible opacity-100;
   }
   .card-content {
     @apply p-3;
@@ -723,9 +782,6 @@
     @apply text-sm font-semibold text-gray-700;
   }
   .category-flex {
-    @apply mb-4 flex flex-wrap items-center gap-3;
-  }
-  .product-category-flex {
     @apply mb-4 flex flex-wrap items-center gap-3;
   }
   .product-category-tag {
@@ -896,10 +952,6 @@
   .dashboard-section-divider {
     @apply mb-8 border-b-2 border-gray-200 pb-8;
   }
-  .metric-card-secondary {
-    @apply bg-gradient-to-br from-brand-secondary to-brand-secondary-light;
-    @apply border-brand-secondary;
-  }
   .metric-card-success {
     @apply bg-gradient-to-br from-green-600 to-green-700;
     @apply border-green-600;
@@ -926,7 +978,7 @@
     @apply text-xs font-semibold text-brand-primary;
   }
   .sr-only {
-    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap;
+    @apply absolute -m-px h-px w-px overflow-hidden whitespace-nowrap p-0;
     clip: rect(0, 0, 0, 0);
     border-width: 0;
   }

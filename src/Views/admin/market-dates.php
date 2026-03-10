@@ -82,7 +82,7 @@
                     <?php endif; ?>
                   </td>
                   <td class="p-2">
-                    <a href="<?= url('/admin/market-dates/edit') ?>?id=<?= h((string) $date['id_mda']) ?>" class="text-primary-600 hover:text-primary-700">Edit</a>
+                    <a href="<?= url('/admin/market-dates/edit') ?>?id=<?= h((string) $date['id_mda']) ?>" class="text-brand-primary hover:text-brand-primary-hover">Edit</a>
                     <form method="post" action="<?= url('/admin/market-dates/delete') ?>" class="inline" onsubmit="return confirm('Are you sure you want to delete this market date?');">
                       <?= csrf_field() ?>
                       <input type="hidden" name="id" value="<?= h((string) $date['id_mda']) ?>">

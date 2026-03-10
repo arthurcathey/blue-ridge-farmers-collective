@@ -234,7 +234,6 @@ class MarketController extends BaseController
     $year = (int) ($_GET['year'] ?? date('Y'));
     $month = (int) ($_GET['month'] ?? date('n'));
 
-    // Validate year and month
     if ($month < 1 || $month > 12) {
       $month = (int) date('n');
     }
@@ -245,11 +244,15 @@ class MarketController extends BaseController
     try {
       $db = $this->db();
 
-      // Get first and last day of month
       $firstDay = "$year-" . str_pad((string) $month, 2, '0', STR_PAD_LEFT) . '-01';
       $lastDay = date('Y-m-t', strtotime($firstDay));
 
-      // Query market dates for this month
+      // Test basic connection and table existence
+      $testStmt = $db->prepare('SELECT 1 FROM market_date_mda LIMIT 1');
+      if (!$testStmt->execute()) {
+        throw new \Exception('Cannot access market_date_mda table: ' . implode(' ', $testStmt->errorInfo()));
+      }
+
       $stmt = $db->prepare('
         SELECT 
           DATE(mda.date_mda) as date,
@@ -260,38 +263,103 @@ class MarketController extends BaseController
         WHERE mda.date_mda >= :start 
           AND mda.date_mda <= :end
           AND m.is_active_mkt = 1
-          AND mda.status_mda != "cancelled"
+          AND mda.status_mda NOT IN (\'cancelled\', \'completed\')
         GROUP BY DATE(mda.date_mda)
-        ORDER BY mda.date_mda ASC
+        ORDER BY date ASC
       ');
 
-      $stmt->execute([
+      if (!$stmt->execute([
         ':start' => $firstDay,
         ':end' => $lastDay,
-      ]);
-
-      $results = $stmt->fetchAll();
-      $marketDates = [];
-
-      foreach ($results as $row) {
-        $marketDates[$row['date']] = [
-          'date' => $row['date'],
-          'event_count' => (int) $row['event_count'],
-          'market_names' => $row['market_names'],
-        ];
+      ])) {
+        $errorInfo = $stmt->errorInfo();
+        throw new \Exception('Query execution failed: ' . $errorInfo[2]);
       }
 
-      echo json_encode([
+      $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+      $marketDates = [];
+
+      if (is_array($results)) {
+        foreach ($results as $row) {
+          if (!empty($row['date'])) {
+            $marketDates[$row['date']] = [
+              'date' => $row['date'],
+              'event_count' => (int) ($row['event_count'] ?? 0),
+              'market_names' => $row['market_names'] ?? '',
+            ];
+          }
+        }
+      }
+
+      $response = [
         'year' => $year,
         'month' => $month,
         'dates' => $marketDates,
+        'success' => true,
+      ];
+
+      echo json_encode($response);
+      return '';
+    } catch (\Throwable $e) {
+      error_log("MarketController::marketCalendarApi error: " . $e->getMessage());
+      http_response_code(500);
+
+      $response = [
+        'error' => 'Failed to load calendar',
+        'success' => false,
+        'dates' => [],
+        'year' => $year,
+        'month' => $month,
+      ];
+
+      echo json_encode($response);
+      return '';
+    }
+  }
+
+  public function simpleTest(): string
+  {
+    header('Content-Type: application/json');
+    echo json_encode([
+      'status' => 'API framework is working',
+      'test' => 'simple-test',
+      'timestamp' => date('Y-m-d H:i:s'),
+    ]);
+    return '';
+  }
+
+  public function debugApi(): string
+  {
+    header('Content-Type: application/json');
+
+    try {
+      $db = $this->db();
+
+      $stmt = $db->query('SELECT 1');
+      $result = $stmt->fetchColumn();
+
+      $countStmt = $db->query('SELECT COUNT(*) FROM market_date_mda');
+      $count = (int) $countStmt->fetchColumn();
+
+      $marketStmt = $db->query('SELECT COUNT(*) FROM market_mkt WHERE is_active_mkt = 1');
+      $marketCount = (int) $marketStmt->fetchColumn();
+
+      echo json_encode([
+        'success' => true,
+        'database_connected' => true,
+        'market_dates_count' => $count,
+        'active_markets_count' => $marketCount,
+        'timestamp' => date('Y-m-d H:i:s'),
       ]);
 
       return '';
     } catch (\Throwable $e) {
       http_response_code(500);
       echo json_encode([
-        'error' => 'Failed to load calendar data',
+        'success' => false,
+        'database_connected' => false,
+        'error' => $e->getMessage(),
+        'timestamp' => date('Y-m-d H:i:s'),
       ]);
       return '';
     }

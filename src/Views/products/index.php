@@ -134,8 +134,14 @@
               <?= h($product['name']) ?>
             </h2>
 
-            <div class="product-category-flex">
-              <span class="product-category-tag">
+            <div>
+              <?php
+              $categoryName = strtolower(str_replace(' ', '', $product['category'] ?? ''));
+              $badgeClass = in_array($categoryName, ['produce', 'dairy', 'baked', 'meat', 'seafood', 'pantry', 'beverages', 'flowers', 'prepared', 'honey', 'grains', 'herbs', 'specialty'])
+                ? "badge-category badge-category-{$categoryName}"
+                : 'badge-category';
+              ?>
+              <span class="<?= $badgeClass ?>">
                 <?= h($product['category']) ?>
               </span>
             </div>

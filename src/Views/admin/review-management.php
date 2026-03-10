@@ -93,6 +93,15 @@
                   <?= nl2br(h($review['review_text_vre'])) ?>
                 </p>
               <?php endif; ?>
+
+              <?php if (!empty($review['response_text_rre'])): ?>
+                <div class="mt-4 pt-4 border-t border-gray-200 bg-blue-50 p-3 rounded">
+                  <div class="text-sm font-semibold text-blue-900 mb-2">Vendor Response:</div>
+                  <p class="text-sm text-gray-700">
+                    <?= nl2br(h($review['response_text_rre'])) ?>
+                  </p>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
 

@@ -15,6 +15,17 @@
 "use strict";
 document.addEventListener("DOMContentLoaded", () => {
   /**
+   * Utility: Debounce function to prevent excessive function calls
+   */
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return function (...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+  };
+
+  /**
    * Flash message auto-dismissal
    * Removes flash messages after 5 seconds
    */
@@ -187,34 +198,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("click", (event) => {
-    if (dropdowns.length === 0) {
-      return;
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    // Close dropdowns when clicking outside
+    if (dropdowns.length > 0) {
+      const clickedDropdown = target.closest("[data-dropdown]");
+      if (!clickedDropdown) {
+        closeAllDropdowns();
+      }
     }
 
-    const target = event.target;
-    const clickedDropdown = target instanceof Element ? target.closest("[data-dropdown]") : null;
-
-    if (!clickedDropdown) {
+    // Close mobile menu when clicking nav link
+    if (navLinks && menuToggle && target.closest('.nav-menu-link') && window.matchMedia('(max-width: 767px)').matches) {
+      closeMobileMenu();
       closeAllDropdowns();
     }
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      closeAllDropdowns();
-    }
-  });
-
-  document.addEventListener('click', (event) => {
-    if (!navLinks || !menuToggle) {
-      return;
-    }
-    const target = event.target;
-    if (!(target instanceof Element)) {
-      return;
-    }
-    if (target.closest('.nav-menu-link') && window.matchMedia('(max-width: 767px)').matches) {
-      closeMobileMenu();
       closeAllDropdowns();
     }
   });
@@ -432,30 +435,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const passwordFields = document.querySelectorAll('input[name="password"], input[name="confirm_password"]');
   if (passwordFields.length === 2) {
     const [passwordField, confirmField] = passwordFields;
-    const confirmFieldContainer = confirmField.closest(".field") || confirmField.closest(".form-field");
 
     const validatePasswordMatch = () => {
-      if (confirmField.value && passwordField.value !== confirmField.value) {
-        confirmField.setAttribute("aria-invalid", "true");
-        let errorElement = confirmFieldContainer ? confirmFieldContainer.querySelector(".form-error") : null;
-        if (!errorElement) {
-          errorElement = document.createElement("small");
-          errorElement.className = "form-error";
-          errorElement.setAttribute("role", "alert");
-          if (confirmFieldContainer) {
-            confirmFieldContainer.appendChild(errorElement);
-          } else {
-            confirmField.insertAdjacentElement("afterend", errorElement);
-          }
-        }
-        errorElement.textContent = "Passwords do not match";
-      } else if (confirmField.value) {
-        confirmField.setAttribute("aria-invalid", "false");
-        const errorElement = confirmFieldContainer ? confirmFieldContainer.querySelector(".form-error") : null;
-        if (errorElement && errorElement.textContent === "Passwords do not match") {
-          errorElement.remove();
-        }
-      }
+      const errors = confirmField.value && passwordField.value !== confirmField.value
+        ? ["Passwords do not match"]
+        : [];
+      updateFieldError(confirmField, errors);
     };
 
     confirmField.addEventListener("input", validatePasswordMatch);
@@ -634,16 +619,17 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   const siteHeader = document.querySelector('.site-header');
   const backToTopButton = document.getElementById('back-to-top');
+  const navLogo = document.querySelector('[data-scroll-logo]');
   
   const handleScroll = () => {
     const scrollY = window.scrollY;
     
     if (siteHeader) {
-      if (scrollY > 0) {
-        siteHeader.classList.add('is-scrolled');
-      } else {
-        siteHeader.classList.remove('is-scrolled');
-      }
+      siteHeader.classList.toggle('is-scrolled', scrollY > 0);
+    }
+    
+    if (navLogo) {
+      navLogo.src = scrollY > 0 ? navLogo.getAttribute('data-logo-scroll') : navLogo.getAttribute('data-logo-default');
     }
     
     if (backToTopButton) {
@@ -660,7 +646,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   if (siteHeader || backToTopButton) {
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    // Call immediately to set initial state
+    setTimeout(handleScroll, 0);
   }
   
   if (backToTopButton) {
@@ -764,20 +751,11 @@ document.addEventListener("DOMContentLoaded", () => {
    * Live Product Search with Debouncing
    * Updates results in real-time as user types, with AJAX fetch
    */
-  const searchInput = document.querySelector('[data-search-input]');
+  const liveSearchInput = document.querySelector('[data-search-input]');
   const resultsContainer = document.querySelector('[data-search-results]');
   const loadingIndicator = document.querySelector('[data-search-loading]');
 
   if (searchInput && resultsContainer) {
-    // Debounce function to limit API calls
-    function debounce(func, delay) {
-      let timeoutId;
-      return function (...args) {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(this, args), delay);
-      };
-    }
-
     // Fetch and display search results
     async function searchProducts(query) {
       query = query.trim();
@@ -843,15 +821,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const formId = form.dataset.autosave;
     const storageKey = `form_${formId}`;
 
-    // Utility: Debounce function
-    function debounce(func, delay) {
-      let timeoutId;
-      return (...args) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func(...args), delay);
-      };
-    }
-
     // Restore saved data on page load
     const savedData = localStorage.getItem(storageKey);
     if (savedData) {
@@ -872,7 +841,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const notice = document.createElement('div');
         notice.className = 'alert-info mb-4';
         notice.innerHTML =
-          '✓ Draft restored. <button type="button" class="text-sm underline ml-2" data-clear-draft>Clear draft</button>';
+          '✓ Draft restored. <button type="button" class="ml-2 text-sm underline" data-clear-draft>Clear draft</button>';
         form.insertAdjacentElement('afterbegin', notice);
 
         notice.querySelector('[data-clear-draft]')?.addEventListener('click', () => {
@@ -921,8 +890,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Fetch market dates for this month
       fetch(`/api/markets/calendar?year=${year}&month=${month}`)
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`API returned ${res.status}`);
+          }
+          return res.json().catch(err => {
+            throw new Error('Invalid JSON response: ' + err.message);
+          });
+        })
         .then((data) => {
+          if (!data || typeof data !== 'object' || !data.dates) {
+            throw new Error('Invalid response format');
+          }
+
           const firstDate = new Date(year, month - 1, 1);
           const lastDate = new Date(year, month, 0);
           const prevDate = new Date(year, month - 1, 0);
@@ -966,7 +946,7 @@ document.addEventListener("DOMContentLoaded", () => {
               hasEvent ? 'calendar-day-has-event' : ''
             } ${isToday ? 'calendar-day-today' : ''}" data-date="${dateStr}" ${
               hasEvent
-                ? `title="${hasEvent.event_count} market(s)"`
+                ? `title="${hasEvent.event_count} market(s): ${hasEvent.market_names}"`
                 : ''
             }>${day}`;
 
@@ -996,13 +976,17 @@ document.addEventListener("DOMContentLoaded", () => {
               renderCalendar();
             });
 
-          // Date click handlers
+          // Date click handlers - safe without eval()
           calendarContainer.querySelectorAll('[data-date]').forEach((btn) => {
             btn.addEventListener('click', () => {
               const dateStr = btn.dataset.date;
-              if (calendarContainer.dataset.onDateSelect) {
-                // Custom handler if provided
-                eval(calendarContainer.dataset.onDateSelect);
+              const eventData = data.dates[dateStr];
+              if (eventData) {
+                // Dispatch custom event instead of using eval
+                const event = new CustomEvent('calendarDateSelected', {
+                  detail: { date: dateStr, markets: eventData.market_names }
+                });
+                calendarContainer.dispatchEvent(event);
               }
             });
           });
@@ -1010,10 +994,316 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch((err) => {
           console.error('Failed to load calendar:', err);
           calendarContainer.innerHTML =
-            '<p class="calendar-error">Failed to load calendar</p>';
+            '<p class="calendar-error">Unable to load calendar. Please try refreshing the page.</p>';
         });
     }
 
     renderCalendar();
+  }
+
+  // Close modal when clicking outside of it
+  const createLayoutModal = document.getElementById('createLayoutModal');
+  if (createLayoutModal) {
+    createLayoutModal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCreateLayoutModal();
+      }
+    });
+  }
+});
+
+// ======================
+// Vendor Attendance Functions
+// ======================
+
+let currentVendorId = null;
+let currentDateId = null;
+let csrfToken = document.querySelector('[name="csrf_token"]')?.value || '';
+
+/**
+ * Check in a vendor for the current market date
+ */
+window.checkInVendor = function(vendorId, farmName) {
+  const dateInput = document.querySelector('[name="date_id"]');
+  const dateId = dateInput?.value;
+
+  if (!dateId) {
+    alert('Please select a market date first');
+    return;
+  }
+
+  const confirmMsg = `Check in ${farmName}?`;
+  if (!confirm(confirmMsg)) return;
+
+  const formData = new FormData();
+  formData.append('vendor_id', vendorId);
+  formData.append('date_id', dateId);
+  formData.append('csrf_token', csrfToken);
+
+  fetch('/admin/vendor-attendance/check-in', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((data) => {
+      if (data.error) {
+        alert('Error: ' + data.error);
+        return;
+      }
+      // Reload to show updated list
+      window.location.reload();
+    })
+    .catch((err) => {
+      console.error('Failed to check in vendor:', err);
+      alert('Failed to check in vendor. See console for details.');
+    });
+};
+
+/**
+ * Mark vendor as no-show
+ */
+window.markAsNoShow = function() {
+  if (!currentVendorId || !currentDateId) {
+    alert('No vendor selected');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('vendor_id', currentVendorId);
+  formData.append('date_id', currentDateId);
+  formData.append('csrf_token', csrfToken);
+
+  fetch('/admin/vendor-attendance/no-show', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      closeVendorActionModal();
+      window.location.reload();
+    })
+    .catch((err) => {
+      console.error('Error marking no-show:', err);
+      alert('Failed to update vendor status');
+    });
+};
+
+/**
+ * Mark vendor as confirmed
+ */
+window.markAsConfirmed = function() {
+  if (!currentVendorId || !currentDateId) {
+    alert('No vendor selected');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('vendor_id', currentVendorId);
+  formData.append('date_id', currentDateId);
+  formData.append('csrf_token', csrfToken);
+
+  fetch('/admin/vendor-attendance/confirm', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      closeVendorActionModal();
+      window.location.reload();
+    })
+    .catch((err) => {
+      console.error('Error marking confirmed:', err);
+      alert('Failed to update vendor status');
+    });
+};
+
+/**
+ * Undo no-show marking
+ */
+window.undoNoShow = function(vendorId) {
+  const dateInput = document.querySelector('[name="date_id"]');
+  const dateId = dateInput?.value;
+
+  if (!dateId) {
+    alert('Please select a market date first');
+    return;
+  }
+
+  if (!confirm('Undo no-show for this vendor?')) return;
+
+  const formData = new FormData();
+  formData.append('vendor_id', vendorId);
+  formData.append('date_id', dateId);
+  formData.append('csrf_token', csrfToken);
+
+  fetch('/admin/vendor-attendance/undo-no-show', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      window.location.reload();
+    })
+    .catch((err) => {
+      console.error('Error undoing no-show:', err);
+      alert('Failed to undo no-show');
+    });
+};
+
+/**
+ * Open vendor action menu
+ */
+window.openVendorMenu = function(vendorId, status) {
+  currentVendorId = vendorId;
+  const dateInput = document.querySelector('[name="date_id"]');
+  currentDateId = dateInput?.value;
+
+  if (!currentDateId) {
+    alert('Please select a market date first');
+    return;
+  }
+
+  const modal = document.getElementById('vendorActionModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+  }
+};
+
+/**
+ * Close vendor action modal
+ */
+window.closeVendorActionModal = function() {
+  const modal = document.getElementById('vendorActionModal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+  currentVendorId = null;
+  currentDateId = null;
+};
+
+/**
+ * Filter vendors by status
+ */
+window.filterByStatus = function(status) {
+  const rows = document.querySelectorAll('.vendor-row');
+  const buttons = document.querySelectorAll('[id^="filter"]');
+
+  // Update button styling
+  buttons.forEach((btn) => btn.classList.remove('btn-primary'));
+  const activeBtn =
+    status === 'all'
+      ? document.getElementById('filterAll')
+      : status === 'checked-in'
+        ? document.getElementById('filterCheckedIn')
+        : document.getElementById('filterPending');
+  if (activeBtn) activeBtn.classList.add('btn-primary');
+
+  // Filter rows
+  rows.forEach((row) => {
+    const rowStatus = row.dataset.status;
+    let show = false;
+
+    if (status === 'all') {
+      show = true;
+    } else if (status === 'checked-in') {
+      show = rowStatus === 'checked_in';
+    } else if (status === 'pending') {
+      show = rowStatus !== 'checked_in' && rowStatus !== 'no_show';
+    }
+
+    row.style.display = show ? '' : 'none';
+  });
+};
+
+/**
+ * Search vendors by farm name
+ */
+const vendorSearchInput = document.getElementById('vendorSearch');
+if (vendorSearchInput) {
+  vendorSearchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    const results = document.getElementById('searchResults');
+
+    if (!query) {
+      results.classList.add('hidden');
+      return;
+    }
+
+    const vendors = document.querySelectorAll('.vendor-row');
+    const matches = [];
+
+    vendors.forEach((vendor) => {
+      const farmName = vendor.dataset.farmName;
+      if (farmName.includes(query)) {
+        matches.push(vendor);
+      }
+    });
+
+    if (matches.length === 0) {
+      results.innerHTML = '<p class="p-3 text-xs text-gray-500">No vendors found</p>';
+    } else {
+      results.innerHTML = matches
+        .slice(0, 5)
+        .map((v) => {
+          const vendorId = v.dataset.vendorId;
+          const vendorName = v.querySelector('h3').textContent;
+          return `
+        <button
+          type="button"
+          onclick="document.querySelector('[data-vendor-id=\\\"${vendorId}\\\"]').scrollIntoView({ behavior: 'smooth' }); document.getElementById('searchResults').classList.add('hidden'); document.getElementById('vendorSearch').value = '';"
+          class="w-full border-b border-gray-100 p-3 text-left text-sm hover:bg-gray-50">
+          ${vendorName}
+        </button>
+      `;
+        })
+        .join('');
+    }
+
+    results.classList.remove('hidden');
+  });
+}
+
+// Close modal on background click
+const modal = document.getElementById('vendorActionModal');
+if (modal) {
+  modal.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeVendorActionModal();
+    }
+  });
+}
+
+/**
+ * Booth Management Modal Functions
+ */
+window.openCreateLayoutModal = function(marketId) {
+  const modal = document.getElementById('createLayoutModal');
+  if (modal) {
+    document.getElementById('layoutMarketId').value = marketId;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+};
+
+window.closeCreateLayoutModal = function() {
+  const modal = document.getElementById('createLayoutModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+};
+
+// Close modal when clicking outside of it
+document.addEventListener('DOMContentLoaded', function() {
+  const createLayoutModal = document.getElementById('createLayoutModal');
+  if (createLayoutModal) {
+    createLayoutModal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCreateLayoutModal();
+      }
+    });
   }
 });

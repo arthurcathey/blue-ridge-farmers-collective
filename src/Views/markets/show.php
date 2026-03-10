@@ -20,7 +20,7 @@
     <h2>Upcoming Market Dates</h2>
     <div class="space-y-4">
       <?php foreach ($marketDates as $date): ?>
-        <div class="border-l-4 border-primary-500 pl-4 py-2">
+        <div class="border-l-4 border-brand-primary pl-4 py-2">
           <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p class="font-semibold text-lg">

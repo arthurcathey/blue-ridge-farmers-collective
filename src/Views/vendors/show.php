@@ -67,7 +67,7 @@
       <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 md:gap-6">
         <?php foreach ($products as $product): ?>
           <div class="card-grid-hover">
-            <!-- Product Photo -->
+            
             <div class="card-image-container">
               <?php if (!empty($product['photo'])): ?>
                 <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="card-image" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
@@ -76,16 +76,24 @@
               <?php endif; ?>
             </div>
 
-            <!-- Product Info -->
+            
             <div class="card-content">
               <h3 class="card-title">
                 <?= h($product['name']) ?>
               </h3>
-              <p class="card-meta">
-                <?= h($product['category']) ?>
-              </p>
+              <?php
+              $categoryName = strtolower(str_replace(' ', '', $product['category'] ?? ''));
+              $badgeClass = in_array($categoryName, ['produce', 'dairy', 'baked', 'meat', 'seafood', 'pantry', 'beverages', 'flowers', 'prepared', 'honey', 'grains', 'herbs', 'specialty'])
+                ? "badge-category badge-category-{$categoryName}"
+                : 'badge-category';
+              ?>
+              <div class="mb-2">
+                <span class="<?= $badgeClass ?>">
+                  <?= h($product['category']) ?>
+                </span>
+              </div>
 
-              <!-- Seasonality Badge -->
+              
               <?php if (!empty($product['seasonal_months'])): ?>
                 <div class="badge-sm badge-success mb-2">
                   Seasonal: <?= h(format_seasonal_months($product['seasonal_months'])) ?>

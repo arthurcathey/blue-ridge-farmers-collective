@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-// PRODUCTION: Hide errors from users (logs go to server error_log)
 ini_set('display_errors', '0');
 error_reporting(E_ALL);
-// LOCAL DEV: Uncomment below to display errors during development
-// error_reporting(E_ALL);
-// ini_set('display_errors', '1');
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
@@ -43,7 +39,6 @@ spl_autoload_register(static function (string $class) use ($basePath): void {
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-// Use query parameter for routing on Bluehost
 if (isset($_GET['_route'])) {
   $path = '/' . ltrim($_GET['_route'], '/');
 } elseif (isset($_GET['page'])) {
@@ -88,10 +83,27 @@ if (!isset($routes[$method][$path])) {
       [$controllerClass, $action] = $routes[$method][$baseRoute];
 
       if (class_exists($controllerClass)) {
-        $controller = new $controllerClass($basePath, $config);
+        try {
+          $controller = new $controllerClass($basePath, $config);
 
-        if (method_exists($controller, $action)) {
-          echo $controller->$action($param);
+          if (method_exists($controller, $action)) {
+            echo $controller->$action($param);
+            exit;
+          }
+        } catch (Throwable $e) {
+          error_log('Unhandled application error: ' . $e->getMessage());
+          http_response_code(500);
+
+          if (strpos($path, '/api/') === 0) {
+            header('Content-Type: application/json');
+            echo json_encode([
+              'error' => 'Internal server error',
+              'debug' => $e->getMessage(),
+              'success' => false,
+            ]);
+          } else {
+            require $basePath . '/src/Views/errors/500.php';
+          }
           exit;
         }
       }
@@ -99,7 +111,16 @@ if (!isset($routes[$method][$path])) {
   }
 
   http_response_code(404);
-  require $basePath . '/src/Views/errors/404.php';
+
+  if (strpos($path, '/api/') === 0) {
+    header('Content-Type: application/json');
+    echo json_encode([
+      'error' => 'Not found',
+      'success' => false,
+    ]);
+  } else {
+    require $basePath . '/src/Views/errors/404.php';
+  }
   exit;
 }
 
@@ -120,6 +141,16 @@ try {
 } catch (Throwable $e) {
   error_log('Unhandled application error: ' . $e->getMessage());
   http_response_code(500);
-  require $basePath . '/src/Views/errors/500.php';
+
+  if (strpos($path, '/api/') === 0) {
+    header('Content-Type: application/json');
+    echo json_encode([
+      'error' => 'Internal server error',
+      'debug' => $e->getMessage(),
+      'success' => false,
+    ]);
+  } else {
+    require $basePath . '/src/Views/errors/500.php';
+  }
   exit;
 }

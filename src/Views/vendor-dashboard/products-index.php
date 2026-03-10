@@ -40,13 +40,13 @@
             <?php endif; ?>
             <?php if (!empty($product['photo_path_prd'])): ?>
               <div>
-                <a href="<?= asset_url((string) $product['photo_path_prd']) ?>" target="_blank" rel="noopener" aria-label="View photo (opens in new window)">View photo</a>
+                <a href="<?= asset_url((string) $product['photo_path_prd']) ?>" target="_blank" rel="noopener" aria-label="View photo (opens in new window)" class="link-primary">View photo</a>
               </div>
             <?php endif; ?>
             <div>
-              <a href="<?= url('/vendor/products/view') ?>?id=<?= h((string) ($product['id_prd'] ?? '')) ?>">View</a>
+              <a href="<?= url('/vendor/products/view') ?>?id=<?= h((string) ($product['id_prd'] ?? '')) ?>" class="link-primary">View</a>
               |
-              <a href="<?= url('/vendor/products/edit') ?>?id=<?= h((string) ($product['id_prd'] ?? '')) ?>">Edit</a>
+              <a href="<?= url('/vendor/products/edit') ?>?id=<?= h((string) ($product['id_prd'] ?? '')) ?>" class="link-primary">Edit</a>
             </div>
             <form method="post" action="<?= url('/vendor/products/delete') ?>" class="mb-6">
               <?= csrf_field() ?>

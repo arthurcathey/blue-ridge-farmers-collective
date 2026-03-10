@@ -32,12 +32,12 @@
             <?php endif; ?>
 
             <?php if (in_array($status, ['approved', 'pending'], true)): ?>
-              <button type="button" disabled class="mb-6">Already <?= h($status) ?></button>
+              <button type="button" disabled class="btn-secondary mb-6">Already <?= h($status) ?></button>
             <?php else: ?>
               <form method="post" action="<?= url('/vendor/markets/apply') ?>" class="mb-6">
                 <?= csrf_field() ?>
                 <input type="hidden" name="market_id" value="<?= h((string) ($market['id_mkt'] ?? '')) ?>">
-                <button type="submit">Apply to this market</button>
+                <button type="submit" class="form-submit">Apply to this market</button>
               </form>
             <?php endif; ?>
           </li>

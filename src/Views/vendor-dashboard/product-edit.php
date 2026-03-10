@@ -99,6 +99,6 @@
       <?php endif; ?>
     </div>
 
-    <button type="submit">Save changes</button>
+    <button type="submit" class="form-submit">Save changes</button>
   </form>
 </section>

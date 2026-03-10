@@ -1,7 +1,7 @@
 <section class="card">
   <h1><?= h($title ?? 'Market Applications') ?></h1>
 
-  <p><a href="<?= url('/vendor/markets/apply') ?>">Apply to a new market</a></p>
+  <p><a href="<?= url('/vendor/markets/apply') ?>" class="link-primary">Apply to a new market</a></p>
 
   <?php if (empty($applications)): ?>
     <p>No market applications yet.</p>

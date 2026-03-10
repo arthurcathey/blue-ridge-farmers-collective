@@ -82,6 +82,6 @@
       <?php endif; ?>
     </div>
 
-    <button type="submit">Save product</button>
+    <button type="submit" class="form-submit">Save product</button>
   </form>
 </section>

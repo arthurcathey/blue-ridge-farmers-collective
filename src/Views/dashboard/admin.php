@@ -1,14 +1,14 @@
 <section class="card">
   <h1><?= h($title ?? 'Admin Dashboard') ?></h1>
-  <p class="text-muted">Welcome <?= h($user['display_name'] ?? $user['username']) ?>. System overview:</p>
+  <p class="text-muted mb-2">Welcome <?= h($user['display_name'] ?? $user['username']) ?>. System overview:</p>
 
   <?php if (isset($dataRefreshedAt)): ?>
-    <p class="text-small text-muted -mt-2.5 text-xs">
+    <p class="text-small text-muted text-xs">
       Data last refreshed: <?= $dataRefreshedAt->format('M d, Y g:i A') ?>
     </p>
   <?php endif; ?>
 
-  <div class="grid gap-4 mb-8 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] md:gap-6 md:mb-12">
+  <div class="mb-8 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 md:mb-12 md:gap-6">
     <div class="metric-card metric-card-pending-vendor">
       <div>
         <p class="metric-label">Pending Vendors</p>
@@ -25,7 +25,7 @@
       <a href="<?= url('/admin/market-applications') ?>" class="btn-metric">Review</a>
     </div>
 
-    <div class="metric-card metric-card-pending-vendor">
+    <div class="metric-card metric-card-pending-review">
       <div>
         <p class="metric-label">Pending Reviews</p>
         <p class="metric-value"><?= h((string) ($metrics['pending_reviews'] ?? 0)) ?></p>
@@ -53,7 +53,7 @@
     </div>
   </div>
 
-  <div class="grid gap-4 mb-8 grid-cols-[repeat(auto-fit,minmax(200px,1fr))] md:gap-6 md:mb-12">
+  <div class="mb-8 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 md:mb-12 md:gap-6">
     <div class="metric-card metric-card-active-market">
       <div>
         <p class="metric-label">Active Markets</p>
@@ -92,12 +92,52 @@
         <?php endif; ?>
       </div>
     </div>
+
+    <div class="metric-card metric-card-secondary">
+      <div>
+        <p class="metric-label">📊 Analytics</p>
+        <p class="text-sm text-muted mb-2">Detailed platform metrics & insights</p>
+      </div>
+      <a href="<?= url('/admin/analytics') ?>" class="btn-metric">View Report</a>
+    </div>
+
+    <div class="metric-card metric-card-secondary">
+      <div>
+        <p class="metric-label">🎪 Booth Management</p>
+        <p class="text-sm text-muted mb-2">Create market layouts & assign booths</p>
+      </div>
+      <a href="<?= url('/admin/booth-management') ?>" class="btn-metric">Manage</a>
+    </div>
+
+    <div class="metric-card metric-card-secondary">
+      <div>
+        <p class="metric-label">👥 Market Admins</p>
+        <p class="text-sm text-muted mb-2">Assign admins to manage markets</p>
+      </div>
+      <a href="<?= url('/admin/market-administrators') ?>" class="btn-metric">Manage</a>
+    </div>
+
+    <div class="metric-card metric-card-secondary">
+      <div>
+        <p class="metric-label">✓ Vendor Attendance</p>
+        <p class="text-sm text-muted mb-2">Check in vendors for market days</p>
+      </div>
+      <a href="<?= url('/admin/vendor-attendance') ?>" class="btn-metric">Check In</a>
+    </div>
+
+    <div class="metric-card metric-card-secondary">
+      <div>
+        <p class="metric-label">↔ Vendor Transfers</p>
+        <p class="text-sm text-muted mb-2">Review market transfer requests</p>
+      </div>
+      <a href="<?= url('/admin/vendor-transfer-requests') ?>" class="btn-metric">Review</a>
+    </div>
   </div>
 
   <div class="dashboard-section-divider">
     <h2 class="dashboard-header">Pending Applications</h2>
 
-    <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 md:gap-8 md:mb-12">
+    <div class="mb-8 grid grid-cols-1 gap-6 md:mb-12 md:grid-cols-2 md:gap-8">
       <div class="dashboard-data-box">
         <h3 class="dashboard-h3">Vendor Applications (<?= count($pendingVendors) ?>)</h3>
         <?php if (!empty($pendingVendors)): ?>
@@ -150,7 +190,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 md:gap-8 md:mb-12">
+  <div class="mb-8 grid grid-cols-1 gap-6 md:mb-12 md:grid-cols-2 md:gap-8">
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Vendor Growth (Last 4 weeks)</h3>
       <?php if (!empty($vendorGrowthTrend)): ?>
@@ -196,7 +236,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 md:gap-8 md:mb-12">
+  <div class="mb-8 grid grid-cols-1 gap-6 md:mb-12 md:grid-cols-2 md:gap-8">
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Recent Products (<?= count($recentProducts) ?>)</h3>
       <?php if (!empty($recentProducts)): ?>
@@ -249,7 +289,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 md:gap-8 md:mb-12">
+  <div class="mb-8 grid grid-cols-1 gap-6 md:mb-12 md:grid-cols-2 md:gap-8">
     <div class="dashboard-data-box">
       <h3 class="dashboard-h3">Markets (Vendors attending)</h3>
       <?php if (!empty($marketStats)): ?>
@@ -296,11 +336,12 @@
 
   <div class="dashboard-quick-actions">
     <h3 class="dashboard-h3">Quick Actions</h3>
-    <div class="grid gap-3 grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
       <a href="<?= url('/admin/vendor-applications') ?>" class="btn-action-blue">Review Vendors</a>
       <a href="<?= url('/admin/market-applications') ?>" class="btn-action-purple">Review Markets</a>
       <a href="<?= url('/admin/market-dates') ?>" class="btn-action-orange">Manage Market Dates</a>
       <a href="<?= url('/admin/market-dates/new') ?>" class="btn-action-pink">Add Market Date</a>
+      <a href="<?= url('/admin/markets/new') ?>" class="btn-action-teal">Create Market</a>
       <a href="<?= url('/admin/manage-admins') ?>" class="btn-action-green">Manage Admins</a>
     </div>
   </div>

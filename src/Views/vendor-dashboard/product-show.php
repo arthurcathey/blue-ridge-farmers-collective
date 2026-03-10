@@ -1,7 +1,7 @@
 <section class="card">
   <h1><?= h($title ?? 'Product Details') ?></h1>
 
-  <p><a href="<?= url('/vendor/products') ?>">Back to products</a></p>
+  <p><a href="<?= url('/vendor/products') ?>" class="link-primary">Back to products</a></p>
 
   <div class="card form-section">
     <h2><?= h((string) ($product['name_prd'] ?? '')) ?></h2>
@@ -33,6 +33,6 @@
   </div>
 
   <div class="mb-6">
-    <a href="<?= url('/vendor/products/edit') ?>?id=<?= h((string) ($product['id_prd'] ?? '')) ?>">Edit product</a>
+    <a href="<?= url('/vendor/products/edit') ?>?id=<?= h((string) ($product['id_prd'] ?? '')) ?>" class="link-primary">Edit product</a>
   </div>
 </section>

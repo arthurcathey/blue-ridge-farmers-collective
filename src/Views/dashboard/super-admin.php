@@ -7,6 +7,6 @@
     <li>System alerts: 0</li>
   </ul>
   <p class="mt-4">
-    <a href="<?= url('/admin-management') ?>">Manage admins</a>
+    <a href="<?= url('/admin-management') ?>" class="link-primary">Manage admins</a>
   </p>
 </section>

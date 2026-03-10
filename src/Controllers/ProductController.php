@@ -816,7 +816,6 @@ class ProductController extends BaseController
         ];
       }, $rows);
 
-      // Log the search
       $this->logSearch($searchTerm, count($products));
 
       echo json_encode(['products' => $products]);

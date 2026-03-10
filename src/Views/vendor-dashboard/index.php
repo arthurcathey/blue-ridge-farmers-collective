@@ -21,19 +21,31 @@
       <li>
         <?= !empty($checklist['complete_profile']) ? '[Done]' : '[Todo]' ?>
         Complete profile (farm details, contact info, photo, categories)
-        - <a href="<?= url('/vendor/apply') ?>">Update profile</a>
+        - <a href="<?= url('/vendor/apply') ?>" class="link-primary">Update profile</a>
       </li>
       <li>
         <?= !empty($checklist['add_first_product']) ? '[Done]' : '[Todo]' ?>
         Add your first product
-        - <a href="<?= url('/vendor/products/new') ?>">Add product</a>
-        | <a href="<?= url('/vendor/products') ?>">Manage products</a>
+        - <a href="<?= url('/vendor/products/new') ?>" class="link-primary">Add product</a>
+        | <a href="<?= url('/vendor/products') ?>" class="link-primary">Manage products</a>
       </li>
       <li>
         <?= !empty($checklist['set_availability']) ? '[Done]' : '[Todo]' ?>
         Set availability (approved market membership)
-        - <a href="<?= url('/vendor/markets/apply') ?>">Apply to markets</a>
-        | <a href="<?= url('/vendor-market-applications') ?>">Application history</a>
+        - <a href="<?= url('/vendor/markets/apply') ?>" class="link-primary">Apply to markets</a>
+        | <a href="<?= url('/vendor/markets/select-dates') ?>" class="link-primary">Select market dates</a>
+        | <a href="<?= url('/vendor-market-applications') ?>" class="link-primary">Application history</a>
+      </li>
+      <li>
+        Manage your presence
+        - <a href="<?= url('/vendor/reviews') ?>" class="link-primary">View reviews & respond</a>
+        | <a href="<?= url('/vendor/analytics') ?>" class="link-primary">Analytics</a>
+        | <a href="<?= url('/vendor/attendance') ?>" class="link-primary">Attendance history</a>
+      </li>
+      <li>
+        Market management
+        - <a href="<?= url('/vendor/transfer/request') ?>" class="link-primary">Transfer to another market</a>
+        | <a href="<?= url('/vendor/transfer/history') ?>" class="link-primary">Transfer history</a>
       </li>
     </ul>
 
@@ -41,7 +53,7 @@
       <div class="section-divider">
         <h2 class="section-header-2xl">Your Reviews</h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div class="card-metric">
             <div class="metric-label">Total Reviews</div>
             <div class="metric-value"><?= h($reviewStats['total'] ?? 0) ?></div>
@@ -64,14 +76,14 @@
           <div class="space-y-4">
             <?php foreach ($reviews as $review): ?>
               <div class="card">
-                <div class="flex items-start justify-between mb-3">
+                <div class="mb-3 flex items-start justify-between">
                   <div>
-                    <div class="flex items-center gap-2 mb-1">
+                    <div class="mb-1 flex items-center gap-2">
                       <span class="font-semibold">
                         <?= h($review['customer_name_vre'] ?: $review['username_acc'] ?: 'Anonymous') ?>
                       </span>
                       <?php if ($review['is_featured_vre']): ?>
-                        <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-yellow-100 text-yellow-800">
+                        <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800">
                           ★ Featured
                         </span>
                       <?php endif; ?>
@@ -82,7 +94,7 @@
                           <span class="<?= $i <= $review['rating_vre'] ? 'text-yellow-500' : 'text-gray-300' ?>">★</span>
                         <?php endfor; ?>
                       </div>
-                      <span class="text-sm text-muted">
+                      <span class="text-muted text-sm">
                         <?= date('F j, Y', strtotime($review['created_at_vre'])) ?>
                       </span>
                     </div>
@@ -96,18 +108,18 @@
                 <?php endif; ?>
 
                 <?php if (!empty($review['response_text_rre'])): ?>
-                  <div class="mt-4 pt-4 border-t border-gray-200 bg-gray-50 -mx-4 -mb-4 px-4 py-3 rounded-b">
+                  <div class="-mx-4 -mb-4 mt-4 rounded-b border-t border-gray-200 bg-gray-50 px-4 py-3 pt-4">
                     <div class="flex items-start gap-2">
-                      <span class="font-semibold text-brand-primary flex-shrink-0">Your Response:</span>
+                      <span class="flex-shrink-0 font-semibold text-brand-primary">Your Response:</span>
                       <div class="flex-1">
-                        <p class="text-sm text-description">
+                        <p class="text-description text-sm">
                           <?= nl2br(h($review['response_text_rre'])) ?>
                         </p>
                       </div>
                     </div>
                   </div>
                 <?php elseif (empty($review['id_rre'])): ?>
-                  <div class="mt-4 pt-4 border-t border-gray-200">
+                  <div class="mt-4 border-t border-gray-200 pt-4">
                     <details class="cursor-pointer">
                       <summary class="font-semibold text-brand-primary hover:text-brand-primary-hover">
                         Respond to this review
@@ -124,7 +136,7 @@
                             required
                             minlength="10"
                             maxlength="1000"></textarea>
-                          <p class="text-xs text-muted mt-1">10-1000 characters</p>
+                          <p class="text-muted mt-1 text-xs">10-1000 characters</p>
                         </div>
                         <button type="submit" class="btn-action-green">
                           Post Response
@@ -137,7 +149,7 @@
             <?php endforeach; ?>
           </div>
         <?php elseif ($reviewStats['total'] === 0): ?>
-          <div class="card text-center py-8">
+          <div class="card py-8 text-center">
             <p class="text-muted">No reviews yet. Encourage your customers to leave reviews!</p>
           </div>
         <?php endif; ?>
