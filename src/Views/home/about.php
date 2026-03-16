@@ -1,12 +1,11 @@
-<section class="about-hero">
-  <h1><?= h($title ?? 'About') ?></h1>
+<section class="hero">
+  <h1><?= h($title ?? 'About How We Make a Difference') ?></h1>
   <p>The Blue Ridge Farmers Collective is a network of growers, makers, and markets focused on local food access and a stronger regional food economy.</p>
 </section>
 
 <section class="card mb-6">
   <h2>Our Story</h2>
-  <p class="text-muted">Blue Ridge Farmers Collective began with a simple idea: make it easier for families in Western North Carolina to find fresh local food while giving small farms and artisan producers better visibility and support.</p>
-  <p class="text-muted">Today, we bring together markets, vendors, and neighbors through one shared platform that helps people discover where to shop, what is in season, and who is growing and making their food.</p>
+  <p class="text-muted">Blue Ridge Farmers Collective began with a simple idea: make it easier for families in Western North Carolina to find fresh local food while giving small farms and artisan producers better visibility and support. Today, we bring together markets, vendors, and neighbors through one shared platform that helps people discover where to shop, what is in season, and who is growing and making their food.</p>
 </section>
 
 <section class="card mb-6">
@@ -29,15 +28,24 @@
 </section>
 
 <section class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
-  <div class="card">
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/fresh-local.svg') ?>" alt="Local First" width="48" height="48">
+    </div>
     <h3 class="section-header-md">Local First</h3>
     <p class="text-muted">We prioritize producers rooted in the Blue Ridge region and celebrate seasonal agriculture.</p>
   </div>
-  <div class="card">
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/community-first.svg') ?>" alt="Community Driven" width="48" height="48">
+    </div>
     <h3 class="section-header-md">Community Driven</h3>
     <p class="text-muted">We help build lasting relationships between vendors, markets, and the communities they serve.</p>
   </div>
-  <div class="card">
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/easy-explore.svg') ?>" alt="Practical Access" width="48" height="48">
+    </div>
     <h3 class="section-header-md">Practical Access</h3>
     <p class="text-muted">We make it easier to discover products, compare options, and find markets near home.</p>
   </div>

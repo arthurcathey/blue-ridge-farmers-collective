@@ -158,7 +158,7 @@
       </div>
 
       <div class="field">
-        <label for="latitude">Latitude</label>
+        <label for="latitude">Latitude *</label>
         <input
           type="number"
           id="latitude"
@@ -167,15 +167,16 @@
           placeholder="35.5951"
           step="0.00000001"
           min="-90"
-          max="90">
+          max="90"
+          required>
         <?php if (!empty($errors['latitude'])): ?>
           <span class="error-message"><?= h($errors['latitude']) ?></span>
         <?php endif; ?>
-        <small class="text-gray-600">Optional: For map display</small>
+        <small class="text-gray-600">Required: For map display and weather features</small>
       </div>
 
       <div class="field">
-        <label for="longitude">Longitude</label>
+        <label for="longitude">Longitude *</label>
         <input
           type="number"
           id="longitude"
@@ -184,11 +185,12 @@
           placeholder="-82.5516"
           step="0.00000001"
           min="-180"
-          max="180">
+          max="180"
+          required>
         <?php if (!empty($errors['longitude'])): ?>
           <span class="error-message"><?= h($errors['longitude']) ?></span>
         <?php endif; ?>
-        <small class="text-gray-600">Optional: For map display</small>
+        <small class="text-gray-600">Required: For map display and weather features</small>
       </div>
 
 

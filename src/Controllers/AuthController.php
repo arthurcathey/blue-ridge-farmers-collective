@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\MailService;
+
 class AuthController extends BaseController
 {
   private function ensureRoles(): array
@@ -288,16 +290,7 @@ class AuthController extends BaseController
     ]);
 
     $resetLink = url('/reset-password') . '?token=' . urlencode($token);
-    $subject = 'Password Reset Request';
-    $message = "Hello {$user['username_acc']},\n\n" .
-      "You requested a password reset. Click the link below to reset your password:\n\n" .
-      "{$resetLink}\n\n" .
-      "This link will expire in 1 hour.\n\n" .
-      "If you did not request this reset, please ignore this email.\n\n" .
-      "Best regards,\n" .
-      "Blue Ridge Farmers Collective";
-
-    send_app_mail($user['email_acc'], $subject, $message);
+    MailService::sendPasswordResetEmail($user['email_acc'], $user['username_acc'], $resetLink);
 
     $this->flash('success', 'If that email address exists in our system, we have sent a password reset link to it.');
     $this->redirect('/login');
@@ -415,17 +408,7 @@ class AuthController extends BaseController
     ]);
 
     $verifyLink = url('/verify-email') . '?token=' . urlencode($token);
-    $subject = 'Verify Your Email Address';
-    $message = "Hello {$username},\n\n" .
-      "Thank you for registering with Blue Ridge Farmers Collective.\n\n" .
-      "Please verify your email address by clicking the link below:\n\n" .
-      "{$verifyLink}\n\n" .
-      "This link will expire in 24 hours.\n\n" .
-      "If you did not create an account, please ignore this email.\n\n" .
-      "Best regards,\n" .
-      "Blue Ridge Farmers Collective";
-
-    send_app_mail($email, $subject, $message);
+    MailService::sendVerificationEmail($email, $username, $verifyLink);
   }
 
   public function verifyEmail(): string

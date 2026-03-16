@@ -33,75 +33,75 @@
               <path d="M 20 0 L 0 0 0 20" fill="none" stroke="
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(
+          <rect width=" 100%" height="100%" fill="url(
         </svg>
 
-        <div id="boothsContainer" class="relative" style="z-index: 1;">
-          <?php if (!empty($booths)): ?>
-            <?php foreach ($booths as $booth): ?>
-              <div class="booth-item absolute flex cursor-move items-center justify-center rounded border-2 border-blue-500 bg-blue-200 text-sm font-medium transition hover:bg-blue-300"
-                data-booth-id="<?= $booth['id_blo'] ?>"
-                style="left: <?= (int)$booth['x_position_blo'] ?>px; top: <?= (int)$booth['y_position_blo'] ?>px; width: <?= (int)$booth['width_blo'] ?>px; height: <?= (int)$booth['height_blo'] ?>px; z-index: 2;"
-                onclick="selectBooth(<?= $booth['id_blo'] ?>)">
-                <?= h($booth['number_blo']) ?>
-              </div>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <div class="flex h-96 items-center justify-center text-gray-400">
-              <p>Create booths to get started. Configure in the right panel.</p>
-            </div>
-          <?php endif; ?>
-        </div>
+        <div id=" boothsContainer" class="relative" style="z-index: 1;">
+                <?php if (!empty($booths)): ?>
+                  <?php foreach ($booths as $booth): ?>
+                    <div class="booth-item absolute flex cursor-move items-center justify-center rounded border-2 border-blue-500 bg-blue-200 text-sm font-medium transition hover:bg-blue-300"
+                      data-booth-id="<?= $booth['id_blo'] ?>"
+                      style="left: <?= (int)$booth['x_position_blo'] ?>px; top: <?= (int)$booth['y_position_blo'] ?>px; width: <?= (int)$booth['width_blo'] ?>px; height: <?= (int)$booth['height_blo'] ?>px; z-index: 2;"
+                      onclick="selectBooth(<?= $booth['id_blo'] ?>)">
+                      <?= h($booth['number_blo']) ?>
+                    </div>
+                  <?php endforeach; ?>
+                <?php else: ?>
+                  <div class="flex h-96 items-center justify-center text-gray-600">
+                    <p>Create booths to get started. Configure in the right panel.</p>
+                  </div>
+                <?php endif; ?>
       </div>
-
-      <div class="mt-4 flex flex-col gap-2 sm:flex-row">
-        <button onclick="generateBoothsGrid()" class="btn-action-blue">
-          Auto-Generate Grid
-        </button>
-        <button onclick="clearLayout()" class="btn-secondary">
-          Clear All
-        </button>
-      </div>
-    </section>
   </div>
 
-  <div>
-    <section class="card">
-      <h2 class="mb-4">Properties</h2>
-
-      <div id="boothProperties" class="space-y-4">
-        <div class="text-muted rounded bg-gray-50 p-4 text-center text-sm">
-          Select a booth to edit
-        </div>
-      </div>
-
-      <div class="mt-6 border-t border-gray-200 pt-6">
-        <h3 class="mb-4 font-semibold">Layout Settings</h3>
-
-        <form method="POST" action="<?= url('/admin/booth-layout/update') ?>" class="space-y-4">
-          <?= csrf_field() ?>
-          <input type="hidden" name="layout_id" value="<?= $layout['id_mla'] ?>">
-
-          <div class="field">
-            <label class="mb-2 block">Booth Count</label>
-            <div class="flex gap-2">
-              <input type="number" name="booth_count" value="<?= $layout['booth_count_mla'] ?? 0 ?>" min="1" max="200" class="form-control flex-1" required>
-              <button type="button" onclick="regenerateBooth()" class="btn-action-blue">Regen</button>
-            </div>
-          </div>
-
-          <div>
-            <label class="flex items-center gap-2 text-xs">
-              <input type="checkbox" name="is_active" value="1" <?= ($layout['is_active_mla'] ? 'checked' : '') ?> class="form-checkbox">
-              <span class="text-gray-700">Active Layout</span>
-            </label>
-          </div>
-
-          <button type="submit" class="btn-action-green mt-4 w-full">Save Layout</button>
-        </form>
-      </div>
-    </section>
+  <div class="mt-4 flex flex-col gap-2 sm:flex-row">
+    <button onclick="generateBoothsGrid()" class="btn-action-blue">
+      Auto-Generate Grid
+    </button>
+    <button onclick="clearLayout()" class="btn-secondary">
+      Clear All
+    </button>
   </div>
+  </section>
+</div>
+
+<div>
+  <section class="card">
+    <h2 class="mb-4">Properties</h2>
+
+    <div id="boothProperties" class="space-y-4">
+      <div class="text-muted rounded bg-gray-50 p-4 text-center text-sm">
+        Select a booth to edit
+      </div>
+    </div>
+
+    <div class="mt-6 border-t border-gray-200 pt-6">
+      <h3 class="mb-4 font-semibold">Layout Settings</h3>
+
+      <form method="POST" action="<?= url('/admin/booth-layout/update') ?>" class="space-y-4">
+        <?= csrf_field() ?>
+        <input type="hidden" name="layout_id" value="<?= $layout['id_mla'] ?>">
+
+        <div class="field">
+          <label class="mb-2 block">Booth Count</label>
+          <div class="flex gap-2">
+            <input type="number" name="booth_count" value="<?= $layout['booth_count_mla'] ?? 0 ?>" min="1" max="200" class="form-control flex-1" required>
+            <button type="button" onclick="regenerateBooth()" class="btn-action-blue">Regen</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="flex items-center gap-2 text-xs">
+            <input type="checkbox" name="is_active" value="1" <?= ($layout['is_active_mla'] ? 'checked' : '') ?> class="form-checkbox">
+            <span class="text-gray-700">Active Layout</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-action-green mt-4 w-full">Save Layout</button>
+      </form>
+    </div>
+  </section>
+</div>
 </div>
 
 <div id="boothEditorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">

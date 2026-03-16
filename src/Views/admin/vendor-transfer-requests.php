@@ -23,7 +23,7 @@
     <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-4">
       <div class="card">
         <p class="text-muted mb-1 text-sm">Pending Requests</p>
-        <p class="text-2xl font-bold text-yellow-600"><?= (int) ($stats['pending'] ?? 0) ?></p>
+        <p class="text-2xl font-bold text-amber-900"><?= (int) ($stats['pending'] ?? 0) ?></p>
       </div>
       <div class="card">
         <p class="text-muted mb-1 text-sm">Approved</p>

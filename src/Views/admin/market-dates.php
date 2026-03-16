@@ -1,7 +1,12 @@
 <section class="card">
-  <div class="mb-6 flex items-center justify-between">
+  <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <h1><?= h($title ?? 'Manage Market Dates') ?></h1>
-    <a href="<?= url('/admin/market-dates/new') ?>" class="form-submit inline-block">Add Market Date</a>
+    <div class="flex gap-2">
+      <button id="syncWeatherBtn" class="form-submit inline-block bg-blue-600 hover:bg-blue-700" title="Auto-fetch weather for upcoming dates">
+        Sync Weather
+      </button>
+      <a href="<?= url('/admin/market-dates/new') ?>" class="form-submit inline-block">Add Market Date</a>
+    </div>
   </div>
 
   <?php if (!empty($message)): ?>
@@ -46,7 +51,11 @@
               <?php foreach ($upcomingDates as $date): ?>
                 <tr class="border-t">
                   <td class="p-2">
-                    <strong><?= h($date['name_mkt']) ?></strong>
+                    <strong>
+                      <a href="<?= url('/admin/markets/edit') ?>?id=<?= h((string) $date['id_mkt']) ?>" class="text-brand-primary hover:text-brand-primary-hover">
+                        <?= h($date['name_mkt']) ?>
+                      </a>
+                    </strong>
                     <br>
                     <span class="text-sm text-gray-600">
                       <?= h($date['city_mkt'] ?? '') ?><?= !empty($date['state_mkt']) ? ', ' . h($date['state_mkt']) : '' ?>
@@ -65,7 +74,7 @@
                     <?= h(date('g:i A', strtotime($date['end_time_mda']))) ?>
                   </td>
                   <td class="p-2">
-                    <?= !empty($date['location_mda']) ? h($date['location_mda']) : '<span class="text-gray-400">Default</span>' ?>
+                    <?= !empty($date['location_mda']) ? h($date['location_mda']) : '<span class="text-gray-600">Default</span>' ?>
                   </td>
                   <td class="p-2">
                     <span class="px-2 py-1 text-sm rounded <?= $date['status_mda'] === 'cancelled' ? 'bg-red-100 text-red-700' : ($date['status_mda'] === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700') ?>">
@@ -78,7 +87,7 @@
                         <?= h(ucfirst(str_replace('_', ' ', $date['weather_status_mda']))) ?>
                       </span>
                     <?php else: ?>
-                      <span class="text-gray-400">-</span>
+                      <span class="text-gray-600">-</span>
                     <?php endif; ?>
                   </td>
                   <td class="p-2">
@@ -119,12 +128,12 @@
             </thead>
             <tbody>
               <?php foreach (array_slice($pastDates, 0, 20) as $date): ?>
-                <tr class="border-t opacity-60">
-                  <td class="p-2"><?= h($date['name_mkt']) ?></td>
-                  <td class="p-2"><?= h(date('M j, Y', strtotime($date['date_mda']))) ?></td>
-                  <td class="p-2"><?= h(ucfirst($date['status_mda'])) ?></td>
+                <tr class="border-t">
+                  <td class="p-2 text-gray-600"><?= h($date['name_mkt']) ?></td>
+                  <td class="p-2 text-gray-600"><?= h(date('M j, Y', strtotime($date['date_mda']))) ?></td>
+                  <td class="p-2 text-gray-600"><?= h(ucfirst($date['status_mda'])) ?></td>
                   <td class="p-2">
-                    <a href="<?= url('/admin/market-dates/edit') ?>?id=<?= h((string) $date['id_mda']) ?>" class="text-primary-600 hover:text-primary-700">Edit</a>
+                    <a href="<?= url('/admin/market-dates/edit') ?>?id=<?= h((string) $date['id_mda']) ?>" class="text-brand-primary hover:text-brand-primary-hover">Edit</a>
                   </td>
                 </tr>
               <?php endforeach; ?>

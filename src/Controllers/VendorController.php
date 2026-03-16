@@ -36,7 +36,10 @@ class VendorController extends BaseController
 
   public function apply(): string
   {
-    $this->requireAuth();
+    if ($this->authUser() === null) {
+      $this->flash('info', 'You need to create an account to apply as a vendor. Sign up below or log in if you already have an account.');
+      $this->redirect('/login');
+    }
 
     $user = $this->authUser();
     $application = $this->fetchApplication((int) ($user['id'] ?? 0));
@@ -738,6 +741,7 @@ class VendorController extends BaseController
       'products' => $products,
       'markets' => $markets,
       'reviews' => $reviews,
+      'authUser' => $this->authUser(),
     ]);
   }
 
@@ -1527,6 +1531,90 @@ class VendorController extends BaseController
       return json_encode(['success' => true]);
     } catch (\Throwable $e) {
       error_log('Cancel transfer error: ' . $e->getMessage());
+      http_response_code(500);
+      return json_encode(['error' => 'Database error']);
+    }
+  }
+
+  public function saveVendor(): string
+  {
+    $this->requireAuth();
+
+    header('Content-Type: application/json');
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      http_response_code(403);
+      return json_encode(['error' => 'Invalid session token']);
+    }
+
+    $vendorId = (int) ($_POST['vendor_id'] ?? 0);
+    if ($vendorId <= 0) {
+      return json_encode(['error' => 'Invalid vendor']);
+    }
+
+    try {
+      $user = $this->authUser();
+      $userId = (int) ($user['id'] ?? 0);
+      $db = $this->db();
+
+      // Check vendor exists
+      $stmt = $db->prepare('SELECT id_ven FROM vendor_ven WHERE id_ven = :id LIMIT 1');
+      $stmt->execute([':id' => $vendorId]);
+      if (!$stmt->fetch()) {
+        return json_encode(['error' => 'Vendor not found']);
+      }
+
+      // Insert if not already saved
+      $stmt = $db->prepare('
+        INSERT IGNORE INTO account_vendor_accven (id_acc_accven, id_ven_accven, created_at_accven)
+        VALUES (:user_id, :vendor_id, NOW())
+      ');
+      $stmt->execute([
+        ':user_id' => $userId,
+        ':vendor_id' => $vendorId,
+      ]);
+
+      return json_encode(['success' => true, 'message' => 'Vendor saved']);
+    } catch (\Throwable $e) {
+      error_log('Save vendor error: ' . $e->getMessage());
+      http_response_code(500);
+      return json_encode(['error' => 'Database error']);
+    }
+  }
+
+  public function unsaveVendor(): string
+  {
+    $this->requireAuth();
+
+    header('Content-Type: application/json');
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      http_response_code(403);
+      return json_encode(['error' => 'Invalid session token']);
+    }
+
+    $vendorId = (int) ($_POST['vendor_id'] ?? 0);
+    if ($vendorId <= 0) {
+      return json_encode(['error' => 'Invalid vendor']);
+    }
+
+    try {
+      $user = $this->authUser();
+      $userId = (int) ($user['id'] ?? 0);
+      $db = $this->db();
+
+      $stmt = $db->prepare('
+        DELETE FROM account_vendor_accven
+        WHERE id_acc_accven = :user_id AND id_ven_accven = :vendor_id
+      ');
+      $stmt->execute([
+        ':user_id' => $userId,
+        ':vendor_id' => $vendorId,
+      ]);
+
+      return json_encode(['success' => true, 'message' => 'Vendor removed from saved']);
+    } catch (\Throwable $e) {
+      error_log('Unsave vendor error: ' . $e->getMessage());
       http_response_code(500);
       return json_encode(['error' => 'Database error']);
     }

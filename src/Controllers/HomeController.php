@@ -14,6 +14,7 @@ class HomeController extends BaseController
       'products' => 0,
     ];
     $featuredMarkets = [];
+    $topVendors = [];
 
     try {
       $db = $this->db();
@@ -21,16 +22,37 @@ class HomeController extends BaseController
       $stats['vendors'] = (int) $db->query('SELECT COUNT(*) FROM vendor_ven')->fetchColumn();
       $stats['products'] = (int) $db->query('SELECT COUNT(*) FROM product_prd')->fetchColumn();
 
-      $stmt = $db->query('SELECT name_mkt FROM market_mkt WHERE is_active_mkt = 1 ORDER BY name_mkt ASC LIMIT 3');
+      $stmt = $db->query('SELECT name_mkt FROM market_mkt ORDER BY name_mkt ASC LIMIT 3');
       $featuredMarkets = $stmt ? array_column($stmt->fetchAll(), 'name_mkt') : [];
+
+      // Get top vendors by average rating
+      $vendorStmt = $db->query('
+        SELECT 
+          v.id_ven, 
+          v.farm_name_ven, 
+          v.city_ven, 
+          v.state_ven,
+          COUNT(p.id_prd) as product_count,
+          COALESCE(AVG(r.rating_vre), 0) as avg_rating
+        FROM vendor_ven v
+        LEFT JOIN product_prd p ON p.vendor_id_ven = v.id_ven AND p.is_active_prd = 1
+        LEFT JOIN review_vre r ON r.vendor_id_ven = v.id_ven AND r.status_vre = "approved"
+        WHERE v.application_status_ven = "approved"
+        GROUP BY v.id_ven
+        ORDER BY avg_rating DESC, product_count DESC
+        LIMIT 4
+      ');
+      $topVendors = $vendorStmt ? $vendorStmt->fetchAll() : [];
     } catch (\Throwable $e) {
       $featuredMarkets = [];
+      $topVendors = [];
     }
 
     return $this->render('home/index', [
       'title' => 'Blue Ridge Farmers Collective',
       'stats' => $stats,
       'featuredMarkets' => $featuredMarkets,
+      'topVendors' => $topVendors,
     ]);
   }
 

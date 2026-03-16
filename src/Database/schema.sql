@@ -434,6 +434,7 @@ CREATE TABLE `weather_cache_wca` (
   `condition_icon_wca` VARCHAR(50),
   `precipitation_chance_wca` INT,
   `wind_speed_wca` INT,
+  `data_wca` LONGTEXT,
   `fetched_at_wca` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `expires_at_wca` TIMESTAMP NULL,
   PRIMARY KEY (`id_wca`),

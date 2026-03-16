@@ -1,7 +1,17 @@
 <section class="card">
   <h1><?= h($title ?? 'Vendor') ?></h1>
 
-  <a href="<?= url('/vendors') ?>" class="back-link">Back to Vendors</a>
+  <div class="mb-4 flex gap-3">
+    <a href="<?= url('/vendors') ?>" class="btn-secondary">Back to Vendors</a>
+    <?php if ($authUser): ?>
+      <button id="saveVendorBtn" class="btn-action-green" onclick="saveVendor(<?= (int) $vendor['id'] ?>)">
+        Save Vendor
+      </button>
+      <input type="hidden" id="csrfToken" value="<?= h(csrf_token()) ?>">
+    <?php else: ?>
+      <a href="<?= url('/login') ?>" class="btn-action-green">Sign In to Save</a>
+    <?php endif; ?>
+  </div>
 
   <div class="two-column">
     <div>
@@ -9,7 +19,7 @@
         <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?>" class="detail-image detail-image-md" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?> farm photo" />
       <?php else: ?>
         <div class="placeholder-image placeholder-image-md">
-          <p>No image available</p>
+          <p class="font-semibold text-gray-700">No image available</p>
         </div>
       <?php endif; ?>
     </div>
@@ -67,16 +77,18 @@
       <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 md:gap-6">
         <?php foreach ($products as $product): ?>
           <div class="card-grid-hover">
-            
+
             <div class="card-image-container">
               <?php if (!empty($product['photo'])): ?>
                 <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="card-image" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
               <?php else: ?>
-                <div class="card-image-placeholder">No image</div>
+                <div class="card-image-placeholder">
+                  <p class="font-semibold text-gray-700">No image</p>
+                </div>
               <?php endif; ?>
             </div>
 
-            
+
             <div class="card-content">
               <h3 class="card-title">
                 <?= h($product['name']) ?>
@@ -93,7 +105,7 @@
                 </span>
               </div>
 
-              
+
               <?php if (!empty($product['seasonal_months'])): ?>
                 <div class="badge-sm badge-success mb-2">
                   Seasonal: <?= h(format_seasonal_months($product['seasonal_months'])) ?>
@@ -176,7 +188,7 @@
               </div>
               <div class="my-2 flex justify-center gap-1">
                 <?php for ($i = 1; $i <= 5; $i++): ?>
-                  <span class="<?= $i <= round($vendor['average_rating']) ? 'text-brand-accent' : 'text-neutral-medium' ?>">★</span>
+                  <span class="<?= $i <= round($vendor['average_rating']) ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
                 <?php endfor; ?>
               </div>
               <div class="text-muted text-sm">
@@ -227,7 +239,7 @@
                   <div class="flex items-center gap-3">
                     <div class="flex gap-0.5">
                       <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <span class="<?= $i <= $review['rating_vre'] ? 'text-brand-accent' : 'text-neutral-medium' ?>">★</span>
+                        <span class="<?= $i <= $review['rating_vre'] ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
                       <?php endfor; ?>
                     </div>
                     <span class="text-muted text-sm">

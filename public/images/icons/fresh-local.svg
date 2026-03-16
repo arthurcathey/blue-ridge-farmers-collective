@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="48" height="48">
+  <!-- Leaf -->
+  <path d="M32 8 C 32 8, 28 20, 28 32 C 28 40, 30 48, 32 52 C 34 48, 36 40, 36 32 C 36 20, 32 8, 32 8" fill="#3F4F47" stroke="#3F4F47" stroke-width="1.5"/>
+  <!-- Leaf vein -->
+  <path d="M32 8 L 32 52" stroke="#5a6c64" stroke-width="1.5" fill="none"/>
+  <!-- Leaf left side -->
+  <path d="M32 16 L 24 20 M 32 24 L 20 28 M 32 32 L 20 35 M 32 40 L 24 43" stroke="#5a6c64" stroke-width="1.2" fill="none"/>
+  <!-- Leaf right side -->
+  <path d="M32 16 L 40 20 M 32 24 L 44 28 M 32 32 L 44 35 M 32 40 L 40 43" stroke="#5a6c64" stroke-width="1.2" fill="none"/>
+</svg>

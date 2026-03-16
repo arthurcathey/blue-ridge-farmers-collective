@@ -9,7 +9,7 @@
         <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="detail-image detail-image-lg" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
       <?php else: ?>
         <div class="placeholder-image placeholder-image-lg">
-          <p>No image available</p>
+          <p class="font-semibold text-gray-700">No image available</p>
         </div>
       <?php endif; ?>
     </div>

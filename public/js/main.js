@@ -783,7 +783,7 @@ document.addEventListener("DOMContentLoaded", () => {
           resultsContainer.innerHTML = data.products
             .map(
               (product) => `
-            <a href="/products?view=${encodeURIComponent(product.name)}" class="live-search-result" data-product-id="${product.id}">
+            <a href="/products?view=${encodeURIComponent(product.slug)}" class="live-search-result" data-product-id="${product.id}">
               <img src="${product.photo}" alt="${product.name}" class="live-search-image" loading="lazy">
               <div class="live-search-content">
                 <h3 class="live-search-name">${product.name}</h3>
@@ -988,6 +988,83 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 calendarContainer.dispatchEvent(event);
               }
+            });
+          });
+
+          // Handle calendar date selection - show markets modal
+          calendarContainer.addEventListener('calendarDateSelected', (e) => {
+            const { date, markets } = e.detail;
+            // Parse date string as local date to avoid timezone issues
+            const [year, month, day] = date.split('-').map(Number);
+            const dateObj = new Date(year, month - 1, day);
+            const formattedDate = dateObj.toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              month: 'long', 
+              day: 'numeric', 
+              year: 'numeric' 
+            });
+
+            // Create modal overlay
+            let modal = document.getElementById('calendarDateModal');
+            if (!modal) {
+              modal = document.createElement('div');
+              modal.id = 'calendarDateModal';
+              modal.className = 'lightbox is-open';
+              document.body.appendChild(modal);
+            }
+
+            // Parse market names (comma-separated string)
+            const marketList = markets
+              .split(',')
+              .map(m => m.trim())
+              .filter(m => m.length > 0);
+
+            modal.innerHTML = `
+              <div class="lightbox-overlay" data-close></div>
+              <div class="lightbox-content">
+                <button type="button" class="lightbox-close" data-close aria-label="Close">×</button>
+                <div style="max-width: 500px; background: white; padding: 2rem; border-radius: 0.5rem; text-align: left;">
+                  <h2 style="margin: 0 0 1rem 0; font-size: 1.5rem; color: #3F4F47;">${formattedDate}</h2>
+                  <p style="margin: 0 0 1rem 0; color: #4b5563;">Markets on this date:</p>
+                  <ul style="margin: 0 0 1.5rem 0; padding-left: 1.5rem; list-style: disc;">
+                    ${marketList.map(market => `<li style="margin-bottom: 0.5rem; color: #111827;">${market}</li>`).join('')}
+                  </ul>
+                  <p style="margin: 0; color: #6b7280; font-size: 0.875rem;">Click a market to view details or apply.</p>
+                </div>
+              </div>
+            `;
+
+            modal.classList.add('is-open');
+
+            // Close handlers - attach to overlay and close button
+            const closeModal = () => {
+              modal.classList.remove('is-open');
+            };
+
+            // Close button click
+            const closeBtn = modal.querySelector('.lightbox-close');
+            if (closeBtn) {
+              closeBtn.onclick = closeModal;
+            }
+
+            // Overlay click
+            const overlay = modal.querySelector('.lightbox-overlay');
+            if (overlay) {
+              overlay.onclick = closeModal;
+            }
+
+            // Escape key to close
+            const handleEscape = (e) => {
+              if (e.key === 'Escape') {
+                closeModal();
+                document.removeEventListener('keydown', handleEscape);
+              }
+            };
+            document.addEventListener('keydown', handleEscape);
+
+            // Close when clicking overlay
+            modal.querySelector('.lightbox-overlay')?.addEventListener('click', () => {
+              modal.classList.remove('is-open');
             });
           });
         })
@@ -1288,6 +1365,80 @@ window.openCreateLayoutModal = function(marketId) {
   }
 };
 
+// ======================
+// Weather Management
+// ======================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const syncWeatherBtn = document.getElementById('syncWeatherBtn');
+  
+  if (syncWeatherBtn) {
+    syncWeatherBtn.addEventListener('click', syncMarketWeather);
+  }
+});
+
+/**
+ * Sync weather data for all upcoming market dates (admin only)
+ * Fetches current weather from OpenWeatherMap and updates database
+ */
+window.syncMarketWeather = function() {
+  const confirmed = confirm(
+    'This will fetch weather data from OpenWeatherMap for all upcoming market dates in the next 30 days.\n\n' +
+    'Continue?'
+  );
+  
+  if (!confirmed) return;
+
+  const btn = document.getElementById('syncWeatherBtn');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Syncing...';
+  }
+
+  const csrfToken = document.querySelector('[name="csrf_token"]')?.value || '';
+
+  fetch('/api/admin/weather/sync-market-dates', {
+    method: 'POST',
+    headers: {
+      'X-CSRF-Token': csrfToken,
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        alert(
+          `Weather sync complete!\n\n` +
+          `Updated: ${data.updated} market dates\n` +
+          `Failed: ${data.failed} market dates\n` +
+          `Total processed: ${data.total}`
+        );
+        
+        // Reload page to show updated weather
+        setTimeout(() => window.location.reload(), 500);
+      } else {
+        alert('Error: ' + (data.error || 'Unknown error occurred'));
+      }
+    })
+    .catch((err) => {
+      console.error('Weather sync error:', err);
+      alert('Failed to sync weather data. See console for details.\n\n' +
+            'Make sure OPENWEATHER_API_KEY is configured in .env file.');
+    })
+    .finally(() => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Sync Weather';
+      }
+    });
+};
+
+
 window.closeCreateLayoutModal = function() {
   const modal = document.getElementById('createLayoutModal');
   if (modal) {
@@ -1307,3 +1458,139 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+/**
+ * Vendor Transfer Request Management
+ * Handles approval and rejection of vendor market transfer requests
+ */
+
+window.approveTransfer = function(transferId, vendorName) {
+  const baseUrl = '<?php echo url(""); ?>' || '';
+  if (confirm(`Approve transfer for ${vendorName}?`)) {
+    const csrfToken = document.querySelector('[name="csrf_token"]')?.value || '';
+    fetch('/admin/vendor-transfer-requests/approve', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'transfer_id=' + transferId + '&csrf_token=' + encodeURIComponent(csrfToken)
+    })
+    .then(response => response.text())
+    .then(data => {
+      location.reload();
+    })
+    .catch(error => {
+      alert('Error: ' + error);
+    });
+  }
+};
+
+window.showRejectModal = function(transferId, vendorName) {
+  const transferIdField = document.getElementById('modalTransferId');
+  const rejectModal = document.getElementById('rejectModal');
+  if (transferIdField) transferIdField.value = transferId;
+  if (rejectModal) rejectModal.classList.remove('hidden');
+};
+
+window.closeRejectModal = function() {
+  const rejectModal = document.getElementById('rejectModal');
+  if (rejectModal) rejectModal.classList.add('hidden');
+};
+
+window.submitReject = function(event) {
+  event.preventDefault();
+  const transferIdField = document.getElementById('modalTransferId');
+  const adminNotesField = document.getElementById('adminNotes');
+  const csrfTokenField = document.getElementById('modalCsrfToken');
+  
+  const transferId = transferIdField?.value || '';
+  const adminNotes = adminNotesField?.value || '';
+  const csrfToken = csrfTokenField?.value || '';
+
+  fetch('/admin/vendor-transfer-requests/reject', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'transfer_id=' + transferId + '&admin_notes=' + encodeURIComponent(adminNotes) + '&csrf_token=' + encodeURIComponent(csrfToken)
+  })
+  .then(response => response.text())
+  .then(data => {
+    location.reload();
+  })
+  .catch(error => {
+    alert('Error: ' + error);
+  });
+};
+
+/**
+ * Save Vendor Functionality
+ * Allows logged-in users to save vendors to their profile
+ */
+window.saveVendor = function(vendorId) {
+  const csrfField = document.getElementById('csrfToken');
+  if (!csrfField) {
+    alert('Security token missing. Please refresh the page.');
+    return;
+  }
+
+  const csrfToken = csrfField.value;
+  const button = event.target;
+
+  fetch('/vendors/save', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'vendor_id=' + vendorId + '&csrf_token=' + encodeURIComponent(csrfToken)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Update button state
+      button.classList.remove('btn-action-green');
+      button.classList.add('btn-action-red');
+      button.textContent = 'Remove from Saved';
+      button.onclick = () => unsaveVendor(vendorId);
+    } else {
+      alert('Error: ' + (data.error || 'Could not save vendor'));
+    }
+  })
+  .catch(error => {
+    alert('Error: ' + error);
+  });
+};
+
+window.unsaveVendor = function(vendorId) {
+  const csrfField = document.getElementById('csrfToken');
+  if (!csrfField) {
+    alert('Security token missing. Please refresh the page.');
+    return;
+  }
+
+  const csrfToken = csrfField.value;
+  const button = event.target;
+
+  fetch('/vendors/unsave', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'vendor_id=' + vendorId + '&csrf_token=' + encodeURIComponent(csrfToken)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Update button state
+      button.classList.remove('btn-action-red');
+      button.classList.add('btn-action-green');
+      button.textContent = 'Save Vendor';
+      button.onclick = () => saveVendor(vendorId);
+    } else {
+      alert('Error: ' + (data.error || 'Could not unsave vendor'));
+    }
+  })
+  .catch(error => {
+    alert('Error: ' + error);
+  });
+};

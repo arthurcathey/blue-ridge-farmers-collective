@@ -1,5 +1,5 @@
 <section class="card">
-  <div class="flex items-center justify-between mb-6">
+  <div class="mb-6 flex items-center justify-between">
     <h1><?= h($title ?? 'Review Management') ?></h1>
     <a href="<?= url('/admin') ?>" class="link-primary">← Back to Dashboard</a>
   </div>
@@ -16,10 +16,10 @@
     </div>
   <?php endif; ?>
 
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+  <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
     <div class="card-metric">
       <div class="metric-label">Pending Reviews</div>
-      <div class="metric-value text-yellow-600"><?= h($stats['pending'] ?? 0) ?></div>
+      <div class="metric-value text-amber-900"><?= h($stats['pending'] ?? 0) ?></div>
     </div>
     <div class="card-metric">
       <div class="metric-label">Approved Reviews</div>
@@ -32,58 +32,58 @@
   </div>
 
   <?php if (empty($reviews)): ?>
-    <div class="card text-center py-8">
+    <div class="card py-8 text-center">
       <p class="text-muted">No reviews found.</p>
     </div>
   <?php else: ?>
     <div class="space-y-6">
       <?php foreach ($reviews as $review): ?>
         <div class="card <?= $review['is_approved_vre'] ? 'border-green-200' : 'border-yellow-200' ?> border-2">
-          <div class="flex items-start justify-between mb-4">
+          <div class="mb-4 flex items-start justify-between">
             <div class="flex-1">
-              <div class="flex items-center gap-3 mb-2">
-                <h2 class="font-semibold text-lg">
+              <div class="mb-2 flex items-center gap-3">
+                <h2 class="text-lg font-semibold">
                   <a href="<?= url('/vendors?view=' . urlencode($this->slugify($review['farm_name_ven']))) ?>" class="link-primary">
                     <?= h($review['farm_name_ven']) ?>
                   </a>
                 </h2>
                 <?php if ($review['is_approved_vre']): ?>
-                  <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-green-100 text-green-800">
+                  <span class="inline-flex items-center rounded bg-green-100 px-2 py-1 text-xs text-green-800">
                     Approved
                   </span>
                 <?php else: ?>
-                  <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-yellow-100 text-yellow-800">
+                  <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800">
                     Pending Approval
                   </span>
                 <?php endif; ?>
                 <?php if ($review['is_featured_vre']): ?>
-                  <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
+                  <span class="inline-flex items-center rounded bg-blue-100 px-2 py-1 text-xs text-blue-800">
                     ★ Featured
                   </span>
                 <?php endif; ?>
                 <?php if ($review['is_verified_purchase_vre']): ?>
-                  <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-purple-100 text-purple-800">
+                  <span class="inline-flex items-center rounded bg-purple-100 px-2 py-1 text-xs text-purple-800">
                     Verified Purchase
                   </span>
                 <?php endif; ?>
               </div>
 
-              <div class="flex items-center gap-3 mb-3">
+              <div class="mb-3 flex items-center gap-3">
                 <div class="flex gap-0.5">
                   <?php for ($i = 1; $i <= 5; $i++): ?>
-                    <span class="<?= $i <= $review['rating_vre'] ? 'text-yellow-500' : 'text-gray-300' ?>">★</span>
+                    <span class="<?= $i <= $review['rating_vre'] ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
                   <?php endfor; ?>
                 </div>
-                <span class="text-sm text-muted">
+                <span class="text-muted text-sm">
                   by <?= h($review['customer_name_vre'] ?: $review['username_acc'] ?: 'Anonymous') ?>
                 </span>
-                <span class="text-sm text-muted">
+                <span class="text-muted text-sm">
                   on <?= date('F j, Y', strtotime($review['created_at_vre'])) ?>
                 </span>
               </div>
 
               <?php if (!empty($review['username_acc'])): ?>
-                <div class="text-sm text-muted mb-2">
+                <div class="text-muted mb-2 text-sm">
                   Account: <?= h($review['username_acc']) ?> (<?= h($review['email_acc']) ?>)
                 </div>
               <?php endif; ?>
@@ -95,8 +95,8 @@
               <?php endif; ?>
 
               <?php if (!empty($review['response_text_rre'])): ?>
-                <div class="mt-4 pt-4 border-t border-gray-200 bg-blue-50 p-3 rounded">
-                  <div class="text-sm font-semibold text-blue-900 mb-2">Vendor Response:</div>
+                <div class="mt-4 rounded border-t border-gray-200 bg-blue-50 p-3 pt-4">
+                  <div class="mb-2 text-sm font-semibold text-blue-900">Vendor Response:</div>
                   <p class="text-sm text-gray-700">
                     <?= nl2br(h($review['response_text_rre'])) ?>
                   </p>
@@ -105,7 +105,7 @@
             </div>
           </div>
 
-          <div class="flex gap-2 pt-4 border-t border-gray-200">
+          <div class="flex gap-2 border-t border-gray-200 pt-4">
             <?php if (!$review['is_approved_vre']): ?>
               <form method="POST" action="<?= url('/admin/reviews/handle') ?>" class="inline">
                 <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">

@@ -60,9 +60,9 @@
           </div>
           <div class="card-metric">
             <div class="metric-label">Average Rating</div>
-            <div class="metric-value text-yellow-600">
+            <div class="metric-value text-amber-900">
               <?= h(number_format($reviewStats['average_rating'] ?? 0, 1)) ?>
-              <span class="text-yellow-500">★</span>
+              <span class="text-orange-700">★</span>
             </div>
           </div>
           <div class="card-metric">
@@ -91,7 +91,7 @@
                     <div class="flex items-center gap-3">
                       <div class="flex gap-0.5">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
-                          <span class="<?= $i <= $review['rating_vre'] ? 'text-yellow-500' : 'text-gray-300' ?>">★</span>
+                          <span class="<?= $i <= $review['rating_vre'] ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
                         <?php endfor; ?>
                       </div>
                       <span class="text-muted text-sm">

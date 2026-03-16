@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="48" height="48">
+  <!-- Left person -->
+  <circle cx="16" cy="16" r="5" fill="#3F4F47"/>
+  <path d="M16 22 L 16 32 M 12 26 L 20 26" stroke="#3F4F47" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 12 32 L 8 42 M 20 32 L 24 42" stroke="#3F4F47" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  
+  <!-- Center person (taller) -->
+  <circle cx="32" cy="12" r="5.5" fill="#3F4F47"/>
+  <path d="M32 19 L 32 32 M 27 26 L 37 26" stroke="#3F4F47" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 27 32 L 22 44 M 37 32 L 42 44" stroke="#3F4F47" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  
+  <!-- Right person -->
+  <circle cx="48" cy="16" r="5" fill="#3F4F47"/>
+  <path d="M48 22 L 48 32 M 44 26 L 52 26" stroke="#3F4F47" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 44 32 L 40 42 M 52 32 L 56 42" stroke="#3F4F47" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  
+  <!-- Connecting hands -->
+  <path d="M 20 26 Q 26 24, 28 26" stroke="#3F4F47" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 36 26 Q 42 24, 44 26" stroke="#3F4F47" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

@@ -388,7 +388,7 @@ class AdminController extends BaseController
     $db = $this->db();
 
     $stmt = $db->prepare('
-      SELECT md.*, m.name_mkt, m.slug_mkt, m.city_mkt, m.state_mkt
+      SELECT md.*, m.id_mkt, m.name_mkt, m.slug_mkt, m.city_mkt, m.state_mkt
       FROM market_date_mda md
       JOIN market_mkt m ON m.id_mkt = md.id_mkt_mda
       ORDER BY md.date_mda DESC, md.start_time_mda ASC

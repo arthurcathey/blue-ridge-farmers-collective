@@ -1,11 +1,17 @@
-<section class="card mb-6">
+<section class="hero">
   <h1><?= h($title ?? 'Contact') ?></h1>
-  <p class="text-muted">We'd love to hear from you. Reach out with questions about markets, vendors, products, or partnerships.</p>
+  <p>We'd love to hear from you. Reach out with questions about markets, vendors, products, or partnerships.</p>
+</section>
+
+<section class="card mb-6">
   <p class="text-muted-sm">We typically respond within one business day.</p>
 </section>
 
-<section class="grid gap-4 grid-cols-1 md:grid-cols-2 md:gap-6">
-  <div class="card">
+<section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/community-first.svg') ?>" alt="Get in Touch" width="48" height="48">
+    </div>
     <h2 class="section-header-md">Get in Touch</h2>
     <div class="space-y-3">
       <div>
@@ -23,9 +29,12 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/easy-explore.svg') ?>" alt="How We Can Help" width="48" height="48">
+    </div>
     <h2 class="section-header-md">How We Can Help</h2>
-    <ul class="space-y-2 pl-5 text-muted list-disc">
+    <ul class="text-muted list-disc space-y-2 pl-5">
       <li>Questions about vendor applications and requirements</li>
       <li>Market schedules, locations, and participation details</li>
       <li>Product discovery and seasonal availability</li>

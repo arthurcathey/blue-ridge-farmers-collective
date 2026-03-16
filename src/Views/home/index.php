@@ -2,8 +2,8 @@
   <h1><?= h($title ?? 'Home') ?></h1>
   <p>Welcome to the Blue Ridge Farmers Collective. Explore markets, discover vendors, and shop seasonal produce.</p>
   <div class="mt-6 flex flex-wrap gap-3">
-    <a href="<?= url('/vendors') ?>" class="btn-action-green">Browse Vendors</a>
-    <a href="<?= url('/markets') ?>" class="btn-secondary">Find Markets</a>
+    <a href="<?= url('/vendors') ?>" class="btn-action-green no-underline">Browse Vendors</a>
+    <a href="<?= url('/markets') ?>" class="btn-secondary no-underline">Find Markets</a>
   </div>
 </section>
 
@@ -13,36 +13,27 @@
   <a href="<?= url('/about') ?>" class="link-primary">Learn More About Us</a>
 </section>
 
-<section class="mb-6 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
-  <div class="card">
-    <h2 class="section-header-md">Fresh & Local</h2>
-    <p class="text-muted">Seasonal produce and artisan goods sourced from trusted farms across Western North Carolina.</p>
+<section class="mb-8 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4 md:gap-6">
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/fresh-local.svg') ?>" alt="Fresh & Local" width="48" height="48">
+    </div>
+    <h3 class="section-header-md">Fresh & Local</h3>
+    <p class="text-muted text-sm">Seasonal produce and artisan goods sourced from trusted farms across Western North Carolina.</p>
   </div>
-  <div class="card">
-    <h2 class="section-header-md">Community First</h2>
-    <p class="text-muted">We help neighbors connect directly with farmers and support a resilient local food economy.</p>
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/community-first.svg') ?>" alt="Community First" width="48" height="48">
+    </div>
+    <h3 class="section-header-md">Community First</h3>
+    <p class="text-muted text-sm">We help neighbors connect directly with farmers and support a resilient local food economy.</p>
   </div>
-  <div class="card">
-    <h2 class="section-header-md">Easy to Explore</h2>
-    <p class="text-muted">Find nearby markets, discover vendors, and browse products in one place.</p>
-  </div>
-</section>
-
-<section class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
-  <div class="card">
-    <h2>Markets</h2>
-    <p class="text-2xl font-bold text-brand-primary"><?= h((string) ($stats['markets'] ?? 0)) ?></p>
-    <p class="text-muted">active markets</p>
-  </div>
-  <div class="card">
-    <h2>Vendors</h2>
-    <p class="text-2xl font-bold text-brand-primary"><?= h((string) ($stats['vendors'] ?? 0)) ?></p>
-    <p class="text-muted">trusted farms</p>
-  </div>
-  <div class="card">
-    <h2>Products</h2>
-    <p class="text-2xl font-bold text-brand-primary"><?= h((string) ($stats['products'] ?? 0)) ?></p>
-    <p class="text-muted">seasonal items</p>
+  <div class="card card-with-accent">
+    <div class="mb-3">
+      <img src="<?= asset_url('/images/icons/easy-explore.svg') ?>" alt="Easy to Explore" width="48" height="48">
+    </div>
+    <h3 class="section-header-md">Easy to Explore</h3>
+    <p class="text-muted text-sm">Find nearby markets, discover vendors, and browse products in one place.</p>
   </div>
 </section>
 

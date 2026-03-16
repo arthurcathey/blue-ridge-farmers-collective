@@ -1,7 +1,7 @@
 <section class="card">
   <h1><?= h($title ?? 'Vendors') ?></h1>
   <p>Explore local farms and makers.</p>
-  <div class="mt-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] md:gap-6">
+  <div class="mt-4 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
     <?php foreach (($vendors ?? []) as $vendor): ?>
       <a href="<?= url('/vendors?view=' . urlencode($vendor['slug'])) ?>" class="card-link" aria-label="View <?= h($vendor['name']) ?> vendor details">
         <div class="card card-grid-hover">

@@ -23,9 +23,9 @@
     </div>
     <div class="card-metric">
       <div class="metric-label">Average Rating</div>
-      <div class="metric-value">
+      <div class="metric-value text-amber-900">
         <?php if ($stats['average'] > 0): ?>
-          <span class="text-yellow-500">★</span> <?= number_format($stats['average'], 1) ?>
+          <span class="text-orange-700">★</span> <?= number_format($stats['average'], 1) ?>
         <?php else: ?>
           No ratings yet
         <?php endif; ?>
@@ -45,14 +45,14 @@
     <div class="space-y-6">
       <?php foreach ($reviews as $review): ?>
         <div class="card border-l-4 <?= $review['rating_vre'] >= 4 ? 'border-l-green-500' : ($review['rating_vre'] >= 3 ? 'border-l-yellow-500' : 'border-l-red-500') ?>">
-          
+
           <div class="mb-4 flex items-start justify-between">
             <div class="flex-1">
               <div class="mb-2 flex items-center gap-3">
-                
+
                 <div class="flex gap-0.5">
                   <?php for ($i = 1; $i <= 5; $i++): ?>
-                    <span class="<?= $i <= $review['rating_vre'] ? 'text-yellow-500' : 'text-gray-300' ?>">★</span>
+                    <span class="<?= $i <= $review['rating_vre'] ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
                   <?php endfor; ?>
                 </div>
                 <span class="text-lg font-semibold"><?= h($review['rating_vre'] ?? 0) ?>/5</span>
@@ -71,7 +71,7 @@
             </div>
           </div>
 
-          
+
           <?php if (!empty($review['review_text_vre'])): ?>
             <div class="mb-4 rounded border border-gray-200 bg-gray-50 p-4">
               <p class="text-description">
@@ -80,7 +80,7 @@
             </div>
           <?php endif; ?>
 
-          
+
           <?php if (!empty($review['response_text_rre'])): ?>
             <div class="mb-4 rounded border-l-4 border-brand-primary bg-brand-primary/10 p-4">
               <div class="mb-2 text-sm font-semibold text-brand-primary">Your Response:</div>
@@ -92,7 +92,7 @@
               </div>
             </div>
           <?php else: ?>
-            
+
             <form method="post" action="<?= url('/vendor/reviews/respond') ?>" class="rounded border border-blue-200 bg-blue-50 p-4">
               <?= csrf_field() ?>
               <input type="hidden" name="review_id" value="<?= h($review['id_vre']) ?>">

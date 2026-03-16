@@ -111,7 +111,7 @@
     <?php endif; ?>
   </form>
 
-  <div class="mt-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] md:gap-6">
+  <div class="mt-4 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
     <?php if (empty($products)): ?>
       <div class="no-products-message">
         <p>No products found matching your search. Try adjusting your filters.</p>
@@ -124,7 +124,7 @@
               <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="product-image" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
             <?php else: ?>
               <div class="product-image-placeholder">
-                No image
+                <p class="font-semibold text-gray-700">No image</p>
               </div>
             <?php endif; ?>
           </div>

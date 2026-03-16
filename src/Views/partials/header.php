@@ -1,14 +1,5 @@
 <?php
 $user = $_SESSION['user'] ?? null;
-$headerLogoPath = '/images/banners/logo.png';
-$headerLogoFile = __DIR__ . '/../../../public' . $headerLogoPath;
-$headerLogoVersion = (string) (@filemtime($headerLogoFile) ?: time());
-$headerLogoSrc = asset_url($headerLogoPath . '?v=' . rawurlencode($headerLogoVersion));
-
-$headerLogo2Path = '/images/banners/logo2.png';
-$headerLogo2File = __DIR__ . '/../../../public' . $headerLogo2Path;
-$headerLogo2Version = (string) (@filemtime($headerLogo2File) ?: time());
-$headerLogo2Src = asset_url($headerLogo2Path . '?v=' . rawurlencode($headerLogo2Version));
 
 $primaryLinks = [
   ['label' => 'Home', 'href' => url('/')],
@@ -62,16 +53,18 @@ if ($user) {
   <div class="container">
     <nav class="site-nav" aria-label="Primary">
       <a href="<?= url('/') ?>" class="nav-brand no-underline" aria-label="Blue Ridge Farmers Collective home">
-        <img src="<?= $headerLogoSrc ?>" alt="Blue Ridge Farmers Collective" class="nav-logo h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[280px] md:h-16 md:max-w-[320px]" data-scroll-logo="default" data-logo-default="<?= $headerLogoSrc ?>" data-logo-scroll="<?= $headerLogo2Src ?>" />
+        <img src="<?= asset_url('/images/logo-default.svg') ?>" alt="Blue Ridge Farmers Collective" class="nav-logo h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[280px] md:h-16 md:max-w-[320px]" data-scroll-logo="default" data-logo-default="<?= asset_url('/images/logo-default.svg') ?>" data-logo-scroll="<?= asset_url('/images/logo-scroll.svg') ?>" />
       </a>
       <div class="nav-links" data-nav>
         <?php foreach ($primaryLinks as $link): ?>
-          <a class="nav-link text-base sm:text-lg" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
+          <a class="nav-link text-lg sm:text-xl md:text-3xl lg:text-4xl" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
         <?php endforeach; ?>
 
         <div class="nav-item" data-dropdown="explore">
-          <button type="button" class="nav-link nav-trigger text-base sm:text-lg" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
-            Explore
+          <button type="button" class="nav-link nav-trigger text-lg sm:text-xl md:text-3xl lg:text-4xl" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
+            Explore <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div id="nav-menu-explore" class="nav-menu" data-menu="explore" hidden role="menu" aria-label="Explore">
             <?php foreach ($exploreLinks as $link): ?>
@@ -81,8 +74,10 @@ if ($user) {
         </div>
 
         <div class="nav-item" data-dropdown="account">
-          <button type="button" class="nav-link nav-trigger text-base sm:text-lg" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
-            Account
+          <button type="button" class="nav-link nav-trigger text-lg sm:text-xl md:text-3xl lg:text-4xl" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
+            Account <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
             <?php foreach ($accountLinks as $link): ?>
