@@ -147,7 +147,6 @@ class ProductController extends BaseController
     $user = $this->authUser();
     $userRole = $user['role'] ?? '';
 
-    // Allow vendor and admin roles
     if (!in_array($userRole, ['vendor', 'admin', 'super_admin'], true)) {
       http_response_code(403);
       return $this->render('errors/403', [
@@ -165,7 +164,6 @@ class ProductController extends BaseController
 
     $vendorId = $this->vendorIdForAccount((int) ($user['id'] ?? 0));
 
-    // Allow admin/super_admin to view any product, vendors can only view their own
     $isAdmin = in_array($userRole, ['admin', 'super_admin'], true);
 
     if (!$isAdmin && $vendorId <= 0) {
@@ -178,13 +176,11 @@ class ProductController extends BaseController
     $product = null;
     try {
       if ($isAdmin) {
-        // Admin can view any product
         $stmt = $this->db()->prepare('SELECT p.id_prd, p.name_prd, p.description_prd, p.photo_path_prd, p.is_active_prd, c.name_pct AS category, v.farm_name_ven, v.id_ven FROM product_prd p JOIN product_category_pct c ON c.id_pct = p.id_pct_prd JOIN vendor_ven v ON v.id_ven = p.id_ven_prd WHERE p.id_prd = :id LIMIT 1');
         $stmt->execute([
           ':id' => $productId,
         ]);
       } else {
-        // Vendor can only view their own products
         $stmt = $this->db()->prepare('SELECT p.id_prd, p.name_prd, p.description_prd, p.photo_path_prd, p.is_active_prd, c.name_pct AS category FROM product_prd p JOIN product_category_pct c ON c.id_pct = p.id_pct_prd WHERE p.id_prd = :id AND p.id_ven_prd = :vendor LIMIT 1');
         $stmt->execute([
           ':id' => $productId,

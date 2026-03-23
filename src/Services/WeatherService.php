@@ -50,7 +50,6 @@ class WeatherService
       return null;
     }
 
-    // Check cache first
     if ($useCache) {
       $cached = $this->getCached($latitude, $longitude);
       if ($cached) {
@@ -91,7 +90,6 @@ class WeatherService
         return null;
       }
 
-      // Cache the result
       $this->cacheWeather($latitude, $longitude, $data);
 
       return $this->formatWeatherData($data);
@@ -167,7 +165,6 @@ class WeatherService
     $main = strtolower($weatherData['weather'][0]['main'] ?? '');
     $description = strtolower($weatherData['weather'][0]['description'] ?? '');
 
-    // Map OpenWeatherMap conditions to our enum
     if (strpos($description, 'snow') !== false || $main === 'snow') {
       return 'snowy';
     }

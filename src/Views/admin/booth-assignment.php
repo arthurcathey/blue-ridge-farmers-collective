@@ -4,7 +4,10 @@
       <h1><?= h($title ?? 'Booth Assignments') ?></h1>
       <p class="text-muted text-sm">Assign vendors to booths for: <?= h($marketDate['date_mda'] ?? 'Unknown') ?></p>
     </div>
-    <a href="<?= url('/admin/booth-management') ?>" class="link-primary">← Back</a>
+    <div class="flex flex-wrap items-center gap-3">
+      <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
+      <a href="<?= url('/admin/booth-management') ?>" class="link-primary">Back to Booth Management</a>
+    </div>
   </div>
 </section>
 

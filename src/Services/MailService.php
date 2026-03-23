@@ -17,7 +17,6 @@ class MailService
    */
   public static function send(string $to, string $subject, string $message, bool $isHtml = false): array
   {
-    // Validate email
     if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
       return [
         'success' => false,
@@ -25,11 +24,9 @@ class MailService
       ];
     }
 
-    // Get config from environment
     $fromName = getenv('MAIL_FROM_NAME') ?: 'Blue Ridge Farmers Collective';
     $fromAddress = getenv('MAIL_FROM_ADDRESS') ?: getenv('APP_FROM') ?: 'noreply@localhost';
 
-    // Build headers
     $headers = [
       'From: ' . $fromName . ' <' . $fromAddress . '>',
       'Reply-To: ' . $fromAddress,
@@ -42,7 +39,6 @@ class MailService
       $headers[] = 'Content-Type: text/plain; charset=UTF-8';
     }
 
-    // Attempt to send email
     try {
       $result = @mail($to, $subject, $message, implode("\r\n", $headers));
 

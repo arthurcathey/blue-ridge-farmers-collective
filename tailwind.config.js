@@ -12,8 +12,6 @@ module.exports = {
           'primary-hover': '#185437',
           'primary-light': '#6ea387',
           secondary: '#7b5b3e',
-          'secondary-hover': '#614630',
-          'secondary-light': '#a67e5a',
           accent: '#c9935f',
           'accent-hover': '#a77546',
         },
@@ -21,7 +19,6 @@ module.exports = {
           dark: '#1e293b',
           medium: '#475569',
           light: '#e8e4df',
-          bg: '#f5f3ef',
         },
         category: {
           produce: '#125a28',

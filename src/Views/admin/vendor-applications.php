@@ -1,5 +1,6 @@
 <section class="card">
   <h1><?= h($title ?? 'Vendor Applications') ?></h1>
+  <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>
 
   <?php if (!empty($message)): ?>
     <div class="alert-success" data-flash>

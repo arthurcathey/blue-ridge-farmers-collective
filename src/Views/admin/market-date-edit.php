@@ -1,6 +1,7 @@
 <section class="card">
   <h1><?= h($title ?? 'Edit Market Date') ?></h1>
-  <p class="mb-4"><a href="<?= url('/admin/market-dates') ?>" class="text-brand-primary hover:text-brand-primary-hover">← Back to Market Dates</a></p>
+  <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>
+  <p class="mb-4"><a href="<?= url('/admin/market-dates') ?>" class="link-primary">Back to Market Dates</a></p>
 
   <?php if (!empty($errors['general'])): ?>
     <div class="alert-error">

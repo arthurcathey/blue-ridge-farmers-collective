@@ -1,8 +1,8 @@
 <div class="container py-8">
   <div class="max-w-4xl">
-    
+
     <div class="mb-6 flex items-center gap-3">
-      <a href="<?= url('/vendor') ?>" class="link-primary text-sm">← Back to Dashboard</a>
+      <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
     </div>
 
     <div class="card">
@@ -41,13 +41,13 @@
             $statusIcon = $statusIcons[$transfer['status_vtr']] ?? '?';
             ?>
             <div class="rounded border border-gray-200 p-4 md:p-6">
-              
+
               <div class="mb-4 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                 <div>
                   <h3 class="font-semibold text-gray-900">
                     <?= h($transfer['from_market']) ?> → <?= h($transfer['to_market']) ?>
                   </h3>
-                  <p class="mt-1 text-sm text-muted">
+                  <p class="text-muted mt-1 text-sm">
                     Requested: <?= date('F j, Y', strtotime($transfer['requested_at_vtr'])) ?>
                   </p>
                 </div>
@@ -57,21 +57,21 @@
                 </div>
               </div>
 
-              
+
               <div class="mb-4 grid grid-cols-1 gap-3 text-sm md:grid-cols-2 md:gap-4">
                 <div>
                   <p class="text-muted">From Market</p>
                   <p class="font-semibold"><?= h($transfer['from_market']) ?></p>
-                  <p class="text-xs text-muted"><?= h($transfer['from_city'] . ', ' . $transfer['from_state']) ?></p>
+                  <p class="text-muted text-xs"><?= h($transfer['from_city'] . ', ' . $transfer['from_state']) ?></p>
                 </div>
                 <div>
                   <p class="text-muted">To Market</p>
                   <p class="font-semibold"><?= h($transfer['to_market']) ?></p>
-                  <p class="text-xs text-muted"><?= h($transfer['to_city'] . ', ' . $transfer['to_state']) ?></p>
+                  <p class="text-muted text-xs"><?= h($transfer['to_city'] . ', ' . $transfer['to_state']) ?></p>
                 </div>
               </div>
 
-              
+
               <?php if (!empty($transfer['notes_vtr'])): ?>
                 <div class="mb-4 rounded bg-gray-50 p-3">
                   <p class="mb-1 text-sm font-semibold text-gray-700">Your Reason</p>
@@ -79,7 +79,7 @@
                 </div>
               <?php endif; ?>
 
-              
+
               <?php if (!empty($transfer['admin_notes_vtr'])): ?>
                 <div class="mb-4 rounded bg-blue-50 p-3">
                   <p class="mb-1 text-sm font-semibold text-blue-700">Admin Notes</p>
@@ -87,10 +87,10 @@
                 </div>
               <?php endif; ?>
 
-              
+
               <?php if (!empty($transfer['processed_at_vtr'])): ?>
                 <div class="border-t border-gray-200 pt-3">
-                  <p class="text-xs text-muted">
+                  <p class="text-muted text-xs">
                     Processed on <?= date('F j, Y', strtotime($transfer['processed_at_vtr'])) ?>
                     <?php if (!empty($transfer['processed_by'])): ?>
                       by <?= h($transfer['processed_by']) ?>
@@ -99,7 +99,7 @@
                 </div>
               <?php endif; ?>
 
-              
+
               <?php if ($transfer['status_vtr'] === 'pending'): ?>
                 <div class="mt-4 flex gap-3 border-t border-gray-200 pt-4">
                   <button

@@ -1,5 +1,6 @@
 <section class="card">
   <h1><?= h($title ?? 'Admin Management') ?></h1>
+  <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>
   <p>Super admins can add, invite, or disable administrators.</p>
 
   <div class="card mt-4">

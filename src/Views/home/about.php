@@ -5,7 +5,7 @@
 
 <section class="card mb-6">
   <h2>Our Story</h2>
-  <p class="text-muted">Blue Ridge Farmers Collective began with a simple idea: make it easier for families in Western North Carolina to find fresh local food while giving small farms and artisan producers better visibility and support. Today, we bring together markets, vendors, and neighbors through one shared platform that helps people discover where to shop, what is in season, and who is growing and making their food.</p>
+  <p class="text-muted">Blue Ridge Farmers Collective began with a simple idea: make it easier for families in Western North Carolina to find fresh local food while giving small farms and artisan producers better visibility and support. Today we bring together markets, vendors, and neighbors through one shared platform that helps people discover where to shop, what is in season, and who is growing and making their food.</p>
 </section>
 
 <section class="card mb-6">
@@ -52,15 +52,15 @@
 </section>
 
 <section class="card mb-6">
-  <h2>What We Stand For</h2>
+  <h3>What We Stand For</h3>
   <?php if (!empty($highlights ?? [])): ?>
-    <ul class="space-y-2">
+    <div class="mt-4 grid gap-4 md:grid-cols-3">
       <?php foreach (($highlights ?? []) as $highlight): ?>
-        <li class="rounded border border-neutral-light bg-neutral-light px-3 py-2 text-neutral-dark">
-          <?= h((string) $highlight) ?>
-        </li>
+        <div class="rounded border border-neutral-light bg-neutral-light p-4">
+          <p class="font-semibold text-neutral-dark"><?= h((string) $highlight) ?></p>
+        </div>
       <?php endforeach; ?>
-    </ul>
+    </div>
   <?php endif; ?>
 </section>
 

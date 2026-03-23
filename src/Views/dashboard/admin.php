@@ -3,7 +3,7 @@
   <p class="text-muted mb-2">Welcome <?= h($user['display_name'] ?? $user['username']) ?>. System overview:</p>
 
   <?php if (isset($dataRefreshedAt)): ?>
-    <p class="text-small text-muted text-xs">
+    <p class="text-small text-muted text-sm">
       Data last refreshed: <?= $dataRefreshedAt->format('M d, Y g:i A') ?>
     </p>
   <?php endif; ?>
@@ -88,7 +88,7 @@
           <?= h((string) ($metrics['new_signups_week'] ?? 0)) ?>
         </p>
         <?php if (($metrics['new_signups_week'] ?? 0) > 0): ?>
-          <p class="dashboard-trend-indicator dashboard-trend-indicator-success">📈 This week</p>
+          <p class="dashboard-trend-indicator dashboard-trend-indicator-success">This week</p>
         <?php endif; ?>
       </div>
     </div>

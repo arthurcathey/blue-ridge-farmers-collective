@@ -1,7 +1,7 @@
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($title ?? 'Analytics') ?></h1>
-    <a href="<?= url('/vendor') ?>" class="link-primary">← Back to Dashboard</a>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
   </div>
   <p class="text-muted mb-4 text-sm">Track your profile visibility, customer engagement, and market performance.</p>
 </section>
@@ -203,12 +203,12 @@
 
 
 <section class="card mt-6 border-l-4 border-blue-500 bg-blue-50">
-  <h2 class="mb-3">📈 Tips to Improve Analytics</h2>
+  <h2 class="mb-3">Tips to Improve Analytics</h2>
   <ul class="space-y-2 text-sm text-gray-700">
-    <li>• <strong>Respond to reviews</strong> - A <?= ($metrics['response_rate'] ?? 0) < 80 ? '🔴' : '🟢' ?> <?= ($metrics['response_rate'] ?? 0) ?? 0 ?>% response rate is a great start</li>
-    <li>• <strong>Attend markets regularly</strong> - Build customer relationships in person</li>
-    <li>• <strong>Update your products</strong> - Fresh products attract more searches</li>
-    <li>• <strong>Complete your profile</strong> - High-quality photos increase profile views</li>
-    <li>• <strong>Add seasonal products</strong> - Match market demand throughout the year</li>
+    <li> <strong>Respond to reviews</strong> - A <?= ($metrics['response_rate'] ?? 0) < 80 ? '🔴' : '🟢' ?> <?= ($metrics['response_rate'] ?? 0) ?? 0 ?>% response rate is a great start</li>
+    <li> <strong>Attend markets regularly</strong> - Build customer relationships in person</li>
+    <li> <strong>Update your products</strong> - Fresh products attract more searches</li>
+    <li> <strong>Complete your profile</strong> - High-quality photos increase profile views</li>
+    <li> <strong>Add seasonal products</strong> - Match market demand throughout the year</li>
   </ul>
 </section>

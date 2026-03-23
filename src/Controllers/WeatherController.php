@@ -153,7 +153,6 @@ class WeatherController extends BaseController
   {
     header('Content-Type: application/json');
 
-    // Admin-only access
     $this->requireRole('admin', 'super_admin');
 
     $weatherService = new WeatherService($this->db());
@@ -169,7 +168,6 @@ class WeatherController extends BaseController
     try {
       $db = $this->db();
 
-      // Get upcoming market dates in next 60 days with market coordinates
       $stmt = $db->prepare(
         'SELECT mda.id_mda, mda.date_mda, m.latitude_mkt, m.longitude_mkt, m.name_mkt
          FROM market_date_mda mda
@@ -233,7 +231,6 @@ class WeatherController extends BaseController
   {
     header('Content-Type: application/json');
 
-    // Admin-only access
     $this->requireRole('admin', 'super_admin');
 
     $marketDateId = (int) ($_POST['market_date_id'] ?? 0);
@@ -260,7 +257,6 @@ class WeatherController extends BaseController
     try {
       $db = $this->db();
 
-      // Get the market date with coordinates (no date restrictions)
       $stmt = $db->prepare(
         'SELECT mda.id_mda, mda.date_mda, m.latitude_mkt, m.longitude_mkt, m.name_mkt
          FROM market_date_mda mda
@@ -281,7 +277,6 @@ class WeatherController extends BaseController
         return '';
       }
 
-      // Force update weather for this date
       $updated = $weatherService->updateMarketDateWeather(
         (int) $marketDate['id_mda'],
         (float) $marketDate['latitude_mkt'],

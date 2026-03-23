@@ -1,7 +1,7 @@
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($title ?? 'Platform Analytics') ?></h1>
-    <a href="<?= url('/admin') ?>" class="link-primary">← Back to Dashboard</a>
+    <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
   </div>
   <p class="text-muted mb-4 text-sm">Monitor platform health, user engagement, and market performance.</p>
 </section>
@@ -20,7 +20,7 @@
 
     <div class="card-metric">
       <div class="metric-label">Active Markets</div>
-      <div class="metric-value text-purple-600"><?= number_format($stats['active_markets'] ?? 0) ?></div>
+      <div class="metric-value text-brand-primary"><?= number_format($stats['active_markets'] ?? 0) ?></div>
       <div class="text-muted mt-1 text-xs">
         <?= ($stats['total_market_dates'] ?? 0) ?> dates scheduled
       </div>
@@ -28,7 +28,7 @@
 
     <div class="card-metric">
       <div class="metric-label">Total Products</div>
-      <div class="metric-value text-green-600"><?= number_format($stats['total_products'] ?? 0) ?></div>
+      <div class="metric-value text-brand-primary"><?= number_format($stats['total_products'] ?? 0) ?></div>
       <div class="text-muted mt-1 text-xs">
         from <?= ($stats['total_vendors_with_products'] ?? 0) ?> vendors
       </div>
@@ -36,7 +36,7 @@
 
     <div class="card-metric">
       <div class="metric-label">Platform Reviews</div>
-      <div class="metric-value text-black"><?= number_format($stats['total_reviews'] ?? 0) ?></div>
+      <div class="metric-value text-brand-primary"><?= number_format($stats['total_reviews'] ?? 0) ?></div>
       <div class="text-muted mt-1 text-xs">
         <?= number_format($stats['avg_rating'] ?? 0, 1) ?>★ avg rating
       </div>
@@ -265,11 +265,11 @@
 
 
 <section class="card mt-6 border-l-4 border-green-500 bg-green-50">
-  <h2 class="mb-3">📊 Platform Health</h2>
+  <h2 class="mb-3">Platform Health</h2>
   <div class="grid grid-cols-1 gap-4 text-sm text-gray-700 sm:grid-cols-2">
     <div>
       <span class="font-medium">Response Rate:</span>
-      <span class="font-bold text-black">
+      <span class="font-bold text-brand-primary">
         <?php
         $approved = $stats['approved_reviews'] ?? 0;
         $responded = $stats['vendor_responses'] ?? 0;
@@ -280,11 +280,11 @@
     </div>
     <div>
       <span class="font-medium">Avg Rating:</span>
-      <span class="font-bold text-black">★ <?= number_format($stats['avg_rating'] ?? 0, 1) ?></span>
+      <span class="font-bold text-brand-primary">★ <?= number_format($stats['avg_rating'] ?? 0, 1) ?></span>
     </div>
     <div>
       <span class="font-medium">Approved Reviews:</span>
-      <span class="font-bold text-black"><?= ($stats['approved_reviews'] ?? 0) ?></span>
+      <span class="font-bold text-brand-primary"><?= ($stats['approved_reviews'] ?? 0) ?></span>
     </div>
     <div>
       <span class="font-medium">Active Vendors:</span>

@@ -3,10 +3,6 @@
   <p>We'd love to hear from you. Reach out with questions about markets, vendors, products, or partnerships.</p>
 </section>
 
-<section class="card mb-6">
-  <p class="text-muted-sm">We typically respond within one business day.</p>
-</section>
-
 <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
   <div class="card card-with-accent">
     <div class="mb-3">

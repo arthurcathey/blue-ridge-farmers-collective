@@ -112,11 +112,9 @@ if (!function_exists('asset_base')) {
     $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
     $baseUrl = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
 
-    // If baseUrl doesn't contain /public, add it (handles rewrites from root)
     if ($baseUrl !== '' && !str_contains($baseUrl, '/public')) {
       $baseUrl = $baseUrl . '/public';
     } elseif ($baseUrl === '') {
-      // If baseUrl is empty, we're at root and need /public
       $baseUrl = '/public';
     }
 

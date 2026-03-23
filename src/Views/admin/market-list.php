@@ -1,7 +1,10 @@
 <section class="card">
   <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <h1><?= h($title ?? 'Manage Markets') ?></h1>
-    <a href="<?= url('/admin/markets/new') ?>" class="form-submit inline-block">Add Market</a>
+    <div class="flex flex-wrap items-center gap-2">
+      <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
+      <a href="<?= url('/admin/markets/new') ?>" class="form-submit inline-block">Add Market</a>
+    </div>
   </div>
 
   <?php if (!empty($message)): ?>

@@ -18,7 +18,7 @@ $availableAccounts = $availableAccounts ?? [];
       <h1><?= h($title) ?></h1>
       <p class="text-muted text-sm">Assign administrators to manage specific markets</p>
     </div>
-    <a href="<?= url('/admin') ?>" class="link-primary">← Back to Dashboard</a>
+    <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
   </div>
 </section>
 
@@ -51,17 +51,17 @@ $availableAccounts = $availableAccounts ?? [];
 
 <?php if ($currentMarket): ?>
   <div class="mt-6 grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-3">
-    
+
     <div class="lg:col-span-2">
       <section class="card">
         <h2 class="mb-4">Market Administrators</h2>
-        <p class="text-sm text-muted mb-4">
+        <p class="text-muted mb-4 text-sm">
           <?php $market = array_filter($markets, fn($m) => $m['id_mkt'] == $currentMarket)[0] ?? []; ?>
           <?= h($market['name_mkt'] ?? 'Selected Market') ?>
         </p>
 
         <?php if (empty($marketAdmins)): ?>
-          <div class="rounded bg-blue-50 border border-blue-200 p-4 text-center">
+          <div class="rounded border border-blue-200 bg-blue-50 p-4 text-center">
             <p class="text-sm text-gray-600">No administrators assigned to this market yet.</p>
           </div>
         <?php else: ?>
@@ -70,7 +70,7 @@ $availableAccounts = $availableAccounts ?? [];
               <div class="flex items-center justify-between rounded border border-gray-200 bg-gray-50 p-4">
                 <div class="flex-1">
                   <div class="font-medium"><?= h($admin['username_acc'] ?? 'Unknown') ?></div>
-                  <div class="text-xs text-muted"><?= h($admin['email_acc'] ?? 'No email') ?></div>
+                  <div class="text-muted text-xs"><?= h($admin['email_acc'] ?? 'No email') ?></div>
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -78,13 +78,13 @@ $availableAccounts = $availableAccounts ?? [];
                     <?= h(ucfirst($admin['admin_role_mad'] ?? 'Market Admin')) ?>
                   </span>
 
-                  
+
                   <?php if (!empty($admin['permissions_mad'])): ?>
                     <?php
                     $permissions = json_decode($admin['permissions_mad'], true) ?? [];
                     $permCount = count($permissions);
                     ?>
-                    <span class="text-xs text-muted" title="Permissions assigned">
+                    <span class="text-muted text-xs" title="Permissions assigned">
                       <?= $permCount ?> permission<?= $permCount !== 1 ? 's' : '' ?>
                     </span>
                   <?php endif; ?>
@@ -109,7 +109,7 @@ $availableAccounts = $availableAccounts ?? [];
       </section>
     </div>
 
-    
+
     <div>
       <section class="card">
         <h2 class="mb-4">Add Administrator</h2>
@@ -128,7 +128,7 @@ $availableAccounts = $availableAccounts ?? [];
                 </option>
               <?php endforeach; ?>
             </select>
-            <p class="text-xs text-muted mt-1">Only accounts not already assigned to this market</p>
+            <p class="text-muted mt-1 text-xs">Only accounts not already assigned to this market</p>
           </div>
 
           <div class="field">
@@ -143,9 +143,9 @@ $availableAccounts = $availableAccounts ?? [];
           <button type="submit" class="btn-action-blue w-full">Add Administrator</button>
         </form>
 
-        
+
         <div class="mt-6 space-y-3 border-t border-gray-200 pt-4 text-xs">
-          <div class="font-semibold mb-2">Roles</div>
+          <div class="mb-2 font-semibold">Roles</div>
           <div>
             <div class="font-medium text-gray-700">Market Administrator</div>
             <p class="text-muted">Full control over market operations</p>
@@ -163,8 +163,8 @@ $availableAccounts = $availableAccounts ?? [];
     </div>
   </div>
 
-  
-  <div id="editAdminModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 p-4">
+
+  <div id="editAdminModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
     <div class="w-full max-w-md rounded-lg bg-white p-6">
       <h2 class="mb-4 text-lg font-semibold">Edit Administrator</h2>
 

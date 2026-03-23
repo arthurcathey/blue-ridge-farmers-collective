@@ -1,7 +1,7 @@
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($title ?? 'Review Management') ?></h1>
-    <a href="<?= url('/admin') ?>" class="link-primary">← Back to Dashboard</a>
+    <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
   </div>
 
   <?php if (!empty($message)): ?>

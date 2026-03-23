@@ -1,7 +1,8 @@
 <section class="card">
   <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <h1><?= h($title ?? 'Manage Market Dates') ?></h1>
-    <div class="flex gap-2">
+    <div class="flex flex-wrap gap-2">
+      <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
       <button id="syncWeatherBtn" class="form-submit inline-block bg-blue-600 hover:bg-blue-700" title="Auto-fetch weather for upcoming dates">
         Sync Weather
       </button>

@@ -201,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const target = event.target;
     if (!(target instanceof Element)) return;
 
-    // Close dropdowns when clicking outside
     if (dropdowns.length > 0) {
       const clickedDropdown = target.closest("[data-dropdown]");
       if (!clickedDropdown) {
@@ -209,7 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Close mobile menu when clicking nav link
     if (navLinks && menuToggle && target.closest('.nav-menu-link') && window.matchMedia('(max-width: 767px)').matches) {
       closeMobileMenu();
       closeAllDropdowns();
@@ -646,7 +644,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
   if (siteHeader || backToTopButton) {
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Call immediately to set initial state
     setTimeout(handleScroll, 0);
   }
   
@@ -679,7 +676,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentIndex = 0;
     const images = Array.from(galleryImages);
 
-    // Create lightbox overlay
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
     lightbox.innerHTML = `
@@ -711,8 +707,6 @@ document.addEventListener("DOMContentLoaded", () => {
       lightbox.classList.remove('is-open');
       document.body.style.overflow = '';
     }
-
-    // Attach click events
     images.forEach((img, index) => {
       img.addEventListener('click', () => showImage(index));
       img.style.cursor = 'pointer';
@@ -720,7 +714,6 @@ document.addEventListener("DOMContentLoaded", () => {
       img.setAttribute('tabindex', '0');
     });
 
-    // Keyboard support for image click
     images.forEach((img, index) => {
       img.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -730,14 +723,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Navigation
     lightbox.querySelector('[data-prev]').addEventListener('click', () => showImage(currentIndex - 1));
     lightbox.querySelector('[data-next]').addEventListener('click', () => showImage(currentIndex + 1));
     lightbox.querySelectorAll('[data-close]').forEach(el => {
       el.addEventListener('click', closeLightbox);
     });
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('is-open')) return;
 
@@ -756,7 +747,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadingIndicator = document.querySelector('[data-search-loading]');
 
   if (searchInput && resultsContainer) {
-    // Fetch and display search results
     async function searchProducts(query) {
       query = query.trim();
 
@@ -764,8 +754,6 @@ document.addEventListener("DOMContentLoaded", () => {
         resultsContainer.innerHTML = '';
         return;
       }
-
-      // Show loading state
       if (loadingIndicator) {
         loadingIndicator.classList.remove('hidden');
       }
@@ -804,7 +792,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Attach debounced search to input
     const debouncedSearch = debounce(searchProducts, 300);
     searchInput.addEventListener('input', (e) => {
       debouncedSearch(e.target.value.trim());
@@ -821,7 +808,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const formId = form.dataset.autosave;
     const storageKey = `form_${formId}`;
 
-    // Restore saved data on page load
     const savedData = localStorage.getItem(storageKey);
     if (savedData) {
       try {
@@ -837,7 +823,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        // Show draft restoration notice
         const notice = document.createElement('div');
         notice.className = 'alert-info mb-4';
         notice.innerHTML =
@@ -853,13 +838,10 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Failed to restore form data:', e);
       }
     }
-
-    // Save data on input (debounced)
     const saveData = debounce(() => {
       const formData = new FormData(form);
       const data = {};
       formData.forEach((value, key) => {
-        // Don't save passwords or CSRF tokens
         if (!key.includes('password') && key !== 'csrf_token') {
           data[key] = value;
         }
@@ -870,7 +852,6 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener('input', saveData);
     form.addEventListener('change', saveData);
 
-    // Clear on successful submit
     form.addEventListener('submit', () => {
       localStorage.removeItem(storageKey);
     });
@@ -888,7 +869,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1;
 
-      // Fetch market dates for this month
       fetch(`/api/markets/calendar?year=${year}&month=${month}`)
         .then((res) => {
           if (!res.ok) {
@@ -926,14 +906,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
           html += '<div class="calendar-days">';
 
-          // Empty cells for days before month starts
           const startDay = firstDate.getDay();
           for (let i = 0; i < startDay; i++) {
             const day = prevDate.getDate() - (startDay - i - 1);
             html += '<div class="calendar-day calendar-day-other"></div>';
           }
 
-          // Days of current month
           for (let day = 1; day <= lastDate.getDate(); day++) {
             const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(
               day
@@ -961,7 +939,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           calendarContainer.innerHTML = html;
 
-          // Attach event listeners
           calendarContainer
             .querySelector('[data-prev-month]')
             ?.addEventListener('click', () => {
@@ -976,13 +953,11 @@ document.addEventListener("DOMContentLoaded", () => {
               renderCalendar();
             });
 
-          // Date click handlers - safe without eval()
           calendarContainer.querySelectorAll('[data-date]').forEach((btn) => {
             btn.addEventListener('click', () => {
               const dateStr = btn.dataset.date;
               const eventData = data.dates[dateStr];
               if (eventData) {
-                // Dispatch custom event instead of using eval
                 const event = new CustomEvent('calendarDateSelected', {
                   detail: { date: dateStr, markets: eventData.market_names }
                 });
@@ -991,10 +966,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
           });
 
-          // Handle calendar date selection - show markets modal
           calendarContainer.addEventListener('calendarDateSelected', (e) => {
             const { date, markets } = e.detail;
-            // Parse date string as local date to avoid timezone issues
             const [year, month, day] = date.split('-').map(Number);
             const dateObj = new Date(year, month - 1, day);
             const formattedDate = dateObj.toLocaleDateString('en-US', { 
@@ -1004,7 +977,6 @@ document.addEventListener("DOMContentLoaded", () => {
               year: 'numeric' 
             });
 
-            // Create modal overlay
             let modal = document.getElementById('calendarDateModal');
             if (!modal) {
               modal = document.createElement('div');
@@ -1013,7 +985,6 @@ document.addEventListener("DOMContentLoaded", () => {
               document.body.appendChild(modal);
             }
 
-            // Parse market names (comma-separated string)
             const marketList = markets
               .split(',')
               .map(m => m.trim())
@@ -1036,24 +1007,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
             modal.classList.add('is-open');
 
-            // Close handlers - attach to overlay and close button
             const closeModal = () => {
               modal.classList.remove('is-open');
             };
 
-            // Close button click
             const closeBtn = modal.querySelector('.lightbox-close');
             if (closeBtn) {
               closeBtn.onclick = closeModal;
             }
 
-            // Overlay click
             const overlay = modal.querySelector('.lightbox-overlay');
             if (overlay) {
               overlay.onclick = closeModal;
             }
 
-            // Escape key to close
             const handleEscape = (e) => {
               if (e.key === 'Escape') {
                 closeModal();
@@ -1062,7 +1029,6 @@ document.addEventListener("DOMContentLoaded", () => {
             };
             document.addEventListener('keydown', handleEscape);
 
-            // Close when clicking overlay
             modal.querySelector('.lightbox-overlay')?.addEventListener('click', () => {
               modal.classList.remove('is-open');
             });
@@ -1078,7 +1044,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCalendar();
   }
 
-  // Close modal when clicking outside of it
   const createLayoutModal = document.getElementById('createLayoutModal');
   if (createLayoutModal) {
     createLayoutModal.addEventListener('click', function(e) {
@@ -1130,7 +1095,6 @@ window.checkInVendor = function(vendorId, farmName) {
         alert('Error: ' + data.error);
         return;
       }
-      // Reload to show updated list
       window.location.reload();
     })
     .catch((err) => {
@@ -1268,7 +1232,6 @@ window.filterByStatus = function(status) {
   const rows = document.querySelectorAll('.vendor-row');
   const buttons = document.querySelectorAll('[id^="filter"]');
 
-  // Update button styling
   buttons.forEach((btn) => btn.classList.remove('btn-primary'));
   const activeBtn =
     status === 'all'
@@ -1278,7 +1241,6 @@ window.filterByStatus = function(status) {
         : document.getElementById('filterPending');
   if (activeBtn) activeBtn.classList.add('btn-primary');
 
-  // Filter rows
   rows.forEach((row) => {
     const rowStatus = row.dataset.status;
     let show = false;
@@ -1343,7 +1305,6 @@ if (vendorSearchInput) {
   });
 }
 
-// Close modal on background click
 const modal = document.getElementById('vendorActionModal');
 if (modal) {
   modal.addEventListener('click', function(e) {
@@ -1418,8 +1379,7 @@ window.syncMarketWeather = function() {
           `Failed: ${data.failed} market dates\n` +
           `Total processed: ${data.total}`
         );
-        
-        // Reload page to show updated weather
+       
         setTimeout(() => window.location.reload(), 500);
       } else {
         alert('Error: ' + (data.error || 'Unknown error occurred'));
@@ -1447,7 +1407,6 @@ window.closeCreateLayoutModal = function() {
   }
 };
 
-// Close modal when clicking outside of it
 document.addEventListener('DOMContentLoaded', function() {
   const createLayoutModal = document.getElementById('createLayoutModal');
   if (createLayoutModal) {
@@ -1581,7 +1540,6 @@ window.unsaveVendor = function(vendorId) {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      // Update button state
       button.classList.remove('btn-action-red');
       button.classList.add('btn-action-green');
       button.textContent = 'Save Vendor';

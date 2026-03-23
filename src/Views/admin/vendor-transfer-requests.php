@@ -5,7 +5,7 @@
         <h1 class="mb-2">Vendor Transfer Requests</h1>
         <p class="text-muted">Review and approve vendor market transfer requests</p>
       </div>
-      <a href="<?= url('/admin') ?>" class="text-sm text-brand-primary hover:underline">← Back to Dashboard</a>
+      <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
     </div>
 
     <?php if (!empty($message)): ?>

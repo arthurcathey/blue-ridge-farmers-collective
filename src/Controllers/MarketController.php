@@ -247,7 +247,6 @@ class MarketController extends BaseController
       $firstDay = "$year-" . str_pad((string) $month, 2, '0', STR_PAD_LEFT) . '-01';
       $lastDay = date('Y-m-t', strtotime($firstDay));
 
-      // Test basic connection and table existence
       $testStmt = $db->prepare('SELECT 1 FROM market_date_mda LIMIT 1');
       if (!$testStmt->execute()) {
         throw new \Exception('Cannot access market_date_mda table: ' . implode(' ', $testStmt->errorInfo()));

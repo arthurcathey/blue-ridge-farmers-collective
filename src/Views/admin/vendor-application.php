@@ -6,7 +6,8 @@ $status = (string) ($application['application_status_ven'] ?? '');
 ?>
 <section class="card">
   <h1><?= h($title ?? 'Vendor Application Review') ?></h1>
-  <p><a href="<?= url('/admin/vendor-applications') ?>">Back to applications</a></p>
+  <p class="mb-2"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>
+  <p><a href="<?= url('/admin/vendor-applications') ?>" class="link-primary">Back to applications</a></p>
 
   <div class="card mt-4">
     <h2>Applicant</h2>

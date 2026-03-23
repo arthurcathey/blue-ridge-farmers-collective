@@ -1,6 +1,6 @@
 <section class="card">
   <h1><?= h($title ?? 'Add New Market') ?></h1>
-  <p class="mb-4"><a href="<?= url('/admin') ?>" class="text-brand-primary hover:underline">← Back to Dashboard</a></p>
+  <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>
 
   <?php if (!empty($errors['general'])): ?>
     <div class="alert-error">

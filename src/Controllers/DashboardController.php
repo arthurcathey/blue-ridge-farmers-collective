@@ -17,7 +17,12 @@ class DashboardController extends BaseController
       $this->redirect('/admin');
     }
 
+    if ($role === 'vendor') {
+      $this->redirect('/vendor');
+    }
+
     $metrics = [];
+    $savedVendors = [];
     try {
       $db = $this->db();
       $userId = (int) ($user['id'] ?? 0);
@@ -25,6 +30,30 @@ class DashboardController extends BaseController
         $stmt = $db->prepare('SELECT COUNT(*) FROM account_vendor_accven WHERE id_acc_accven = :userId');
         $stmt->execute([':userId' => $userId]);
         $metrics['saved_vendors'] = (int) $stmt->fetchColumn();
+
+        $stmt = $db->prepare('
+          SELECT v.id_ven, v.farm_name_ven, v.city_ven, v.state_ven
+          FROM account_vendor_accven av
+          JOIN vendor_ven v ON v.id_ven = av.id_ven_accven
+          WHERE av.id_acc_accven = :userId
+          ORDER BY av.created_at_accven DESC
+          LIMIT 8
+        ');
+        $stmt->execute([':userId' => $userId]);
+        $rows = $stmt ? $stmt->fetchAll() : [];
+        $savedVendors = array_map(function (array $row): array {
+          $location = trim((string) ($row['city_ven'] ?? ''));
+          if (!empty($row['state_ven'])) {
+            $location = $location === '' ? (string) $row['state_ven'] : $location . ', ' . $row['state_ven'];
+          }
+
+          return [
+            'id' => (int) ($row['id_ven'] ?? 0),
+            'name' => $row['farm_name_ven'] ?? '',
+            'slug' => $this->slugify((string) ($row['farm_name_ven'] ?? '')),
+            'location' => $location,
+          ];
+        }, $rows);
       } else {
         $metrics['saved_vendors'] = 0;
       }
@@ -57,7 +86,7 @@ class DashboardController extends BaseController
     }
 
     $view = 'dashboard/member';
-    $title = ($role === 'vendor') ? 'Vendor Dashboard' : 'Member Dashboard';
+    $title = 'Member Dashboard';
 
     $warning = $this->flash('warning');
 
@@ -65,6 +94,7 @@ class DashboardController extends BaseController
       'title' => $title,
       'user' => $user,
       'metrics' => $metrics,
+      'savedVendors' => $savedVendors,
       'warning' => $warning,
     ]);
   }

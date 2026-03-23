@@ -1,5 +1,6 @@
 <section class="card">
   <h1><?= h($title ?? 'Market Applications') ?></h1>
+  <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>
 
   <?php if (!empty($message)): ?>
     <div class="alert-success" data-flash>
@@ -31,11 +32,11 @@
             <?php if (!empty($application['applied_date_venmkt'])): ?>
               <div>Applied: <?= h((string) $application['applied_date_venmkt']) ?></div>
             <?php endif; ?>
-            <form method="post" action="<?= url('/admin/market-applications') ?>" class="mt-2">
+            <form method="post" action="<?= url('/admin/market-applications') ?>" class="mt-3 flex flex-wrap gap-2">
               <?= csrf_field() ?>
               <input type="hidden" name="application_id" value="<?= h((string) ($application['id_venmkt'] ?? '')) ?>">
-              <button type="submit" name="action" value="approve">Approve</button>
-              <button type="submit" name="action" value="reject">Reject</button>
+              <button type="submit" name="action" value="approve" class="btn-action-green">Approve</button>
+              <button type="submit" name="action" value="reject" class="btn-action-orange">Reject</button>
             </form>
           </li>
         <?php endforeach; ?>

@@ -21,3 +21,24 @@
     <li>Unread alerts: 0</li>
   </ul>
 </section>
+
+<section class="card mt-6">
+  <h2>Saved Vendors</h2>
+
+  <?php if (!empty($savedVendors)): ?>
+    <ul class="mt-3 space-y-2">
+      <?php foreach ($savedVendors as $vendor): ?>
+        <li>
+          <a href="<?= url('/vendors?view=' . urlencode($vendor['slug'])) ?>" class="link-primary">
+            <?= h($vendor['name']) ?>
+          </a>
+          <?php if (!empty($vendor['location'])): ?>
+            <span class="text-muted">- <?= h($vendor['location']) ?></span>
+          <?php endif; ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  <?php else: ?>
+    <p class="text-muted mt-2">You have no saved vendors yet.</p>
+  <?php endif; ?>
+</section>

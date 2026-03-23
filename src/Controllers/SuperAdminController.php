@@ -313,7 +313,6 @@ class SuperAdminController extends BaseController
     try {
       $db = $this->db();
 
-      // Check if slug is taken by another market
       $stmt = $db->prepare('SELECT id_mkt FROM market_mkt WHERE slug_mkt = :slug AND id_mkt != :id LIMIT 1');
       $stmt->execute([':slug' => $old['slug'], ':id' => $marketId]);
       if ($stmt->fetchColumn() !== false) {

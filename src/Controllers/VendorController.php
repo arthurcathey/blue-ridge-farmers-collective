@@ -356,7 +356,6 @@ class VendorController extends BaseController
     $marketDates = [];
 
     try {
-      // Get vendor's approved markets
       $stmt = $db->prepare('
         SELECT vm.id_venmkt, m.id_mkt, m.name_mkt, m.city_mkt, m.state_mkt
         FROM vendor_market_venmkt vm
@@ -367,11 +366,9 @@ class VendorController extends BaseController
       $stmt->execute([':vendor' => $vendorId]);
       $approvedMarkets = $stmt->fetchAll() ?: [];
 
-      // Get upcoming market dates for approved markets and vendor's attendance status
       if (!empty($approvedMarkets)) {
         $marketIds = array_column($approvedMarkets, 'id_mkt');
 
-        // Build named placeholders and params for IN clause
         $placeholders = [];
         $params = [':vendor' => $vendorId];
         foreach ($marketIds as $index => $marketId) {
@@ -408,7 +405,6 @@ class VendorController extends BaseController
       error_log('Select market dates error: ' . $e->getMessage());
     }
 
-    // Debug: Log what we're getting
     error_log('selectMarketDates - Vendor ID: ' . $vendorId);
     error_log('selectMarketDates - Approved Markets: ' . count($approvedMarkets));
     error_log('selectMarketDates - Market Dates: ' . count($marketDates));
@@ -446,7 +442,6 @@ class VendorController extends BaseController
       return json_encode(['error' => 'Invalid date selection']);
     }
 
-    // Cast to integers
     $selectedDates = array_map(function ($val) {
       return (int) $val;
     }, $selectedDates);
@@ -458,7 +453,6 @@ class VendorController extends BaseController
     $db = $this->db();
 
     try {
-      // Verify all selected dates are upcoming market dates for approved markets
       $marketIds = $db->prepare('
         SELECT DISTINCT m.id_mkt FROM vendor_market_venmkt vm
         JOIN market_mkt m ON m.id_mkt = vm.id_mkt_venmkt
@@ -471,7 +465,6 @@ class VendorController extends BaseController
         return json_encode(['error' => 'No approved markets found']);
       }
 
-      // Build named placeholders for market IDs
       $marketPlaceholders = [];
       $marketParams = [];
       foreach ($approvedMarkets as $index => $marketId) {
@@ -481,7 +474,6 @@ class VendorController extends BaseController
       }
       $marketInClause = implode(',', $marketPlaceholders);
 
-      // Build named placeholders for selected dates
       $datePlaceholders = [];
       $dateParams = [];
       foreach ($selectedDates as $index => $dateId) {
@@ -491,7 +483,6 @@ class VendorController extends BaseController
       }
       $dateInClause = implode(',', $datePlaceholders);
 
-      // Validate dates
       $validateDates = $db->prepare("
         SELECT id_mda FROM market_date_mda
         WHERE id_mkt_mda IN ($marketInClause)
@@ -504,7 +495,6 @@ class VendorController extends BaseController
         return json_encode(['error' => 'Invalid dates selected']);
       }
 
-      // Remove existing attendance records for this vendor (clear old selections)
       $clear = $db->prepare("
         DELETE va FROM vendor_attendance_vat va
         JOIN market_date_mda md ON md.id_mda = va.id_mda_vat
@@ -513,7 +503,6 @@ class VendorController extends BaseController
       ");
       $clear->execute(array_merge([':vendor' => $vendorId], $marketParams));
 
-      // Insert new attendance records for selected dates
       $insert = $db->prepare('
         INSERT INTO vendor_attendance_vat (id_ven_vat, id_mda_vat, status_vat)
         VALUES (:vendor, :date, "intended")
@@ -1557,14 +1546,12 @@ class VendorController extends BaseController
       $userId = (int) ($user['id'] ?? 0);
       $db = $this->db();
 
-      // Check vendor exists
       $stmt = $db->prepare('SELECT id_ven FROM vendor_ven WHERE id_ven = :id LIMIT 1');
       $stmt->execute([':id' => $vendorId]);
       if (!$stmt->fetch()) {
         return json_encode(['error' => 'Vendor not found']);
       }
 
-      // Insert if not already saved
       $stmt = $db->prepare('
         INSERT IGNORE INTO account_vendor_accven (id_acc_accven, id_ven_accven, created_at_accven)
         VALUES (:user_id, :vendor_id, NOW())

@@ -17,7 +17,7 @@ $attendanceStats = $attendanceStats ?? [];
       <h1><?= h($title) ?></h1>
       <p class="text-muted text-sm">Check in vendors for market days and track attendance</p>
     </div>
-    <a href="<?= url('/admin') ?>" class="link-primary">← Back to Dashboard</a>
+    <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
   </div>
 </section>
 

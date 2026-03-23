@@ -14,7 +14,7 @@ $marketDates = $marketDates ?? [];
       <h1><?= h($title ?? 'Select Market Dates') ?></h1>
       <p class="text-muted text-sm">Choose which market dates you want to participate in</p>
     </div>
-    <a href="<?= url('/vendor') ?>" class="link-primary">← Back to Dashboard</a>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
   </div>
 </section>
 

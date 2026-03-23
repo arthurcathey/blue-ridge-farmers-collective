@@ -10,7 +10,7 @@
 </section>
 
 <section class="card mt-6">
-  <h1>Onboarding Checklist</h1>
+  <h2>Onboarding Checklist</h2>
 
   <?php if (empty($vendor)): ?>
     <div class="alert-error form-section">
@@ -19,32 +19,33 @@
   <?php else: ?>
     <ul class="form-section">
       <li>
-        <?= !empty($checklist['complete_profile']) ? '[Done]' : '[Todo]' ?>
+        <?= !empty($checklist['complete_profile']) ? '[Done]' : 'Todo:' ?>
         Complete profile (farm details, contact info, photo, categories)
-        - <a href="<?= url('/vendor/apply') ?>" class="link-primary">Update profile</a>
+        <a href="<?= url('/vendor/apply') ?>" class="link-primary">Update profile</a>
       </li>
       <li>
-        <?= !empty($checklist['add_first_product']) ? '[Done]' : '[Todo]' ?>
+        <?= !empty($checklist['add_first_product']) ? '[Done]' : 'Todo:' ?>
         Add your first product
-        - <a href="<?= url('/vendor/products/new') ?>" class="link-primary">Add product</a>
+        <a href="<?= url('/vendor/products/new') ?>" class="link-primary">Add product</a>
         | <a href="<?= url('/vendor/products') ?>" class="link-primary">Manage products</a>
       </li>
       <li>
-        <?= !empty($checklist['set_availability']) ? '[Done]' : '[Todo]' ?>
+        <?= !empty($checklist['set_availability']) ? '[Done]' : 'Todo:' ?>
         Set availability (approved market membership)
-        - <a href="<?= url('/vendor/markets/apply') ?>" class="link-primary">Apply to markets</a>
+        <a href="<?= url('/vendor/markets/apply') ?>" class="link-primary">Apply to markets</a>
         | <a href="<?= url('/vendor/markets/select-dates') ?>" class="link-primary">Select market dates</a>
         | <a href="<?= url('/vendor-market-applications') ?>" class="link-primary">Application history</a>
       </li>
       <li>
+        <?= !empty($checklist['manage_presence']) ? '[Done]' : 'Todo:' ?>
         Manage your presence
-        - <a href="<?= url('/vendor/reviews') ?>" class="link-primary">View reviews & respond</a>
+        <a href="<?= url('/vendor/reviews') ?>" class="link-primary">View reviews & respond</a>
         | <a href="<?= url('/vendor/analytics') ?>" class="link-primary">Analytics</a>
         | <a href="<?= url('/vendor/attendance') ?>" class="link-primary">Attendance history</a>
       </li>
       <li>
         Market management
-        - <a href="<?= url('/vendor/transfer/request') ?>" class="link-primary">Transfer to another market</a>
+        <a href="<?= url('/vendor/transfer/request') ?>" class="link-primary">Transfer to another market</a>
         | <a href="<?= url('/vendor/transfer/history') ?>" class="link-primary">Transfer history</a>
       </li>
     </ul>

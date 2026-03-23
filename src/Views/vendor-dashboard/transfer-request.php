@@ -1,8 +1,8 @@
 <div class="container py-8">
   <div class="max-w-2xl">
-    
+
     <div class="mb-6 flex items-center gap-3">
-      <a href="<?= url('/vendor') ?>" class="link-primary text-sm">← Back to Dashboard</a>
+      <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
     </div>
 
     <div class="card">
@@ -25,7 +25,7 @@
         <form method="POST" action="<?= url('/vendor/transfer/request') ?>" class="space-y-6">
           <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 
-          
+
           <div class="field">
             <label for="from_market" class="field-label">Transfer From (Current Market)</label>
             <select name="from_market_id" id="from_market" class="form-control" required>
@@ -42,7 +42,7 @@
             <?php endif; ?>
           </div>
 
-          
+
           <div class="field">
             <label for="to_market" class="field-label">Transfer To (Target Market)</label>
             <select name="to_market_id" id="to_market" class="form-control" required>
@@ -57,10 +57,10 @@
             <?php if (!empty($errors['to_market_id'])): ?>
               <p class="form-error"><?= h($errors['to_market_id']) ?></p>
             <?php endif; ?>
-            <p class="mt-2 text-sm text-muted">Only markets where you don't currently have membership</p>
+            <p class="text-muted mt-2 text-sm">Only markets where you don't currently have membership</p>
           </div>
 
-          
+
           <div class="field">
             <label for="reason" class="field-label">Reason for Transfer (Optional)</label>
             <textarea
@@ -70,10 +70,10 @@
               rows="4"
               placeholder="Explain why you're requesting this transfer (e.g., changing location, better fit, etc.)"
               maxlength="1000"><?= isset($old['notes']) ? h($old['notes']) : '' ?></textarea>
-            <p class="mt-1 text-sm text-muted">Max 1000 characters</p>
+            <p class="text-muted mt-1 text-sm">Max 1000 characters</p>
           </div>
 
-          
+
           <div class="rounded border-l-4 border-blue-500 bg-blue-50 p-4">
             <p class="text-sm font-semibold text-blue-900">What happens next?</p>
             <ul class="mt-2 list-inside space-y-1 text-sm text-blue-800">
@@ -84,7 +84,7 @@
             </ul>
           </div>
 
-          
+
           <button type="submit" class="btn-action-blue w-full">Submit Transfer Request</button>
         </form>
       <?php else: ?>

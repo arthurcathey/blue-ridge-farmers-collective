@@ -25,7 +25,6 @@ class HomeController extends BaseController
       $stmt = $db->query('SELECT name_mkt FROM market_mkt ORDER BY name_mkt ASC LIMIT 3');
       $featuredMarkets = $stmt ? array_column($stmt->fetchAll(), 'name_mkt') : [];
 
-      // Get top vendors by average rating
       $vendorStmt = $db->query('
         SELECT 
           v.id_ven, 
