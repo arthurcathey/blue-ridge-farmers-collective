@@ -198,6 +198,11 @@ class VendorController extends BaseController
 
 
 
+  /**
+   * Display vendor application form
+   *
+   * @return string Rendered form view
+   */
   public function apply(): string
   {
     if ($this->authUser() === null) {
@@ -225,6 +230,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Process vendor application submission
+   *
+   * @return string JSON response or redirect
+   */
   public function submitApplication(): string
   {
     $this->requireAuth();
@@ -301,6 +311,11 @@ class VendorController extends BaseController
     return '';
   }
 
+  /**
+   * Display market application form
+   *
+   * @return string Rendered market selection form
+   */
   public function marketApply(): string
   {
     $this->requireRole('vendor');
@@ -335,6 +350,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Display vendor's market participation history
+   *
+   * @return string Rendered history view
+   */
   public function marketHistory(): string
   {
     $this->requireRole('vendor');
@@ -364,6 +384,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Process market application
+   *
+   * @return string JSON response or redirect
+   */
   public function submitMarketApply(): string
   {
     $this->requireRole('vendor');
@@ -425,6 +450,11 @@ class VendorController extends BaseController
     return '';
   }
 
+  /**
+   * Display market dates selection for registration
+   *
+   * @return string Rendered date selection view
+   */
   public function selectMarketDates(): string
   {
     $this->requireRole('vendor');
@@ -505,6 +535,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Save vendor's selected market dates
+   *
+   * @return string JSON response
+   */
   public function saveMarketDates(): string
   {
     $this->requireRole('vendor');
@@ -614,6 +649,11 @@ class VendorController extends BaseController
     }
   }
 
+  /**
+   * Display public vendor listing page
+   *
+   * @return string Rendered vendors view
+   */
   public function index(): string
   {
     $viewSlug = (string) ($_GET['view'] ?? '');

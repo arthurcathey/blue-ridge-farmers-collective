@@ -565,6 +565,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Show create market date form
+   *
+   * @return string Rendered form view
+   */
   public function showCreateMarketDate(): string
   {
     $this->requireRole('admin');
@@ -586,6 +591,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Create new market date
+   *
+   * @return string JSON response or redirect
+   */
   public function createMarketDate(): string
   {
     $this->requireRole('admin');
@@ -652,6 +662,11 @@ class AdminController extends BaseController
     return '';
   }
 
+  /**
+   * Show market date edit form
+   *
+   * @return string Rendered form view
+   */
   public function showEditMarketDate(): string
   {
     $this->requireRole('admin');
@@ -691,6 +706,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Update existing market date
+   *
+   * @return string JSON response or redirect
+   */
   public function updateMarketDate(): string
   {
     $this->requireRole('admin');
@@ -755,6 +775,11 @@ class AdminController extends BaseController
     return '';
   }
 
+  /**
+   * Delete market date
+   *
+   * @return string JSON response
+   */
   public function deleteMarketDate(): string
   {
     $this->requireRole('admin');
@@ -790,6 +815,11 @@ class AdminController extends BaseController
     return '';
   }
 
+  /**
+   * Display review management page
+   *
+   * @return string Rendered reviews view
+   */
   public function reviewManagement(): string
   {
     $this->requireRole('admin');
@@ -844,6 +874,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Process review approval or rejection
+   *
+   * @return string JSON response
+   */
   public function handleReview(): string
   {
     $this->requireRole('admin');
@@ -892,6 +927,11 @@ class AdminController extends BaseController
     return '';
   }
 
+  /**
+   * Display analytics overview dashboard
+   *
+   * @return string Rendered analytics view
+   */
   public function analyticsOverview(): string
   {
     $this->requireRole('admin');
@@ -1026,6 +1066,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display booth management page
+   *
+   * @return string Rendered booth management view
+   */
   public function boothManagement(): string
   {
     $this->requireRole('admin');
@@ -1089,6 +1134,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display booth layout editor
+   *
+   * @return string Rendered layout editor view
+   */
   public function boothLayoutEditor(): string
   {
     $this->requireRole('admin');
@@ -1135,6 +1185,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display booth assignment interface
+   *
+   * @return string Rendered assignment view
+   */
   public function boothAssignment(): string
   {
     $this->requireRole('admin');
@@ -1237,6 +1292,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Create new booth layout
+   *
+   * @return string JSON response
+   */
   public function createBoothLayout(): string
   {
     $this->requireRole('admin');

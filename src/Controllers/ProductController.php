@@ -93,6 +93,11 @@ class ProductController extends BaseController
     }
   }
 
+  /**
+   * Show create product form
+   *
+   * @return string Rendered form view
+   */
   public function create(): string
   {
     $this->requireRole('vendor');
@@ -117,6 +122,11 @@ class ProductController extends BaseController
     ]);
   }
 
+  /**
+   * Display vendor's product inventory
+   *
+   * @return string Rendered products list view
+   */
   public function vendorIndex(): string
   {
     $this->requireRole('vendor');
@@ -159,6 +169,11 @@ class ProductController extends BaseController
     ]);
   }
 
+  /**
+   * Display single product details for vendor
+   *
+   * @return string Rendered product detail view
+   */
   public function vendorShow(): string
   {
     $user = $this->authUser();
@@ -230,6 +245,11 @@ class ProductController extends BaseController
     ]);
   }
 
+  /**
+   * Show product edit form
+   *
+   * @return string Rendered form view
+   */
   public function edit(): string
   {
     $this->requireRole('vendor');
@@ -299,6 +319,11 @@ class ProductController extends BaseController
     ]);
   }
 
+  /**
+   * Update existing product
+   *
+   * @return string JSON response or redirect
+   */
   public function update(): string
   {
     $this->requireRole('vendor');
@@ -408,6 +433,11 @@ class ProductController extends BaseController
     return '';
   }
 
+  /**
+   * Delete product
+   *
+   * @return string JSON response
+   */
   public function destroy(): string
   {
     $this->requireRole('vendor');
@@ -441,6 +471,11 @@ class ProductController extends BaseController
     return '';
   }
 
+  /**
+   * Create new product
+   *
+   * @return string JSON response or redirect
+   */
   public function store(): string
   {
     $this->requireRole('vendor');
@@ -541,6 +576,11 @@ class ProductController extends BaseController
     return '';
   }
 
+  /**
+   * Display public product listing page
+   *
+   * @return string Rendered products view
+   */
   public function index(): string
   {
     $viewSlug = (string) ($_GET['view'] ?? '');
@@ -840,6 +880,11 @@ class ProductController extends BaseController
     ]);
   }
 
+  /**
+   * API endpoint for product search with filtering
+   *
+   * @return string JSON response with products
+   */
   public function searchApi(): string
   {
     header('Content-Type: application/json');
