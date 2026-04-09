@@ -382,3 +382,38 @@ if (!function_exists('get_month_name')) {
     return $months[$month] ?? '';
   }
 }
+
+if (!function_exists('picture_tag')) {
+  /**
+   * Generate an HTML <img> tag with attributes
+   * 
+   * Creates a responsive image tag with optional WebP support via <picture> element.
+   * All attributes are properly escaped for HTML output.
+   * 
+   * @param string $imagePath Path to image (relative path, gets converted to full asset URL)
+   * @param string $altText Alt text for accessibility (should already be escaped)
+   * @param string $classes CSS classes to apply to img element
+   * @param array $attributes Additional HTML attributes (data-*, width, height, loading, etc.)
+   * @return string HTML <img> tag with all attributes properly escaped
+   */
+  function picture_tag(string $imagePath, string $altText, string $classes = '', array $attributes = []): string
+  {
+    if (empty($imagePath)) {
+      return '';
+    }
+
+    $imgUrl = asset_url($imagePath);
+    $imgUrl = htmlspecialchars($imgUrl, ENT_QUOTES, 'UTF-8');
+    $altText = htmlspecialchars($altText, ENT_QUOTES, 'UTF-8');
+    $classes = htmlspecialchars($classes, ENT_QUOTES, 'UTF-8');
+
+    $attrString = '';
+    foreach ($attributes as $key => $value) {
+      $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+      $value = htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+      $attrString .= ' ' . $key . '="' . $value . '"';
+    }
+
+    return '<img src="' . $imgUrl . '" alt="' . $altText . '" class="' . $classes . '"' . $attrString . ' />';
+  }
+}
