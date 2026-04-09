@@ -186,13 +186,116 @@ This project is part of the WEB-289 course curriculum.
 - Course: WEB-289
 - Assignment: Database Schema Refactoring
 
+## � Deployment
+
+### Pre-Deployment Checklist
+1. **Build Tailwind CSS**
+   ```bash
+   npm run tailwind:build
+   ```
+   Ensure CSS is up-to-date before deployment.
+
+2. **Test Locally**
+   ```bash
+   php -S localhost:8000 -t public/
+   ```
+   Verify all features work in local environment.
+
+3. **Commit Changes**
+   ```bash
+   git status
+   git add .
+   git commit -m "Deployment ready"
+   git push
+   ```
+
+### Deployment to Bluehost
+
+#### One-Time Setup
+1. In cPanel, set **Document Root** to `/public/`
+2. Ensure **mod_rewrite** is enabled (contact support if needed)
+3. Create database in cPanel
+4. Update `config/env.php` with Bluehost credentials
+
+#### Files to Upload
+Upload from project root to Bluehost:
+
+**Critical Files:**
+- `public/.htaccess` - URL rewriting
+- `public/index.php` - Front controller
+- `config/routes.php` - Routes configuration
+- `config/database.php` - Database connection
+- `config/env.php` - Environment variables (with Bluehost credentials)
+
+**Stylesheets & JavaScript:**
+- `public/css/main.css`
+- `public/css/tailwind.css`
+- `public/js/main.js`
+
+**Views & Controllers:**
+- `src/Views/` - All PHP templates
+- `src/Controllers/` - All controllers
+- `src/Helpers/` - Helper functions
+- `src/Models/` - Data models
+- `src/Services/` - Service classes
+
+**Images:**
+- `public/images/` - All static images
+- `public/uploads/` - Keep writable for uploads
+
+**Database:**
+- `src/Database/schema.sql` - For reference (import manually)
+
+**Build Files:**
+- `package.json` - Dependencies reference
+- `tailwind.config.js` - Tailwind configuration
+
+#### Database Setup
+1. Access phpMyAdmin in cPanel
+2. Create database (e.g., `hqkmwgmy_blueridge_farmers_db`)
+3. Open "SQL" tab and paste contents of `src/Database/schema.sql`
+4. Execute to create tables and seed data
+
+#### After Upload
+1. Hard refresh browser: `Ctrl+F5`
+2. Test URLs:
+   - https://blueridgefarmerscollective.com/ (home)
+   - https://blueridgefarmerscollective.com/login (login)
+   - https://blueridgefarmerscollective.com/about (about)
+3. Check browser console for CSS/JS errors
+4. Test on mobile device for responsive design
+
+#### Troubleshooting Deployment
+
+**Site goes to /public/ URL:**
+- `.htaccess` not uploading correctly
+- Check if mod_rewrite is enabled (cPanel → Apache Modules)
+- Verify document root is set to `/public/`
+
+**CSS/JS missing (404 errors):**
+- Verify all files in `public/css/` and `public/js/` directories exist
+- Check file permissions: should be readable (644)
+
+**Database connection error:**
+- Verify `config/env.php` credentials match cPanel database
+- Test connection: Visit homepage, should show database statistics
+- Check PHP error logs in cPanel
+
+**Email not sending:**
+- Update SMTP credentials in `config/env.php`
+- Verify email account exists in cPanel
+- Check `config/env.php` for correct MAIL_HOST and MAIL_PORT
+
+---
+
 ## 📞 Support
 
 For questions or issues:
 1. Check the database logs in the audit_log_aud table
 2. Review error messages in PHP error logs
 3. Verify database connection in config/database.php
+4. See DEPLOYMENT section for hosting-specific issues
 
 ---
 
-**Last Updated:** February 15, 2026
+**Last Updated:** April 9, 2026
