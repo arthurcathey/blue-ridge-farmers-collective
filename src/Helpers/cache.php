@@ -1,7 +1,10 @@
 <?php
 
 /**
- * File cache helper
+ * Retrieve value from file cache
+ *
+ * @param string $key Cache key
+ * @return mixed|null Cached value if exists and not expired, null otherwise
  */
 function cache_get(string $key)
 {
@@ -17,6 +20,14 @@ function cache_get(string $key)
   return $payload['value'] ?? null;
 }
 
+/**
+ * Store value in file cache
+ *
+ * @param string $key Cache key
+ * @param mixed $value Value to cache
+ * @param int $ttl Time-to-live in seconds (default: 300)
+ * @return void
+ */
 function cache_set(string $key, $value, int $ttl = 300): void
 {
   $file = __DIR__ . '/../../storage/cache/' . md5($key) . '.cache';

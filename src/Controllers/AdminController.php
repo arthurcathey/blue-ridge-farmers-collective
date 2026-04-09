@@ -60,6 +60,13 @@ class AdminController extends BaseController
     return $id !== false ? (int) $id : null;
   }
 
+  /**
+   * Display admin dashboard with analytics and metrics
+   *
+   * Shows pending vendors, market applications, recent products, and trending analysis
+   *
+   * @return string Rendered dashboard view
+   */
   public function index(): string
   {
     $this->requireRole('admin');
@@ -195,6 +202,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display list of pending vendor applications
+   *
+   * @return string Rendered vendor applications view
+   */
   public function vendorApplications(): string
   {
     $this->requireRole('admin');
@@ -213,6 +225,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display single vendor application for review
+   *
+   * @return string Rendered vendor application detail view
+   */
   public function vendorApplicationShow(): string
   {
     $this->requireRole('admin');
@@ -242,6 +259,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display list of pending market applications
+   *
+   * @return string Rendered market applications view
+   */
   public function marketApplications(): string
   {
     $this->requireRole('admin');
@@ -260,6 +282,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Process market application approval or rejection
+   *
+   * @return string JSON response
+   */
   public function handleMarketApplication(): string
   {
     $this->requireRole('admin');
@@ -315,6 +342,13 @@ class AdminController extends BaseController
     return '';
   }
 
+  /**
+   * Process vendor application approval or rejection
+   *
+   * Approves application and sends welcome email or rejects with reason
+   *
+   * @return string JSON response
+   */
   public function handleVendorApplication(): string
   {
     $this->requireRole('admin');
@@ -418,6 +452,13 @@ class AdminController extends BaseController
     return '';
   }
 
+  /**
+   * Display vendor management page
+   *
+   * Lists all approved vendors with status and attendance info
+   *
+   * @return string Rendered vendor management view
+   */
   public function vendorManagement(): string
   {
     $this->requireRole('admin');
@@ -456,6 +497,11 @@ class AdminController extends BaseController
     ]);
   }
 
+  /**
+   * Toggle featured status for vendor
+   *
+   * @return void
+   */
   public function toggleVendorFeatured(): void
   {
     $this->requireRole('admin');
@@ -483,6 +529,11 @@ class AdminController extends BaseController
     $this->redirect('/admin/vendors');
   }
 
+  /**
+   * Display market dates management page
+   *
+   * @return string Rendered market dates view
+   */
   public function marketDates(): string
   {
     $this->requireRole('admin');

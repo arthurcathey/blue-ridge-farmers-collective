@@ -15,6 +15,13 @@
 export const Navigation = (() => {
   let isInitialized = false;
 
+  /**
+   * Initialize navigation module
+   *
+   * Sets up mobile menu toggle, dropdowns, and keyboard navigation
+   *
+   * @returns {void}
+   */
   const init = () => {
     if (isInitialized) return;
 
@@ -22,6 +29,11 @@ export const Navigation = (() => {
     const navLinks = document.querySelector('[data-nav]');
     const dropdowns = Array.from(document.querySelectorAll("[data-dropdown]"));
 
+    /**
+     * Close mobile menu
+     *
+     * @returns {void}
+     */
     const closeMobileMenu = () => {
       if (navLinks) {
         navLinks.removeAttribute('data-mobile-open');
@@ -31,6 +43,11 @@ export const Navigation = (() => {
       }
     };
 
+    /**
+     * Close all dropdown menus
+     *
+     * @returns {void}
+     */
     const closeAllDropdowns = () => {
       dropdowns.forEach((item) => {
         item.classList.remove("is-open");
@@ -41,7 +58,6 @@ export const Navigation = (() => {
       });
     };
 
-    // Menu toggle click
     if (menuToggle) {
       menuToggle.addEventListener("click", () => {
         const isOpen = navLinks?.hasAttribute('data-mobile-open');
@@ -54,7 +70,6 @@ export const Navigation = (() => {
       });
     }
 
-    // Dropdown menu interactions
     dropdowns.forEach((item) => {
       const btn = item.querySelector(".nav-trigger");
       const itemMenu = item.querySelector("[data-menu]");
@@ -80,7 +95,6 @@ export const Navigation = (() => {
         }
       });
 
-      // Keyboard navigation
       btn.addEventListener("keydown", (e) => {
         const items = Array.from(itemMenu?.querySelectorAll("a, button") || []);
         if (items.length === 0) return;
@@ -128,7 +142,6 @@ export const Navigation = (() => {
         }
       });
 
-      // Item navigation within menu
       itemMenu?.addEventListener("keydown", (e) => {
         const items = Array.from(itemMenu.querySelectorAll("a, button"));
         const current = document.activeElement;
@@ -150,7 +163,6 @@ export const Navigation = (() => {
       });
     });
 
-    // Close menu on click outside
     document.addEventListener("click", (e) => {
       if (!e.target.closest("[data-dropdown]") && !e.target.closest("[data-menu-toggle]")) {
         closeAllDropdowns();
@@ -161,7 +173,6 @@ export const Navigation = (() => {
       }
     });
 
-    // Close menus on resize
     window.addEventListener("resize", () => {
       if (window.innerWidth > 768) {
         closeMobileMenu();

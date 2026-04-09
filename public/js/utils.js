@@ -7,9 +7,9 @@
  */
 
 /**
- * Debounce function to limit how often a function is called
- * 
- * @param {Function} func - The function to debounce
+ * Debounce function calls with delay
+ *
+ * @param {Function} func - Function to debounce
  * @param {number} delay - Delay in milliseconds
  * @returns {Function} Debounced function
  */
@@ -22,8 +22,11 @@ export const debounce = (func, delay) => {
 };
 
 /**
- * Flash message auto-dismissal
- * Removes flash messages after 5 seconds
+ * Initialize flash message auto-removal
+ *
+ * Removes flash message element after 5 second timeout
+ *
+ * @returns {void}
  */
 export const initFlashMessages = () => {
   const flash = document.querySelector("[data-flash]");

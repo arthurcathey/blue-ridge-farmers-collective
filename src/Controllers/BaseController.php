@@ -19,6 +19,12 @@ class BaseController
     require_once __DIR__ . '/../Helpers/cache.php';
   }
 
+  /**
+   * Validate HTTP request method
+   *
+   * @param string $method Expected HTTP method
+   * @return void
+   */
   protected function requireMethod(string $method): void
   {
     $expected = strtoupper($method);
@@ -31,6 +37,13 @@ class BaseController
     }
   }
 
+  /**
+   * Render a view with data and optional layout
+   *
+   * @param string $view Path to view file (relative to src/Views/)
+   * @param array $data Data to pass to view
+   * @return string Rendered HTML
+   */
   protected function render(string $view, array $data = []): string
   {
     $viewFile = $this->basePath . '/src/Views/' . ltrim($view, '/') . '.php';
@@ -68,6 +81,12 @@ class BaseController
     return (string) ob_get_clean();
   }
 
+  /**
+   * Redirect to a different URL
+   *
+   * @param string $path URL path to redirect to
+   * @return void
+   */
   protected function redirect(string $path): void
   {
     $target = $path;
@@ -80,11 +99,23 @@ class BaseController
     exit;
   }
 
+  /**
+   * Get authenticated user from session
+   *
+   * @return array|null User data if authenticated, null otherwise
+   */
   protected function authUser(): ?array
   {
     return $_SESSION['user'] ?? null;
   }
 
+  /**
+   * Require user to be authenticated
+   *
+   * Redirects to login if not authenticated.
+   *
+   * @return void
+   */
   protected function requireAuth(): void
   {
     if ($this->authUser() === null) {
@@ -92,6 +123,14 @@ class BaseController
     }
   }
 
+  /**
+   * Require user to have specific role
+   *
+   * Redirects or exits with 403 if user lacks required role.
+   *
+   * @param string $role Required role name
+   * @return void
+   */
   protected function requireRole(string $role): void
   {
     $user = $this->authUser();
@@ -109,6 +148,13 @@ class BaseController
     }
   }
 
+  /**
+   * Get or set flash message
+   *
+   * @param string $key Message key
+   * @param string|null $value Message value (if setting)
+   * @return string|null Message value if getting, null if setting
+   */
   protected function flash(string $key, ?string $value = null): ?string
   {
     if ($value !== null) {
@@ -121,6 +167,13 @@ class BaseController
     return $message;
   }
 
+  /**
+   * Get old form input value from session
+   *
+   * @param string $key Form field name
+   * @param string $default Default value if not found
+   * @return string Form input value or default
+   */
   protected function old(string $key, string $default = ''): string
   {
     return (string) ($_SESSION['old'][$key] ?? $default);
@@ -142,16 +195,32 @@ class BaseController
     return (int) ($stmt->fetchColumn() ?: 0);
   }
 
+  /**
+   * Clear old form input and validation errors from session
+   *
+   * @return void
+   */
   protected function clearOld(): void
   {
     unset($_SESSION['old'], $_SESSION['errors']);
   }
 
+  /**
+   * Get database connection instance
+   *
+   * @return \PDO
+   */
   protected function db(): \PDO
   {
     return \App\Models\BaseModel::connection();
   }
 
+  /**
+   * Convert string to URL-friendly slug
+   *
+   * @param string $value String to convert
+   * @return string URL-safe slug
+   */
   protected function slugify(string $value): string
   {
     $value = strtolower(trim($value));
@@ -160,6 +229,17 @@ class BaseController
     return trim($value, '-');
   }
 
+  /**
+   * Handle file upload for photos
+   *
+   * Validates file size, MIME type, and saves to appropriate directory.
+   * Supports JPG, PNG, and WebP formats with 5MB size limit.
+   *
+   * @param string $type Upload directory type (vendors, products, etc.)
+   * @param array|null $file $_FILES array element
+   * @param string|null $existingPath Path to existing file to preserve if no new file
+   * @return array ['path' => string|null, 'error' => string|null]
+   */
   protected function uploadPhoto(string $type, ?array $file, ?string $existingPath = null): array
   {
     if (!$file || ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {

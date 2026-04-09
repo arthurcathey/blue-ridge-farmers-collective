@@ -12,10 +12,16 @@
 export const ScrollEffects = (() => {
   let isInitialized = false;
 
+  /**
+   * Initialize scroll effects
+   *
+   * Sets up sticky header on scroll and back-to-top button visibility toggle
+   *
+   * @returns {void}
+   */
   const init = () => {
     if (isInitialized) return;
 
-    // Sticky header effect
     const header = document.querySelector("header");
     if (header) {
       window.addEventListener("scroll", () => {
@@ -27,7 +33,6 @@ export const ScrollEffects = (() => {
       });
     }
 
-    // Back-to-top button
     const backToTopBtn = document.querySelector("[data-back-to-top]");
     if (backToTopBtn) {
       window.addEventListener("scroll", () => {

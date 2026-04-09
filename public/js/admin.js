@@ -13,10 +13,22 @@ export const Admin = (() => {
   let currentVendorId = null;
   let currentDateId = null;
 
+  /**
+   * Retrieve CSRF token from form
+   *
+   * @returns {string} CSRF token value or empty string
+   */
   const getCsrfToken = () => {
     return document.querySelector('[name="csrf_token"]')?.value || '';
   };
 
+  /**
+   * Check in vendor to market date
+   *
+   * @param {number} vendorId - Vendor ID
+   * @param {string} farmName - Farm name for confirmation
+   * @returns {void}
+   */
   const checkInVendor = function(vendorId, farmName) {
     const dateInput = document.querySelector('[name="date_id"]');
     const dateId = dateInput?.value;
@@ -51,6 +63,11 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Mark vendor as no-show for selected date
+   *
+   * @returns {void}
+   */
   const markAsNoShow = function() {
     if (!currentVendorId || !currentDateId) {
       alert('No vendor selected');
@@ -77,6 +94,11 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Mark vendor as confirmed for selected date
+   *
+   * @returns {void}
+   */
   const markAsConfirmed = function() {
     if (!currentVendorId || !currentDateId) {
       alert('No vendor selected');
@@ -103,6 +125,12 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Remove no-show status from vendor
+   *
+   * @param {number} vendorId - Vendor ID to update
+   * @returns {void}
+   */
   const undoNoShow = function(vendorId) {
     const dateInput = document.querySelector('[name="date_id"]');
     const dateId = dateInput?.value;
@@ -129,6 +157,13 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Open vendor action menu modal
+   *
+   * @param {number} vendorId - Vendor ID
+   * @param {string} status - Current vendor status
+   * @returns {void}
+   */
   const openVendorMenu = function(vendorId, status) {
     currentVendorId = vendorId;
     currentDateId = document.querySelector('[name="date_id"]')?.value;
@@ -140,6 +175,11 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Close vendor action modal
+   *
+   * @returns {void}
+   */
   const closeVendorActionModal = function() {
     const modal = document.getElementById('vendorActionModal');
     if (modal) {
@@ -149,6 +189,12 @@ export const Admin = (() => {
     currentVendorId = null;
   };
 
+  /**
+   * Filter vendor rows by status
+   *
+   * @param {string} status - Status to filter by (or 'all')
+   * @returns {void}
+   */
   const filterByStatus = function(status) {
     const rows = document.querySelectorAll('[data-vendor-status]');
     rows.forEach((row) => {
@@ -161,6 +207,13 @@ export const Admin = (() => {
     });
   };
 
+  /**
+   * Approve vendor transfer request
+   *
+   * @param {number} transferId - Transfer request ID
+   * @param {string} vendorName - Vendor name for confirmation
+   * @returns {void}
+   */
   const approveTransfer = function(transferId, vendorName) {
     if (!confirm(`Approve transfer for ${vendorName}?`)) return;
 
@@ -186,6 +239,13 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Show rejection modal for transfer request
+   *
+   * @param {number} transferId - Transfer request ID
+   * @param {string} vendorName - Vendor name
+   * @returns {void}
+   */
   const showRejectModal = function(transferId, vendorName) {
     const modal = document.getElementById('rejectModal');
     if (modal) {
@@ -195,6 +255,11 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Close rejection modal
+   *
+   * @returns {void}
+   */
   const closeRejectModal = function() {
     const modal = document.getElementById('rejectModal');
     if (modal) {
@@ -202,6 +267,12 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Submit transfer rejection with reason
+   *
+   * @param {Event} event - Form submission event
+   * @returns {void}
+   */
   const submittReject = function(event) {
     event?.preventDefault?.();
 
@@ -232,6 +303,13 @@ export const Admin = (() => {
       });
   };
 
+
+  /**
+   * Save vendor to user's collection
+   *
+   * @param {number} vendorId - Vendor ID to save
+   * @returns {void}
+   */
   const saveVendor = function(vendorId) {
     const csrfField = document.getElementById('csrfToken');
     if (!csrfField) {
@@ -267,6 +345,12 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Remove vendor from user's collection
+   *
+   * @param {number} vendorId - Vendor ID to unsave
+   * @returns {void}
+   */
   const unsaveVendor = function(vendorId) {
     const csrfField = document.getElementById('csrfToken');
     if (!csrfField) {
@@ -302,6 +386,11 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Delete vendor profile photo
+   *
+   * @returns {void}
+   */
   const deleteVendorPhoto = function() {
     const performerId = document.querySelector('[name="performer_id"]')?.value;
     if (!performerId) {
@@ -332,6 +421,12 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Delete market image
+   *
+   * @param {number} marketId - Market ID
+   * @returns {void}
+   */
   const deleteMarketImage = function(marketId) {
     if (!confirm('Are you sure you want to delete this image?')) return;
 
@@ -355,6 +450,12 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Open booth layout creation modal
+   *
+   * @param {number} marketId - Market ID
+   * @returns {void}
+   */
   const openCreateLayoutModal = function(marketId) {
     const modal = document.getElementById('createLayoutModal');
     if (modal) {
@@ -365,6 +466,11 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Close booth layout modal
+   *
+   * @returns {void}
+   */
   const closeCreateLayoutModal = function() {
     const modal = document.getElementById('createLayoutModal');
     if (modal) {
@@ -373,6 +479,12 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Open booth assignment modal
+   *
+   * @param {number} boothId - Booth ID
+   * @returns {void}
+   */
   const openAssignmentModal = function(boothId) {
     const modal = document.getElementById('assignmentModal');
     if (modal) {
@@ -382,6 +494,11 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Close booth assignment modal
+   *
+   * @returns {void}
+   */
   const closeAssignmentModal = function() {
     const modal = document.getElementById('assignmentModal');
     if (modal) {
@@ -389,12 +506,23 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Highlight vendor row by ID
+   *
+   * @param {number} vendorId - Vendor ID to highlight
+   * @returns {void}
+   */
   const highlightVendor = function(vendorId) {
     document.querySelectorAll('[data-vendor-id]').forEach((row) => {
       row.classList.toggle('highlight', row.getAttribute('data-vendor-id') === String(vendorId));
     });
   };
 
+  /**
+   * Unassign vendor from booth
+   *
+   * @returns {void}
+   */
   const unassignBooth = function() {
     if (!confirm('Are you sure you want to unassign this vendor?')) return;
 
@@ -420,6 +548,11 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Clear all booths from layout
+   *
+   * @returns {void}
+   */
   const clearLayout = function() {
     if (!confirm('Are you sure you want to clear this layout?')) return;
 
@@ -445,6 +578,11 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Generate grid of booths for layout
+   *
+   * @returns {void}
+   */
   const generateBoothsGrid = function() {
     const layoutId = document.querySelector('[name="layout_id"]')?.value;
     if (!layoutId) {
@@ -470,6 +608,11 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Delete booth from layout
+   *
+   * @returns {void}
+   */
   const deleteBooth = function() {
     const boothId = document.querySelector('[name="booth_id"]')?.value;
     if (!boothId) {
@@ -497,11 +640,23 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Select booth by ID in dropdown
+   *
+   * @param {number} boothId - Booth ID to select
+   * @returns {void}
+   */
   const selectBooth = function(boothId) {
     const select = document.querySelector('[name="booth_id"]');
     if (select) select.value = boothId;
   };
 
+  /**
+   * Cancel vendor transfer request
+   *
+   * @param {number} transferId - Transfer request ID
+   * @returns {void}
+   */
   const cancelTransfer = function(transferId) {
     if (!confirm('Cancel this transfer request?')) return;
 
@@ -523,6 +678,11 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Regenerate booth ID
+   *
+   * @returns {void}
+   */
   const regenerateBooth = function() {
     const boothId = document.querySelector('[name="booth_id"]')?.value;
     if (!boothId) {
@@ -548,6 +708,13 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Remove admin user
+   *
+   * @param {number} adminId - Admin user ID
+   * @param {string} adminName - Admin user name for confirmation
+   * @returns {void}
+   */
   const removeAdmin = function(adminId, adminName) {
     if (!confirm(`Remove ${adminName} as admin?`)) return;
 
@@ -569,6 +736,14 @@ export const Admin = (() => {
       });
   };
 
+  /**
+   * Open admin edit modal
+   *
+   * @param {number} adminId - Admin user ID
+   * @param {string} adminName - Admin user name
+   * @param {string} adminRole - Admin user role
+   * @returns {void}
+   */
   const openEditAdminModal = function(adminId, adminName, adminRole) {
     const modal = document.getElementById('editAdminModal');
     if (modal) {
@@ -583,6 +758,11 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Close admin edit modal
+   *
+   * @returns {void}
+   */
   const closeEditAdminModal = function() {
     const modal = document.getElementById('editAdminModal');
     if (modal) {
@@ -591,6 +771,11 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Close booth editor modal
+   *
+   * @returns {void}
+   */
   const closeBoothEditor = function() {
     const editor = document.getElementById('boothEditorModal');
     if (editor) {
@@ -598,6 +783,13 @@ export const Admin = (() => {
     }
   };
 
+  /**
+   * Initialize Admin module and expose functions to window object
+   *
+   * Sets up all window event handlers for onclick attributes
+   *
+   * @returns {void}
+   */
   const init = () => {
     if (isInitialized) return;
 

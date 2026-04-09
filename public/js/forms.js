@@ -17,6 +17,9 @@ export const Forms = (() => {
 
   /**
    * Validate email address format
+   *
+   * @param {string} email - Email address to validate
+   * @returns {boolean} True if email is valid
    */
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,6 +28,9 @@ export const Forms = (() => {
 
   /**
    * Validate URL format
+   *
+   * @param {string} url - URL to validate
+   * @returns {boolean} True if URL is valid
    */
   const isValidUrl = (url) => {
     try {
@@ -36,7 +42,10 @@ export const Forms = (() => {
   };
 
   /**
-   * Validate phone number (basic format)
+   * Validate phone number format
+   *
+   * @param {string} phone - Phone number to validate
+   * @returns {boolean} True if phone number has 10-15 digits
    */
   const isValidPhone = (phone) => {
     const digitsOnly = phone.replace(/[^\d]/g, "");
@@ -44,7 +53,10 @@ export const Forms = (() => {
   };
 
   /**
-   * Validate a single form field based on type
+   * Validate form field based on type and constraints
+   *
+   * @param {HTMLElement} field - Form field element
+   * @returns {Object} Object with valid (boolean) and error (string|null) properties
    */
   const validateField = (field) => {
     const type = field.getAttribute("type") || field.tagName.toLowerCase();
@@ -121,7 +133,11 @@ export const Forms = (() => {
   };
 
   /**
-   * Display validation error for a field
+   * Display validation error message for field
+   *
+   * @param {HTMLElement} field - Form field element
+   * @param {string} error - Error message text
+   * @returns {void}
    */
   const showFieldError = (field, error) => {
     field.setAttribute("aria-invalid", "true");
@@ -139,7 +155,10 @@ export const Forms = (() => {
   };
 
   /**
-   * Clear validation error for a field
+   * Clear validation error for field
+   *
+   * @param {HTMLElement} field - Form field element
+   * @returns {void}
    */
   const clearFieldError = (field) => {
     field.setAttribute("aria-invalid", "false");
@@ -151,7 +170,9 @@ export const Forms = (() => {
   };
 
   /**
-   * Initialize form field validation
+   * Initialize form validation for all marked forms
+   *
+   * @returns {void}
    */
   const initFormValidation = () => {
     const forms = document.querySelectorAll("form[data-validate]");
@@ -160,7 +181,6 @@ export const Forms = (() => {
       const fields = form.querySelectorAll("input, textarea, select");
 
       fields.forEach((field) => {
-        // Real-time validation on blur
         field.addEventListener("blur", () => {
           const result = validateField(field);
           if (!result.valid) {
@@ -170,7 +190,6 @@ export const Forms = (() => {
           }
         });
 
-        // Clear error on input
         field.addEventListener("input", () => {
           if (field.getAttribute("aria-invalid") === "true") {
             const result = validateField(field);
@@ -181,7 +200,6 @@ export const Forms = (() => {
         });
       });
 
-      // Form submission validation
       form.addEventListener("submit", (e) => {
         let hasErrors = false;
 
@@ -203,7 +221,9 @@ export const Forms = (() => {
   };
 
   /**
-   * Initialize star rating widget
+   * Initialize star rating widgets
+   *
+   * @returns {void}
    */
   const initStarRating = () => {
     const starRatingGroups = document.querySelectorAll("[data-rating-stars]");
@@ -275,6 +295,13 @@ export const Forms = (() => {
     });
   };
 
+  /**
+   * Initialize Forms module
+   *
+   * Sets up form validation and star rating widgets
+   *
+   * @returns {void}
+   */
   const init = () => {
     if (isInitialized) return;
     initFormValidation();

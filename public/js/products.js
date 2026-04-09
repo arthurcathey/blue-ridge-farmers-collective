@@ -18,6 +18,13 @@
 export const Products = (() => {
   let isInitialized = false;
 
+  /**
+   * Initialize Products module
+   *
+   * Sets up product filtering by search, category, vendor, market, and sort options
+   *
+   * @returns {void}
+   */
   const init = () => {
     if (isInitialized) return;
 
@@ -30,10 +37,12 @@ export const Products = (() => {
     const resultsCounter = document.querySelector("[data-results-count]");
     const noResultsMessage = document.querySelector("[data-no-results]");
 
-    if (!productCardsContainer) return; // Not on products page
+    if (!productCardsContainer) return;
 
     /**
-     * Filter and display products based on current filter values
+     * Filter and display products based on search and filter criteria
+     *
+     * @returns {void}
      */
     const filterProducts = () => {
       const searchTerm = (searchInput?.value || "").toLowerCase();
@@ -46,7 +55,6 @@ export const Products = (() => {
         productCardsContainer.querySelectorAll("[data-product-id]")
       );
 
-      // Apply search filter
       if (searchTerm) {
         productCards = productCards.filter((card) => {
           const name = card.querySelector("[data-product-name]")?.textContent || "";
@@ -61,7 +69,6 @@ export const Products = (() => {
         });
       }
 
-      // Apply category filter
       if (categoryValue) {
         productCards = productCards.filter((card) => {
           const category = card.getAttribute("data-product-category") || "";
@@ -69,7 +76,6 @@ export const Products = (() => {
         });
       }
 
-      // Apply vendor filter
       if (vendorValue) {
         productCards = productCards.filter((card) => {
           const vendor = card.getAttribute("data-product-vendor-id") || "";
@@ -77,7 +83,6 @@ export const Products = (() => {
         });
       }
 
-      // Apply market filter
       if (marketValue) {
         productCards = productCards.filter((card) => {
           const market = card.getAttribute("data-product-market-id") || "";
@@ -85,7 +90,6 @@ export const Products = (() => {
         });
       }
 
-      // Apply sorting
       if (sortBy === "newest") {
         productCards.sort(
           (a, b) =>
@@ -100,7 +104,6 @@ export const Products = (() => {
         });
       }
 
-      // Update visibility
       let visibleCount = 0;
       Array.from(productCardsContainer.querySelectorAll("[data-product-id]")).forEach(
         (card) => {
@@ -113,12 +116,10 @@ export const Products = (() => {
         }
       );
 
-      // Update results counter
       if (resultsCounter) {
         resultsCounter.textContent = visibleCount;
       }
 
-      // Show/hide no-results message
       if (noResultsMessage) {
         if (visibleCount === 0) {
           noResultsMessage.style.display = "";
@@ -129,7 +130,9 @@ export const Products = (() => {
     };
 
     /**
-     * Debounced filter function
+     * Debounced version of filterProducts with 150ms delay
+     *
+     * @returns {void}
      */
     const debounceFilter = (() => {
       let timeoutId;
@@ -139,7 +142,6 @@ export const Products = (() => {
       };
     })();
 
-    // Attach event listeners
     if (searchInput) {
       searchInput.addEventListener("input", debounceFilter);
     }
