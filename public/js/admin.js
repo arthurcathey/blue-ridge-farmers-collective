@@ -353,6 +353,247 @@ export const Admin = (() => {
       });
   };
 
+  const openCreateLayoutModal = function(marketId) {
+    const modal = document.getElementById('createLayoutModal');
+    if (modal) {
+      const marketInput = document.getElementById('layoutMarketId');
+      if (marketInput) marketInput.value = marketId;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+  };
+
+  const closeCreateLayoutModal = function() {
+    const modal = document.getElementById('createLayoutModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+  };
+
+  const openAssignmentModal = function(boothId) {
+    const modal = document.querySelector('[data-assignment-modal]');
+    if (modal) {
+      modal.removeAttribute('hidden');
+      const input = modal.querySelector('[name="booth_id"]');
+      if (input) input.value = boothId;
+    }
+  };
+
+  const closeAssignmentModal = function() {
+    const modal = document.querySelector('[data-assignment-modal]');
+    if (modal) {
+      modal.setAttribute('hidden', '');
+    }
+  };
+
+  const highlightVendor = function(vendorId) {
+    document.querySelectorAll('[data-vendor-option]').forEach((row) => {
+      row.classList.toggle('highlight', row.getAttribute('data-vendor-option') === String(vendorId));
+    });
+  };
+
+  const unassignBooth = function() {
+    if (!confirm('Are you sure you want to unassign this vendor?')) return;
+
+    const boothSelect = document.querySelector('[name="booth_id"]');
+    const boothId = boothSelect?.value;
+    if (!boothId) return;
+
+    const formData = new FormData();
+    formData.append('booth_id', boothId);
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/admin/booths/unassign', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error('Error unassigning booth:', err);
+        alert('Failed to unassign booth');
+      });
+  };
+
+  const clearLayout = function() {
+    if (!confirm('Are you sure you want to clear this layout?')) return;
+
+    const layoutSelect = document.querySelector('[name="layout_id"]');
+    const layoutId = layoutSelect?.value;
+    if (!layoutId) return;
+
+    const formData = new FormData();
+    formData.append('layout_id', layoutId);
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/admin/layouts/clear', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error('Error clearing layout:', err);
+        alert('Failed to clear layout');
+      });
+  };
+
+  const generateBoothsGrid = function() {
+    const layoutId = document.querySelector('[name="layout_id"]')?.value;
+    if (!layoutId) {
+      alert('Please select a layout first');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('layout_id', layoutId);
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/admin/layouts/generate-grid', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error('Error generating booths:', err);
+        alert('Failed to generate booths');
+      });
+  };
+
+  const deleteBooth = function() {
+    const boothId = document.querySelector('[name="booth_id"]')?.value;
+    if (!boothId) {
+      alert('No booth selected');
+      return;
+    }
+
+    if (!confirm('Delete this booth?')) return;
+
+    const formData = new FormData();
+    formData.append('booth_id', boothId);
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/admin/booths/delete', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error('Error deleting booth:', err);
+        alert('Failed to delete booth');
+      });
+  };
+
+  const selectBooth = function(boothId) {
+    const select = document.querySelector('[name="booth_id"]');
+    if (select) select.value = boothId;
+  };
+
+  const cancelTransfer = function(transferId) {
+    if (!confirm('Cancel this transfer request?')) return;
+
+    const formData = new FormData();
+    formData.append('transfer_id', transferId);
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/vendor/cancel-transfer', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error('Error canceling transfer:', err);
+        alert('Failed to cancel transfer');
+      });
+  };
+
+  const regenerateBooth = function() {
+    const boothId = document.querySelector('[name="booth_id"]')?.value;
+    if (!boothId) {
+      alert('No booth selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('booth_id', boothId);
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/admin/booths/regenerate', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error('Error regenerating booth:', err);
+        alert('Failed to regenerate booth');
+      });
+  };
+
+  const removeAdmin = function(adminId, adminName) {
+    if (!confirm(`Remove ${adminName} as admin?`)) return;
+
+    const formData = new FormData();
+    formData.append('admin_id', adminId);
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/admin/remove-admin', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.error('Error removing admin:', err);
+        alert('Failed to remove admin');
+      });
+  };
+
+  const openEditAdminModal = function(adminId, adminName, adminRole) {
+    const modal = document.querySelector('[data-edit-admin-modal]');
+    if (modal) {
+      modal.removeAttribute('hidden');
+      const idInput = modal.querySelector('[name="admin_id"]');
+      const nameInput = modal.querySelector('[name="admin_name"]');
+      const roleSelect = modal.querySelector('[name="admin_role"]');
+      if (idInput) idInput.value = adminId;
+      if (nameInput) nameInput.value = adminName;
+      if (roleSelect) roleSelect.value = adminRole;
+    }
+  };
+
+  const closeEditAdminModal = function() {
+    const modal = document.querySelector('[data-edit-admin-modal]');
+    if (modal) {
+      modal.setAttribute('hidden', '');
+    }
+  };
+
+  const closeBoothEditor = function() {
+    const editor = document.querySelector('[data-booth-editor]');
+    if (editor) {
+      editor.setAttribute('hidden', '');
+    }
+  };
+
   const init = () => {
     if (isInitialized) return;
 
@@ -371,6 +612,22 @@ export const Admin = (() => {
     window.unsaveVendor = unsaveVendor;
     window.deleteVendorPhoto = deleteVendorPhoto;
     window.deleteMarketImage = deleteMarketImage;
+    window.openCreateLayoutModal = openCreateLayoutModal;
+    window.closeCreateLayoutModal = closeCreateLayoutModal;
+    window.openAssignmentModal = openAssignmentModal;
+    window.closeAssignmentModal = closeAssignmentModal;
+    window.highlightVendor = highlightVendor;
+    window.unassignBooth = unassignBooth;
+    window.clearLayout = clearLayout;
+    window.generateBoothsGrid = generateBoothsGrid;
+    window.deleteBooth = deleteBooth;
+    window.selectBooth = selectBooth;
+    window.cancelTransfer = cancelTransfer;
+    window.regenerateBooth = regenerateBooth;
+    window.removeAdmin = removeAdmin;
+    window.openEditAdminModal = openEditAdminModal;
+    window.closeEditAdminModal = closeEditAdminModal;
+    window.closeBoothEditor = closeBoothEditor;
 
     isInitialized = true;
   };
