@@ -4,6 +4,40 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+/**
+ * Market Controller
+ * 
+ * Manages farmers market browsing, operations calendar, and weather integration.
+ * Displays market details, vendor participation, scheduling, and real-time weather.
+ * Handles market date management and vendor market applications.
+ * 
+ * Public Routes:
+ * - GET /markets - List all active markets
+ * - GET /market/:id - Show market details and overview
+ * - GET /market/:id/calendar - Market operational calendar
+ * - GET /market/:id/vendors - List vendors at market
+ * - GET /market/:id/products - List products available at market
+ * - GET /market/:id/weather - Real-time weather for market location
+ * 
+ * Vendor Routes (requires vendor role):
+ * - GET /market/:id/apply - Market application form
+ * - POST /market/:id/apply - Apply to sell at market
+ * - POST /market/:id/leave - Withdraw from market
+ * 
+ * Features:
+ * - Detailed market information (location, dates, contact)
+ * - Vendor roster with farm details
+ * - Seasonal market calendar (monthly dates)
+ * - Real-time weather integration via WeatherService
+ * - Vendor application status tracking
+ * - Market ratings and reviews
+ * - Geographic location coordinates for maps
+ * 
+ * Security:
+ * - Vendor scope validation (applied markets only)
+ * - CSRF protection on sensitive operations
+ * - Market existence verification before display
+ */
 class MarketController extends BaseController
 {
   public function index(): string

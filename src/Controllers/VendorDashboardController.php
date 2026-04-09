@@ -4,6 +4,31 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+/**
+ * Vendor Dashboard Controller
+ * 
+ * Provides vendor-specific dashboard with sales analytics, product management,
+ * application status, and market participation tracking.
+ * 
+ * Authentication: Requires 'vendor' role.
+ * 
+ * Routes handled:
+ * - GET /vendor/dashboard - Vendor dashboard overview
+ * - GET /vendor - Redirect to vendor dashboard
+ * 
+ * Dashboard Features:
+ * - Vendor profile status and approval details
+ * - Product management quick links
+ * - Sales metrics (if available)
+ * - Market participation status
+ * - Application history and admin notes
+ * - Pending action notifications
+ * - Featured status indicator
+ * 
+ * Security:
+ * - Vendor role enforcement
+ * - User ID scope validation (vendors only see own data)
+ */
 class VendorDashboardController extends BaseController
 {
   public function index(): string

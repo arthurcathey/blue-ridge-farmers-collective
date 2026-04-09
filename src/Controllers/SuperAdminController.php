@@ -4,6 +4,37 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+/**
+ * Super Admin Controller
+ * 
+ * Handles superuser administrative operations with full system access.
+ * System configuration, user role management, admin account management,
+ * system monitoring, and advanced administrative tasks.
+ * 
+ * Authentication: Requires 'super_admin' role only.
+ * 
+ * Routes handled:
+ * - GET /super-admin/dashboard - System overview dashboard
+ * - GET /super-admin/admins - Manage admin accounts
+ * - POST /super-admin/admin - Create/update admin account
+ * - GET /super-admin/settings - System settings
+ * - POST /super-admin/settings - Update system settings
+ * - GET /super-admin/logs - System activity logs
+ * 
+ * Responsibilities:
+ * - Admin account creation and management
+ * - System-wide settings and configuration
+ * - User role assignment and management
+ * - System health monitoring
+ * - Database and performance metrics
+ * - System logs access
+ * 
+ * Security:
+ * - Super admin role enforcement (strict)
+ * - Audit logging of all admin actions
+ * - No delegation to standard admins
+ * - Sensitive operations may require confirmation
+ */
 class SuperAdminController extends BaseController
 {
   public function index(): string

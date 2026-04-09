@@ -4,6 +4,27 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+/**
+ * Dashboard Controller
+ * 
+ * Handles user dashboard routing and personalization based on user role.
+ * Serves as entry point for authenticated users to access role-specific dashboards.
+ * 
+ * Authentication: Requires authenticated user (any role).
+ * 
+ * Routes handled:
+ * - GET /dashboard - Role-based dashboard redirect
+ * - Redirects to appropriate dashboard based on user role:
+ *   - super_admin → /super-admin/dashboard
+ *   - admin → /admin/dashboard
+ *   - vendor → /vendor/dashboard
+ *   - customer → /dashboard/customer (or home)
+ * 
+ * Purpose:
+ * - Central entry point for authenticated users
+ * - Role-aware routing without exposing role-specific URLs in main navigation
+ * - Consistent dashboard URL across different roles (/dashboard)
+ */
 class DashboardController extends BaseController
 {
   public function index(): string

@@ -6,8 +6,196 @@ namespace App\Controllers;
 
 use App\Services\ValidationService;
 
+/**
+ * Vendor Controller
+ * 
+ * Manages vendor application submissions and profile management.
+ * Handles vendor registration process: form display, validation, file uploads,
+ * and database persistence. Supports both new applications and profile updates.
+ * 
+ * Authentication: Requires user account (redirects to login if needed).
+ * 
+ * Public Routes:
+ * - GET /vendor/apply - Display vendor application form
+ * - POST /vendor/apply - Submit vendor application
+ * - GET /vendors - Browse all approved vendors
+ * - GET /vendor/:id - View vendor profile and products
+ * 
+ * Form Processing:
+ * - Farm name validation (3-100 chars)
+ * - State code validation (2-letter uppercase)
+ * - Website URL validation via ValidationService
+ * - Phone number optional
+ * - Photo upload with MIME validation (JPG/PNG/WebP)
+ * - Multi-select category and production method normalization
+ * - Years in operation range validation (0-200)
+ * 
+ * Features:
+ * - Existing application editing (pending/rejected status)
+ * - Approved vendor profile updates (without re-review)
+ * - Photo upload with WebP conversion and optimization
+ * - Application history tracking with admin notes
+ * - Seasonal availability tracking
+ * 
+ * Security:
+ * - CSRF token validation on all form submissions
+ * - File upload MIME type validation + finfo verification
+ * - Max file size: 5MB
+ * - Input normalization with ValidationService
+ */
 class VendorController extends BaseController
 {
+  private function fetchApplication(int $accountId): ?array
+  {
+    $stmt = $this->db()->prepare('SELECT id_ven, farm_name_ven, farm_description_ven, city_ven, state_ven, phone_ven, website_ven, address_ven, application_status_ven, applied_date_ven, photo_path_ven, primary_categories_ven, production_methods_ven, years_in_operation_ven, food_safety_info_ven, admin_notes_ven FROM vendor_ven WHERE id_acc_ven = :id LIMIT 1');
+    $stmt->execute([':id' => $accountId]);
+    $row = $stmt->fetch();
+    return $row ?: null;
+  }
+
+  /**
+   * Extract and normalize vendor submission form data
+   * 
+   * @return array Form data with trimmed/normalized values
+   */
+  private function extractFormData(): array
+  {
+    return [
+      'farm_name' => trim((string) ($_POST['farm_name'] ?? '')),
+      'description' => trim((string) ($_POST['farm_description'] ?? '')),
+      'address' => trim((string) ($_POST['address'] ?? '')),
+      'city' => trim((string) ($_POST['city'] ?? '')),
+      'state' => strtoupper(trim((string) ($_POST['state'] ?? ''))),
+      'phone' => trim((string) ($_POST['phone'] ?? '')),
+      'website' => trim((string) ($_POST['website'] ?? '')),
+      'years_raw' => trim((string) ($_POST['years_in_operation'] ?? '')),
+      'food_safety' => trim((string) ($_POST['food_safety_info'] ?? '')),
+    ];
+  }
+
+  /**
+   * Validate vendor submission form data
+   * 
+   * @param array $data Form data to validate
+   * @return array Errors array (empty if valid)
+   */
+  private function validateVendorSubmission(array $data): array
+  {
+    $errors = [];
+
+    if ($data['farm_name'] === '' || !ValidationService::isValidLength($data['farm_name'], 3, 100)) {
+      $errors['farm_name'] = 'Farm name must be 3-100 characters.';
+    }
+
+    if ($data['state'] !== '' && !ValidationService::isValidStateCode($data['state'])) {
+      $errors['state'] = 'State must be a 2-letter code.';
+    }
+
+    if ($data['website'] !== '' && !ValidationService::isValidUrl($data['website'])) {
+      $errors['website'] = 'Website must be a valid URL.';
+    }
+
+    return $errors;
+  }
+
+  /**
+   * Process and normalize multi-select values
+   * 
+   * @param array $data Form data with raw values
+   * @return array Data with normalized categories and production methods
+   */
+  private function normalizeSelections(array $data): array
+  {
+    $categoryOptions = ['Produce', 'Dairy & Eggs', 'Baked Goods', 'Meat', 'Pantry', 'Flowers', 'Prepared Foods'];
+    $productionOptions = ['organic', 'pesticide-free', 'regenerative', 'conventional'];
+
+    $data['primary_categories'] = ValidationService::normalizeMultiSelect(
+      (array) ($_POST['primary_categories'] ?? []),
+      $categoryOptions
+    );
+    $data['production_methods'] = ValidationService::normalizeMultiSelect(
+      (array) ($_POST['production_methods'] ?? []),
+      $productionOptions
+    );
+
+    return $data;
+  }
+
+  /**
+   * Validate and parse years in operation
+   * 
+   * @param string $yearsRaw Raw input value
+   * @param array $errors Current errors array (passed by reference)
+   * @return int|null Parsed years value or null if invalid/empty
+   */
+  private function parseYearsInOperation(string $yearsRaw, array &$errors): ?int
+  {
+    if ($yearsRaw === '') {
+      return null;
+    }
+
+    $yearsValue = filter_var($yearsRaw, FILTER_VALIDATE_INT, [
+      'options' => ['min_range' => 0, 'max_range' => 200],
+    ]);
+
+    if ($yearsValue === false) {
+      $errors['years_in_operation'] = 'Years in operation must be a valid number.';
+      return null;
+    }
+
+    return (int) $yearsValue;
+  }
+
+  /**
+   * Update existing approved vendor profile
+   * 
+   * @param array $application Existing application record
+   * @param array $data Normalized form data
+   * @param array $params Database parameters including photo path and JSON data
+   * @return void
+   */
+  private function updateApprovedVendorProfile(array $application, array $data, array $params): void
+  {
+    $update = $this->db()->prepare('UPDATE vendor_ven SET farm_name_ven = :farm_name, farm_description_ven = :description, address_ven = :address, city_ven = :city, state_ven = :state, phone_ven = :phone, website_ven = :website, photo_path_ven = :photo_path, primary_categories_ven = :categories, production_methods_ven = :methods, years_in_operation_ven = :years, food_safety_info_ven = :food_safety, updated_at_ven = NOW() WHERE id_ven = :id');
+
+    $update->execute(array_merge($params, [':id' => $application['id_ven']]));
+    $this->flash('success', 'Profile updated successfully!');
+    $this->redirect('/vendor/apply');
+  }
+
+  /**
+   * Resubmit pending/rejected vendor application
+   * 
+   * @param array $application Existing application record
+   * @param array $data Normalized form data
+   * @param array $params Database parameters including photo path and JSON data
+   * @return void
+   */
+  private function resubmitVendorApplication(array $application, array $data, array $params): void
+  {
+    $update = $this->db()->prepare('UPDATE vendor_ven SET farm_name_ven = :farm_name, farm_description_ven = :description, address_ven = :address, city_ven = :city, state_ven = :state, phone_ven = :phone, website_ven = :website, photo_path_ven = :photo_path, primary_categories_ven = :categories, production_methods_ven = :methods, years_in_operation_ven = :years, food_safety_info_ven = :food_safety, admin_notes_ven = NULL, application_status_ven = "pending", applied_date_ven = NOW(), updated_at_ven = NOW() WHERE id_ven = :id');
+
+    $update->execute(array_merge($params, [':id' => $application['id_ven']]));
+    $this->flash('success', 'Application resubmitted. We will review it soon.');
+    $this->redirect('/vendor/apply');
+  }
+
+  /**
+   * Create new vendor application
+   * 
+   * @param int $accountId Account ID for the new vendor
+   * @param array $params Database parameters including photo path and JSON data
+   * @return void
+   */
+  private function createNewVendorApplication(int $accountId, array $params): void
+  {
+    $stmt = $this->db()->prepare('INSERT INTO vendor_ven (id_acc_ven, farm_name_ven, farm_description_ven, address_ven, city_ven, state_ven, phone_ven, website_ven, photo_path_ven, primary_categories_ven, production_methods_ven, years_in_operation_ven, food_safety_info_ven, application_status_ven, applied_date_ven, created_at_ven) VALUES (:account_id, :farm_name, :description, :address, :city, :state, :phone, :website, :photo_path, :categories, :methods, :years, :food_safety, "pending", NOW(), NOW())');
+
+    $stmt->execute(array_merge($params, [':account_id' => $accountId]));
+    $this->flash('success', 'Application submitted. We will review it soon.');
+    $this->redirect('/vendor/apply');
+  }
+
   private function fetchApplication(int $accountId): ?array
   {
     $stmt = $this->db()->prepare('SELECT id_ven, farm_name_ven, farm_description_ven, city_ven, state_ven, phone_ven, website_ven, address_ven, application_status_ven, applied_date_ven, photo_path_ven, primary_categories_ven, production_methods_ven, years_in_operation_ven, food_safety_info_ven, admin_notes_ven FROM vendor_ven WHERE id_acc_ven = :id LIMIT 1');
@@ -54,68 +242,23 @@ class VendorController extends BaseController
       $this->redirect('/vendor/apply');
     }
 
-    $farmName = trim((string) ($_POST['farm_name'] ?? ''));
-    $description = trim((string) ($_POST['farm_description'] ?? ''));
-    $address = trim((string) ($_POST['address'] ?? ''));
-    $city = trim((string) ($_POST['city'] ?? ''));
-    $state = strtoupper(trim((string) ($_POST['state'] ?? '')));
-    $phone = trim((string) ($_POST['phone'] ?? ''));
-    $website = trim((string) ($_POST['website'] ?? ''));
-    $yearsRaw = trim((string) ($_POST['years_in_operation'] ?? ''));
-    $foodSafetyInfo = trim((string) ($_POST['food_safety_info'] ?? ''));
+    // Extract form data
+    $data = $this->extractFormData();
+    $data = $this->normalizeSelections($data);
 
-    $categoryOptions = [
-      'Produce',
-      'Dairy & Eggs',
-      'Baked Goods',
-      'Meat',
-      'Pantry',
-      'Flowers',
-      'Prepared Foods',
-    ];
+    // Validate submission
+    $errors = $this->validateVendorSubmission($data);
 
-    $productionOptions = [
-      'organic',
-      'pesticide-free',
-      'regenerative',
-      'conventional',
-    ];
+    // Parse years in operation
+    $yearsInOperation = $this->parseYearsInOperation($data['years_raw'], $errors);
 
-    $primaryCategories = ValidationService::normalizeMultiSelect((array) ($_POST['primary_categories'] ?? []), $categoryOptions);
-    $productionMethods = ValidationService::normalizeMultiSelect((array) ($_POST['production_methods'] ?? []), $productionOptions);
-
-    $errors = [];
-
-    if ($farmName === '' || !ValidationService::isValidLength($farmName, 3, 100)) {
-      $errors['farm_name'] = 'Farm name must be 3-100 characters.';
-    }
-
-    if ($state !== '' && !ValidationService::isValidStateCode($state)) {
-      $errors['state'] = 'State must be a 2-letter code.';
-    }
-
-    if ($website !== '' && !ValidationService::isValidUrl($website)) {
-      $errors['website'] = 'Website must be a valid URL.';
-    }
-
-    $yearsInOperation = null;
-    if ($yearsRaw !== '') {
-      $yearsValue = filter_var($yearsRaw, FILTER_VALIDATE_INT, [
-        'options' => ['min_range' => 0, 'max_range' => 200],
-      ]);
-      if ($yearsValue === false) {
-        $errors['years_in_operation'] = 'Years in operation must be a valid number.';
-      } else {
-        $yearsInOperation = (int) $yearsValue;
-      }
-    }
-
+    // Get existing application if any
     $user = $this->authUser();
     $accountId = (int) ($user['id'] ?? 0);
     $application = $this->fetchApplication($accountId);
 
+    // Handle photo upload only if no validation errors yet
     $photoResult = ['path' => null, 'error' => null];
-
     if (!$errors) {
       $photoResult = $this->uploadPhoto('vendors', $_FILES['farm_photo'] ?? null, $application['photo_path_ven'] ?? null);
       if (!empty($photoResult['error'])) {
@@ -123,93 +266,46 @@ class VendorController extends BaseController
       }
     }
 
+    // If validation failed, store errors and redirect
     if ($errors) {
       $_SESSION['errors'] = $errors;
-      $_SESSION['old'] = [
-        'farm_name' => $farmName,
-        'farm_description' => $description,
-        'address' => $address,
-        'city' => $city,
-        'state' => $state,
-        'phone' => $phone,
-        'website' => $website,
-        'years_in_operation' => $yearsRaw,
-        'food_safety_info' => $foodSafetyInfo,
-        'primary_categories' => $primaryCategories,
-        'production_methods' => $productionMethods,
-      ];
+      $_SESSION['old'] = $data;
       $this->redirect('/vendor/apply');
     }
 
-    $categoriesJson = $primaryCategories ? json_encode($primaryCategories) : null;
-    $methodsJson = $productionMethods ? json_encode($productionMethods) : null;
+    // Prepare database parameters
+    $categoriesJson = $data['primary_categories'] ? json_encode($data['primary_categories']) : null;
+    $methodsJson = $data['production_methods'] ? json_encode($data['production_methods']) : null;
     $photoPath = $photoResult['path'] ?? ($application['photo_path_ven'] ?? null);
 
-    if ($application !== null) {
-      $status = (string) ($application['application_status_ven'] ?? '');
-
-      if ($status === 'approved') {
-        $update = $this->db()->prepare('UPDATE vendor_ven SET farm_name_ven = :farm_name, farm_description_ven = :description, address_ven = :address, city_ven = :city, state_ven = :state, phone_ven = :phone, website_ven = :website, photo_path_ven = :photo_path, primary_categories_ven = :categories, production_methods_ven = :methods, years_in_operation_ven = :years, food_safety_info_ven = :food_safety, updated_at_ven = NOW() WHERE id_ven = :id');
-        $update->execute([
-          ':farm_name' => $farmName,
-          ':description' => $description,
-          ':address' => $address,
-          ':city' => $city,
-          ':state' => $state,
-          ':phone' => $phone,
-          ':website' => $website,
-          ':photo_path' => $photoPath,
-          ':categories' => $categoriesJson,
-          ':methods' => $methodsJson,
-          ':years' => $yearsInOperation,
-          ':food_safety' => $foodSafetyInfo,
-          ':id' => $application['id_ven'],
-        ]);
-
-        $this->flash('success', 'Profile updated successfully!');
-        $this->redirect('/vendor/apply');
-      }
-
-      $update = $this->db()->prepare('UPDATE vendor_ven SET farm_name_ven = :farm_name, farm_description_ven = :description, address_ven = :address, city_ven = :city, state_ven = :state, phone_ven = :phone, website_ven = :website, photo_path_ven = :photo_path, primary_categories_ven = :categories, production_methods_ven = :methods, years_in_operation_ven = :years, food_safety_info_ven = :food_safety, admin_notes_ven = NULL, application_status_ven = "pending", applied_date_ven = NOW(), updated_at_ven = NOW() WHERE id_ven = :id');
-      $update->execute([
-        ':farm_name' => $farmName,
-        ':description' => $description,
-        ':address' => $address,
-        ':city' => $city,
-        ':state' => $state,
-        ':phone' => $phone,
-        ':website' => $website,
-        ':photo_path' => $photoPath,
-        ':categories' => $categoriesJson,
-        ':methods' => $methodsJson,
-        ':years' => $yearsInOperation,
-        ':food_safety' => $foodSafetyInfo,
-        ':id' => $application['id_ven'],
-      ]);
-
-      $this->flash('success', 'Application resubmitted. We will review it soon.');
-      $this->redirect('/vendor/apply');
-    }
-
-    $stmt = $this->db()->prepare('INSERT INTO vendor_ven (id_acc_ven, farm_name_ven, farm_description_ven, address_ven, city_ven, state_ven, phone_ven, website_ven, photo_path_ven, primary_categories_ven, production_methods_ven, years_in_operation_ven, food_safety_info_ven, application_status_ven, applied_date_ven, created_at_ven) VALUES (:account_id, :farm_name, :description, :address, :city, :state, :phone, :website, :photo_path, :categories, :methods, :years, :food_safety, "pending", NOW(), NOW())');
-    $stmt->execute([
-      ':account_id' => $accountId,
-      ':farm_name' => $farmName,
-      ':description' => $description,
-      ':address' => $address,
-      ':city' => $city,
-      ':state' => $state,
-      ':phone' => $phone,
-      ':website' => $website,
+    $params = [
+      ':farm_name' => $data['farm_name'],
+      ':description' => $data['description'],
+      ':address' => $data['address'],
+      ':city' => $data['city'],
+      ':state' => $data['state'],
+      ':phone' => $data['phone'],
+      ':website' => $data['website'],
       ':photo_path' => $photoPath,
       ':categories' => $categoriesJson,
       ':methods' => $methodsJson,
       ':years' => $yearsInOperation,
-      ':food_safety' => $foodSafetyInfo,
-    ]);
+      ':food_safety' => $data['food_safety'],
+    ];
 
-    $this->flash('success', 'Application submitted. We will review it soon.');
-    $this->redirect('/vendor/apply');
+    // Handle based on application status
+    if ($application !== null) {
+      $status = (string) ($application['application_status_ven'] ?? '');
+
+      if ($status === 'approved') {
+        $this->updateApprovedVendorProfile($application, $data, $params);
+      } else {
+        $this->resubmitVendorApplication($application, $data, $params);
+      }
+    } else {
+      $this->createNewVendorApplication($accountId, $params);
+    }
+
     return '';
   }
 

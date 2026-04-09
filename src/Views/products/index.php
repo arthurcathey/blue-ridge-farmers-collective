@@ -142,7 +142,7 @@
       </div>
     <?php else: ?>
       <?php foreach ($products as $product): ?>
-        <div class="product-card">
+        <article class="product-card">
           <div class="product-image-container">
             <?php if (!empty($product['photo'])): ?>
               <?= picture_tag(
@@ -199,7 +199,7 @@
               View Details
             </a>
           </div>
-        </div>
+        </article>
       <?php endforeach; ?>
     <?php endif; ?>
   </div>

@@ -4,6 +4,47 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+/**
+ * Admin Controller
+ * 
+ * Handles administrative operations for market managers and system administrators.
+ * Dashboard analytics, vendor application reviews, market application handling,
+ * vendor management, booth assignment, and booth layout editing.
+ * 
+ * Authentication: Requires 'admin' or 'super_admin' role.
+ * 
+ * Routes handled:
+ * - GET /admin - Admin dashboard with metrics and analytics
+ * - GET /admin/vendor-applications - List pending vendor applications
+ * - GET /admin/vendor-application/:id - Review single vendor application
+ * - POST /admin/vendor-application - Approve/reject vendor application
+ * - GET /admin/market-applications - List market application requests
+ * - POST /admin/market-application - Approve/reject market application
+ * - GET /admin/vendors - Vendor management page
+ * - GET /admin/markets - Market management page
+ * - GET /admin/booth-layout - Market booth layout editor
+ * - GET /admin/analytics - Advanced analytics dashboard
+ * 
+ * Dashboard Features:
+ * - Real-time metrics (pending vendors, pending reviews, active vendors/products)
+ * - Weekly signup trends and vendor growth tracking
+ * - Recent product listings
+ * - Category breakdown analysis
+ * - Market statistics with vendor counts
+ * - Top search terms for trending analysis
+ * 
+ * Vendor Application Management:
+ * - Approve with optional admin notes
+ * - Reject with reason
+ * - Request changes (sets to rejected with notes)
+ * - Featured vendor toggle
+ * - Email notifications to applicants
+ * 
+ * Security:
+ * - Admin role enforcement on all operations
+ * - CSRF token validation on all form submissions
+ * - Admin action history tracking via admin_notes_ven field
+ */
 class AdminController extends BaseController
 {
   /**

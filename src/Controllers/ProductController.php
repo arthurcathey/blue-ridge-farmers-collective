@@ -6,6 +6,39 @@ namespace App\Controllers;
 
 use App\Services\ValidationService;
 
+/**
+ * Product Controller
+ * 
+ * Manages product CRUD operations for vendors and product browsing for customers.
+ * Handles product searches with rate limiting, category filtering, vendor filtering,
+ * market filtering, and sorting. Full-text search with security validations.
+ * 
+ * Vendor Routes (requires vendor role):
+ * - GET /vendor/products - List vendor's products
+ * - GET /vendor/products/:id - Show product details
+ * - GET /product/create - Product creation form
+ * - POST /product - Create new product
+ * - GET /product/edit/:id - Edit form
+ * - POST /product/:id - Update product
+ * - POST /product/:id/delete - Delete product
+ * 
+ * Public Routes:
+ * - GET /products - List all active products with filtering/search
+ * - GET /search/products - AJAX endpoint for live product search
+ * 
+ * Features:
+ * - Rate limiting: 20 searches per 60 seconds per session/IP
+ * - Search input sanitization via ValidationService
+ * - Seasonal availability filtering
+ * - Vendor/market/category filtering
+ * - Results pagination (12 per page)
+ * - Search logging for analytics
+ * 
+ * Security:
+ * - All searches rate-limited to prevent abuse
+ * - Search terms sanitized (max 100 chars, special chars stripped)
+ * - Vendor scope validation (vendors can only edit own products)
+ */
 class ProductController extends BaseController
 {
 

@@ -9,12 +9,38 @@ use App\Services\WeatherService;
 /**
  * Weather Controller
  * 
- * Handles weather API endpoints and updates.
- * Provides endpoints for:
- * - Get current weather for a location
- * - Get 5-day forecast
- * - Sync weather for upcoming market dates
- * - Check weather service status
+ * Provides weather information for market locations via API endpoint.
+ * Integrates with OpenWeatherMap API with intelligent caching to reduce
+ * external API calls and improve performance.
+ * 
+ * Routes handled:
+ * - GET /api/weather/:latitude/:longitude - Get weather for location (AJAX)
+ * 
+ * Usage:
+ * - Called via AJAX from market pages
+ * - Returns current weather and conditions
+ * - Caches results to minimize API calls
+ * 
+ * Response Format:
+ * ```json
+ * {
+ *   "temperature": 72,
+ *   "condition": "Partly Cloudy",
+ *   "humidity": 65,
+ *   "wind_speed": 8,
+ *   "forecast": [...]
+ * }
+ * ```
+ * 
+ * Caching:
+ * - Default cache duration: 6 hours (configurable)
+ * - Uses database cache table
+ * - Automatic cache invalidation after TTL
+ * 
+ * Security:
+ * - Input validation on latitude/longitude
+ * - API key protected in environment variables
+ * - Error responses don't expose API details
  */
 class WeatherController extends BaseController
 {

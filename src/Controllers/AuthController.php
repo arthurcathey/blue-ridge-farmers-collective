@@ -6,6 +6,27 @@ namespace App\Controllers;
 
 use App\Services\MailService;
 
+/**
+ * Authentication Controller
+ * 
+ * Handles user authentication operations including login, registration, logout,
+ * password reset, and email verification. Manages session creation and account
+ * creation with security best practices (bcrypt hashing, CSRF protection, email verification).
+ * 
+ * Routes handled:
+ * - GET/POST /login - User login with email/password
+ * - GET/POST /register - New account registration
+ * - GET /logout - Destroy session
+ * - POST /forgot-password - Initiate password reset process
+ * - POST /reset-password - Reset password with token validation
+ * - GET /verify-email/:token - Email verification endpoint
+ * 
+ * Security:
+ * - All forms require CSRF tokens
+ * - Passwords hashed with PHP PASSWORD_DEFAULT (bcrypt)
+ * - Email verification tokens generated with random_bytes()
+ * - Password reset tokens expire after 1 hour
+ */
 class AuthController extends BaseController
 {
   private function ensureRoles(): array

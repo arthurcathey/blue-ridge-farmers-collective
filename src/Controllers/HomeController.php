@@ -4,6 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+/**
+ * Home Controller
+ * 
+ * Handles public-facing homepage and browse functionality.
+ * Displays market statistics, featured vendors/products, and market listings.
+ * Optimized for performance with data aggregation and caching strategies.
+ * 
+ * Routes handled:
+ * - GET / - Homepage with featured vendor/product showcase
+ * - GET /markets - List all monthly markets
+ * - GET /vendors - Browse all vendors (with filtering/search)
+ * - GET /products - Browse all products (with filtering/search/sorting)
+ * - GET /about - About page
+ * 
+ * Public pages: No authentication required.
+ * 
+ * Performance:
+ * - Caches market statistics with try-catch error handling
+ * - Implements search term rate limiting (20 queries per minute)
+ * - Includes product pagination and category filtering
+ * - Weather service integration for market pages
+ */
 class HomeController extends BaseController
 {
   public function index(): string
