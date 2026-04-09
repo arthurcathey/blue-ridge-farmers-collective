@@ -133,16 +133,18 @@ export const Admin = (() => {
     currentVendorId = vendorId;
     currentDateId = document.querySelector('[name="date_id"]')?.value;
 
-    const modal = document.querySelector('[data-vendor-action-modal]');
+    const modal = document.getElementById('vendorActionModal');
     if (modal) {
-      modal.removeAttribute('hidden');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
   };
 
   const closeVendorActionModal = function() {
-    const modal = document.querySelector('[data-vendor-action-modal]');
+    const modal = document.getElementById('vendorActionModal');
     if (modal) {
-      modal.setAttribute('hidden', '');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
     currentVendorId = null;
   };
@@ -185,18 +187,18 @@ export const Admin = (() => {
   };
 
   const showRejectModal = function(transferId, vendorName) {
-    const modal = document.querySelector('[data-reject-modal]');
+    const modal = document.getElementById('rejectModal');
     if (modal) {
-      modal.removeAttribute('hidden');
-      const input = modal.querySelector('[name="transfer_id"]');
+      modal.classList.remove('hidden');
+      const input = document.getElementById('modalTransferId');
       if (input) input.value = transferId;
     }
   };
 
   const closeRejectModal = function() {
-    const modal = document.querySelector('[data-reject-modal]');
+    const modal = document.getElementById('rejectModal');
     if (modal) {
-      modal.setAttribute('hidden', '');
+      modal.classList.add('hidden');
     }
   };
 
@@ -372,24 +374,24 @@ export const Admin = (() => {
   };
 
   const openAssignmentModal = function(boothId) {
-    const modal = document.querySelector('[data-assignment-modal]');
+    const modal = document.getElementById('assignmentModal');
     if (modal) {
-      modal.removeAttribute('hidden');
-      const input = modal.querySelector('[name="booth_id"]');
+      modal.classList.remove('hidden');
+      const input = document.getElementById('modalBoothId');
       if (input) input.value = boothId;
     }
   };
 
   const closeAssignmentModal = function() {
-    const modal = document.querySelector('[data-assignment-modal]');
+    const modal = document.getElementById('assignmentModal');
     if (modal) {
-      modal.setAttribute('hidden', '');
+      modal.classList.add('hidden');
     }
   };
 
   const highlightVendor = function(vendorId) {
-    document.querySelectorAll('[data-vendor-option]').forEach((row) => {
-      row.classList.toggle('highlight', row.getAttribute('data-vendor-option') === String(vendorId));
+    document.querySelectorAll('[data-vendor-id]').forEach((row) => {
+      row.classList.toggle('highlight', row.getAttribute('data-vendor-id') === String(vendorId));
     });
   };
 
@@ -568,9 +570,10 @@ export const Admin = (() => {
   };
 
   const openEditAdminModal = function(adminId, adminName, adminRole) {
-    const modal = document.querySelector('[data-edit-admin-modal]');
+    const modal = document.getElementById('editAdminModal');
     if (modal) {
-      modal.removeAttribute('hidden');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
       const idInput = modal.querySelector('[name="admin_id"]');
       const nameInput = modal.querySelector('[name="admin_name"]');
       const roleSelect = modal.querySelector('[name="admin_role"]');
@@ -581,16 +584,17 @@ export const Admin = (() => {
   };
 
   const closeEditAdminModal = function() {
-    const modal = document.querySelector('[data-edit-admin-modal]');
+    const modal = document.getElementById('editAdminModal');
     if (modal) {
-      modal.setAttribute('hidden', '');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
   };
 
   const closeBoothEditor = function() {
-    const editor = document.querySelector('[data-booth-editor]');
+    const editor = document.getElementById('boothEditorModal');
     if (editor) {
-      editor.setAttribute('hidden', '');
+      editor.classList.add('hidden');
     }
   };
 
