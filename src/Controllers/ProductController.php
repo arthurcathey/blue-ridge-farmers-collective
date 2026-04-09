@@ -4,27 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\ValidationService;
+
 class ProductController extends BaseController
 {
-  private function vendorIdForAccount(int $accountId): int
-  {
-    $stmt = $this->db()->prepare('SELECT id_ven FROM vendor_ven WHERE id_acc_ven = :id AND application_status_ven = "approved" LIMIT 1');
-    $stmt->execute([':id' => $accountId]);
-    return (int) ($stmt->fetchColumn() ?: 0);
-  }
-
-  private function validateSearchInput(string $input): string
-  {
-    $input = trim($input);
-
-    if (strlen($input) > 100) {
-      $input = substr($input, 0, 100);
-    }
-
-    $input = preg_replace('/[^\w\s\-]/', '', $input) ?? '';
-
-    return trim($input);
-  }
 
   private function isRateLimited(): bool
   {
@@ -73,6 +56,7 @@ class ProductController extends BaseController
         ':ip' => $ip,
       ]);
     } catch (\Throwable $e) {
+      error_log('ProductController::logSearch() error: ' . $e->getMessage());
     }
   }
 
@@ -573,7 +557,7 @@ class ProductController extends BaseController
 
       $searchTerm = '';
       if (!empty($rawSearchTerm)) {
-        $searchTerm = $this->validateSearchInput($rawSearchTerm);
+        $searchTerm = ValidationService::sanitizeSearchInput($rawSearchTerm);
       }
 
       if (!empty($searchTerm)) {
@@ -827,7 +811,7 @@ class ProductController extends BaseController
       return '';
     }
 
-    $searchTerm = $this->validateSearchInput($rawSearchTerm);
+    $searchTerm = ValidationService::sanitizeSearchInput($rawSearchTerm);
 
     if (empty($searchTerm)) {
       echo json_encode(['products' => [], 'message' => 'Invalid search term']);

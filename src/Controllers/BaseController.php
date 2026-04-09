@@ -126,6 +126,22 @@ class BaseController
     return (string) ($_SESSION['old'][$key] ?? $default);
   }
 
+  /**
+   * Get the vendor ID for the current account if approved
+   * 
+   * Returns the vendor database ID only if the vendor application is approved.
+   * Used to scope vendor-only operations to the authenticated account.
+   * 
+   * @param int $accountId The account ID to look up
+   * @return int The vendor ID if approved vendor exists, 0 otherwise
+   */
+  protected function vendorIdForAccount(int $accountId): int
+  {
+    $stmt = $this->db()->prepare('SELECT id_ven FROM vendor_ven WHERE id_acc_ven = :id AND application_status_ven = "approved" LIMIT 1');
+    $stmt->execute([':id' => $accountId]);
+    return (int) ($stmt->fetchColumn() ?: 0);
+  }
+
   protected function clearOld(): void
   {
     unset($_SESSION['old'], $_SESSION['errors']);

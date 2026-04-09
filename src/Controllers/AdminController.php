@@ -6,6 +6,11 @@ namespace App\Controllers;
 
 class AdminController extends BaseController
 {
+  /**
+   * Get the database ID for the vendor role
+   * 
+   * @return int|null The role ID if found, null otherwise
+   */
   private function vendorRoleId(): ?int
   {
     $stmt = $this->db()->prepare('SELECT id_rol FROM role_rol WHERE name_rol = :name LIMIT 1');

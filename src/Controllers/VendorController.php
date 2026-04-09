@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\ValidationService;
+
 class VendorController extends BaseController
 {
   private function fetchApplication(int $accountId): ?array
@@ -14,25 +16,7 @@ class VendorController extends BaseController
     return $row ?: null;
   }
 
-  private function vendorIdForAccount(int $accountId): int
-  {
-    $stmt = $this->db()->prepare('SELECT id_ven FROM vendor_ven WHERE id_acc_ven = :id AND application_status_ven = "approved" LIMIT 1');
-    $stmt->execute([':id' => $accountId]);
-    return (int) ($stmt->fetchColumn() ?: 0);
-  }
 
-  private function normalizeMultiSelect(array $values, array $allowed): array
-  {
-    $clean = [];
-    foreach ($values as $value) {
-      $value = trim((string) $value);
-      if ($value !== '' && in_array($value, $allowed, true) && !in_array($value, $clean, true)) {
-        $clean[] = $value;
-      }
-    }
-
-    return $clean;
-  }
 
   public function apply(): string
   {
@@ -97,20 +81,20 @@ class VendorController extends BaseController
       'conventional',
     ];
 
-    $primaryCategories = $this->normalizeMultiSelect((array) ($_POST['primary_categories'] ?? []), $categoryOptions);
-    $productionMethods = $this->normalizeMultiSelect((array) ($_POST['production_methods'] ?? []), $productionOptions);
+    $primaryCategories = ValidationService::normalizeMultiSelect((array) ($_POST['primary_categories'] ?? []), $categoryOptions);
+    $productionMethods = ValidationService::normalizeMultiSelect((array) ($_POST['production_methods'] ?? []), $productionOptions);
 
     $errors = [];
 
-    if ($farmName === '' || strlen($farmName) < 3 || strlen($farmName) > 100) {
+    if ($farmName === '' || !ValidationService::isValidLength($farmName, 3, 100)) {
       $errors['farm_name'] = 'Farm name must be 3-100 characters.';
     }
 
-    if ($state !== '' && !preg_match('/^[A-Z]{2}$/', $state)) {
+    if ($state !== '' && !ValidationService::isValidStateCode($state)) {
       $errors['state'] = 'State must be a 2-letter code.';
     }
 
-    if ($website !== '' && !filter_var($website, FILTER_VALIDATE_URL)) {
+    if ($website !== '' && !ValidationService::isValidUrl($website)) {
       $errors['website'] = 'Website must be a valid URL.';
     }
 
