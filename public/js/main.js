@@ -19,19 +19,18 @@ import { Navigation } from './navigation.js';
 import { Forms } from './forms.js';
 import { Products } from './products.js';
 import { ScrollEffects } from './scroll.js';
+import { Admin } from './admin.js';
 import { initFlashMessages } from './utils.js';
 
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize flash message auto-dismissal
   initFlashMessages();
-
-  // Initialize all feature modules
   Navigation.init();
   Forms.init();
   Products.init();
   ScrollEffects.init();
+  Admin.init();
 
   console.log('Blue Ridge Farmers Collective - JavaScript modules initialized');
 });
