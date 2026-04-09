@@ -15,11 +15,11 @@
  * @version 2.0.0
  */
 
-import { Navigation } from './modules/navigation.js';
-import { Forms } from './modules/forms.js';
-import { Products } from './modules/products.js';
-import { ScrollEffects } from './modules/scroll.js';
-import { initFlashMessages } from './modules/utils.js';
+import { Navigation } from './navigation.js';
+import { Forms } from './forms.js';
+import { Products } from './products.js';
+import { ScrollEffects } from './scroll.js';
+import { initFlashMessages } from './utils.js';
 
 "use strict";
 
