@@ -604,15 +604,19 @@ class ProductController extends BaseController
         $totalCount = (int) ($countStmt->fetchColumn() ?? 0);
 
         $offset = ($page - 1) * $perPage;
-        $orderBy = ($sortBy === 'newest') ? 'ORDER BY p.created_at_prd DESC' : 'ORDER BY p.name_prd ASC';
+        $orderBy = ($sortBy === 'newest') ? 'p.created_at_prd DESC' : 'p.name_prd ASC';
 
         $simpleQuery = "SELECT p.id_prd, p.name_prd, p.description_prd, p.photo_path_prd, c.name_pct AS category, v.farm_name_ven AS vendor 
           FROM product_prd p 
           JOIN product_category_pct c ON c.id_pct = p.id_pct_prd 
           JOIN vendor_ven v ON v.id_ven = p.id_ven_prd 
-          WHERE p.is_active_prd = 1 $orderBy LIMIT $perPage OFFSET $offset";
+          WHERE p.is_active_prd = 1 ORDER BY " . $orderBy . " LIMIT :limit OFFSET :offset";
 
-        $stmt = $db->query($simpleQuery);
+        $stmt = $db->prepare($simpleQuery);
+        $stmt->execute([
+          ':limit' => $perPage,
+          ':offset' => $offset,
+        ]);
         $rows = $stmt ? $stmt->fetchAll() : [];
       } else {
         $query = 'SELECT DISTINCT p.id_prd, p.name_prd, p.description_prd, p.photo_path_prd, c.name_pct AS category, v.farm_name_ven AS vendor 
@@ -683,7 +687,10 @@ class ProductController extends BaseController
         $totalCount = (int) ($countStmt->fetchColumn() ?? 0);
 
         $offset = ($page - 1) * $perPage;
-        $query .= ' LIMIT ' . (int) $perPage . ' OFFSET ' . (int) $offset;
+        $query .= ' LIMIT :limit OFFSET :offset';
+
+        $params[':limit'] = $perPage;
+        $params[':offset'] = $offset;
 
         $stmt = $db->prepare($query);
         $stmt->execute($params);
