@@ -963,10 +963,8 @@ class ProductController extends BaseController
    */
   private function buildFilterUrl(array $overrides): string
   {
-    // Start with current query parameters
     $params = $_GET;
 
-    // Apply override parameters
     foreach ($overrides as $key => $value) {
       if ($value === null) {
         unset($params[$key]);

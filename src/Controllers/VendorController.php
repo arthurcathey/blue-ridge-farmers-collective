@@ -244,22 +244,17 @@ class VendorController extends BaseController
       $this->redirect('/vendor/apply');
     }
 
-    // Extract form data
     $data = $this->extractFormData();
     $data = $this->normalizeSelections($data);
 
-    // Validate submission
     $errors = $this->validateVendorSubmission($data);
 
-    // Parse years in operation
     $yearsInOperation = $this->parseYearsInOperation($data['years_raw'], $errors);
 
-    // Get existing application if any
     $user = $this->authUser();
     $accountId = (int) ($user['id'] ?? 0);
     $application = $this->fetchApplication($accountId);
 
-    // Handle photo upload only if no validation errors yet
     $photoResult = ['path' => null, 'error' => null];
     if (!$errors) {
       $photoResult = $this->uploadPhoto('vendors', $_FILES['farm_photo'] ?? null, $application['photo_path_ven'] ?? null);
@@ -268,14 +263,12 @@ class VendorController extends BaseController
       }
     }
 
-    // If validation failed, store errors and redirect
     if ($errors) {
       $_SESSION['errors'] = $errors;
       $_SESSION['old'] = $data;
       $this->redirect('/vendor/apply');
     }
 
-    // Prepare database parameters
     $categoriesJson = $data['primary_categories'] ? json_encode($data['primary_categories']) : null;
     $methodsJson = $data['production_methods'] ? json_encode($data['production_methods']) : null;
     $photoPath = $photoResult['path'] ?? ($application['photo_path_ven'] ?? null);
@@ -295,7 +288,6 @@ class VendorController extends BaseController
       ':food_safety' => $data['food_safety'],
     ];
 
-    // Handle based on application status
     if ($application !== null) {
       $status = (string) ($application['application_status_ven'] ?? '');
 
@@ -704,7 +696,6 @@ class VendorController extends BaseController
     try {
       $db = $this->db();
 
-      // Use prepared statement and filter by approval status
       $stmt = $db->prepare('SELECT id_ven, farm_name_ven, farm_description_ven, philosophy_ven, city_ven, state_ven, phone_ven, website_ven, photo_path_ven, latitude_ven, longitude_ven FROM vendor_ven WHERE application_status_ven = :status ORDER BY farm_name_ven ASC');
       $stmt->execute([':status' => 'approved']);
       $rows = $stmt ? $stmt->fetchAll() : [];
@@ -740,7 +731,6 @@ class VendorController extends BaseController
         $stmt->execute([':vendor' => $vendorId]);
         $productRows = $stmt ? $stmt->fetchAll() : [];
 
-        // Load all seasonal data at once to prevent N+1 queries
         $productIds = array_column($productRows, 'id_prd');
         $seasonalMap = [];
         if (!empty($productIds)) {

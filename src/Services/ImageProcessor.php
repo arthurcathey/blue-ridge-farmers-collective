@@ -337,12 +337,10 @@ class ImageProcessor
 
       list($width, $height, $type) = $imageInfo;
 
-      // Check if resizing is needed
       if (($maxWidth && $width <= $maxWidth) && ($maxHeight && $height <= $maxHeight)) {
         return ['success' => true, 'error' => null];  // Image is small enough
       }
 
-      // Try using Imagick first (better quality)
       if (extension_loaded('imagick')) {
         try {
           /** @phpstan-ignore-next-line */
@@ -371,11 +369,9 @@ class ImageProcessor
 
           return ['success' => true, 'error' => null];
         } catch (\Exception $e) {
-          // Fall back to GD
         }
       }
 
-      // Fall back to GD library
       if (extension_loaded('gd')) {
         $image = match ($type) {
           IMAGETYPE_JPEG => imagecreatefromjpeg($imagePath),
@@ -405,7 +401,6 @@ class ImageProcessor
           $image = $resized;
         }
 
-        // Save the resized image back to original path
         $ext = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
         $success = false;
 

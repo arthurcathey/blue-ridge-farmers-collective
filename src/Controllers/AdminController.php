@@ -1080,7 +1080,6 @@ class AdminController extends BaseController
     try {
       $db = $this->db();
 
-      // Fetch markets
       $stmt = $db->query('SELECT 
         m.id_mkt, 
         m.name_mkt, 
@@ -1094,7 +1093,6 @@ class AdminController extends BaseController
         $markets = $stmt->fetchAll() ?: [];
       }
 
-      // Fetch layouts for each market
       if (!empty($markets)) {
         $layoutStmt = $db->query('SELECT 
           id_mla, 
@@ -1115,7 +1113,6 @@ class AdminController extends BaseController
           $layoutsByMarket[$marketId][] = $layoutRow;
         }
 
-        // Add layouts to each market
         foreach ($markets as &$market) {
           $market['layouts'] = $layoutsByMarket[$market['id_mkt']] ?? [];
         }
