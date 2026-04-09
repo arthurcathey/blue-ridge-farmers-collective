@@ -206,16 +206,16 @@ export const Admin = (() => {
     event?.preventDefault?.();
 
     const transferId = document.querySelector('[name="transfer_id"]')?.value;
-    const reason = document.querySelector('[name="rejection_reason"]')?.value;
+    const reason = document.querySelector('[name="admin_notes"]')?.value;
 
-    if (!transferId || !reason) {
-      alert('Please provide a rejection reason');
+    if (!transferId) {
+      alert('Transfer ID not found');
       return;
     }
 
     const formData = new FormData();
     formData.append('transfer_id', transferId);
-    formData.append('rejection_reason', reason);
+    formData.append('admin_notes', reason);
     formData.append('csrf_token', getCsrfToken());
 
     fetch('/admin/vendor-transfer-requests/reject', {
