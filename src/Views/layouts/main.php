@@ -25,7 +25,7 @@
   <link rel="icon" type="image/svg+xml" href="<?= asset_url('/images/favicon.svg') ?>">
   <link rel="stylesheet" href="<?= $tailwindSrc ?>">
   <link rel="stylesheet" href="<?= $mainCssSrc ?>">
-  <script src="<?= $mainJsSrc ?>" defer></script>
+  <script type="module" src="<?= $mainJsSrc ?>" defer></script>
 </head>
 
 <body>
