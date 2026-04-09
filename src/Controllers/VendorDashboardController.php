@@ -31,6 +31,11 @@ namespace App\Controllers;
  */
 class VendorDashboardController extends BaseController
 {
+  /**
+   * Display vendor dashboard overview
+   *
+   * @return string Rendered vendor dashboard view
+   */
   public function index(): string
   {
     $this->requireRole('vendor');

@@ -40,6 +40,11 @@ namespace App\Controllers;
  */
 class MarketController extends BaseController
 {
+  /**
+   * Display list of all markets
+   *
+   * @return string Rendered markets list view
+   */
   public function index(): string
   {
     $viewSlug = (string) ($_GET['view'] ?? '');
@@ -111,6 +116,12 @@ class MarketController extends BaseController
     ]);
   }
 
+  /**
+   * Display single market details
+   *
+   * @param string $slug Market URL slug
+   * @return string Rendered market detail view
+   */
   public function show(string $slug): string
   {
     $market = null;
@@ -257,6 +268,11 @@ class MarketController extends BaseController
     ]);
   }
 
+  /**
+   * API endpoint for market calendar events
+   *
+   * @return string JSON response with market dates
+   */
   public function marketCalendarApi(): string
   {
     header('Content-Type: application/json');
@@ -358,6 +374,11 @@ class MarketController extends BaseController
     }
   }
 
+  /**
+   * Simple test endpoint
+   *
+   * @return string Test response
+   */
   public function simpleTest(): string
   {
     header('Content-Type: application/json');
@@ -369,6 +390,11 @@ class MarketController extends BaseController
     return '';
   }
 
+  /**
+   * Debug API endpoint for testing
+   *
+   * @return string Debug response
+   */
   public function debugApi(): string
   {
     header('Content-Type: application/json');

@@ -877,6 +877,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Display vendor profile and reviews in public listing
+   *
+   * @return string Rendered vendor profile view
+   */
   public function vendorReviews(): string
   {
     $this->requireRole('vendor');
@@ -948,6 +953,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Submit review for vendor
+   *
+   * @return string JSON response
+   */
   public function submitReview(): string
   {
     if (!csrf_verify($_POST['csrf_token'] ?? null)) {
@@ -1026,6 +1036,11 @@ class VendorController extends BaseController
     return '';
   }
 
+  /**
+   * Submit vendor response to review
+   *
+   * @return string JSON response
+   */
   public function respondToReview(): string
   {
     $this->requireAuth();
@@ -1110,6 +1125,11 @@ class VendorController extends BaseController
     return '';
   }
 
+  /**
+   * Display vendor sales analytics
+   *
+   * @return string Rendered analytics view
+   */
   public function vendorAnalytics(): string
   {
     $this->requireAuth();
@@ -1227,6 +1247,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Display booth assignment for vendor
+   *
+   * @return string Rendered booth assignment view
+   */
   public function boothAssignment(): string
   {
     $this->requireAuth();
@@ -1313,6 +1338,11 @@ class VendorController extends BaseController
    * Vendor Attendance History
    * Show vendor their attendance records for registered markets
    */
+  /**
+   * Display vendor's market attendance history
+   *
+   * @return string Rendered history view
+   */
   public function attendanceHistory(): string
   {
     $this->requireAuth();
@@ -1381,6 +1411,11 @@ class VendorController extends BaseController
   /**
    * Vendor Transfer Request Management
    * Allow vendors to request transfer between markets
+   */
+  /**
+   * Display vendor transfer request form
+   *
+   * @return string Rendered form view
    */
   public function transferRequest(): string
   {
@@ -1453,6 +1488,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Submit vendor account transfer request
+   *
+   * @return string JSON response
+   */
   public function submitTransferRequest(): string
   {
     $this->requireAuth();
@@ -1562,6 +1602,11 @@ class VendorController extends BaseController
     return '';
   }
 
+  /**
+   * Display vendor transfer request history
+   *
+   * @return string Rendered history view
+   */
   public function transferHistory(): string
   {
     $this->requireAuth();
@@ -1615,6 +1660,11 @@ class VendorController extends BaseController
     ]);
   }
 
+  /**
+   * Cancel pending transfer request
+   *
+   * @return string JSON response
+   */
   public function cancelTransfer(): string
   {
     $this->requireAuth();
@@ -1668,6 +1718,11 @@ class VendorController extends BaseController
     }
   }
 
+  /**
+   * Add vendor to user's saved collection
+   *
+   * @return string JSON response
+   */
   public function saveVendor(): string
   {
     $this->requireAuth();
@@ -1712,6 +1767,11 @@ class VendorController extends BaseController
     }
   }
 
+  /**
+   * Remove vendor from user's saved collection
+   *
+   * @return string JSON response
+   */
   public function unsaveVendor(): string
   {
     $this->requireAuth();
@@ -1750,6 +1810,11 @@ class VendorController extends BaseController
     }
   }
 
+  /**
+   * Delete vendor profile photo
+   *
+   * @return void
+   */
   public function deletePhoto(): void
   {
     $this->requireAuth();

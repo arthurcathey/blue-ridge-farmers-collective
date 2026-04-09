@@ -61,6 +61,11 @@ class AuthController extends BaseController
     return $map;
   }
 
+  /**
+   * Display login form
+   *
+   * @return string Rendered login view
+   */
   public function showLogin(): string
   {
     $message = $this->flash('success');
@@ -80,6 +85,11 @@ class AuthController extends BaseController
     ]);
   }
 
+  /**
+   * Process user login
+   *
+   * @return string JSON response or redirect
+   */
   public function login(): string
   {
     $username = trim((string) ($_POST['username'] ?? ''));
@@ -148,6 +158,11 @@ class AuthController extends BaseController
     return '';
   }
 
+  /**
+   * Display registration form
+   *
+   * @return string Rendered registration view
+   */
   public function showRegister(): string
   {
     $errors = $_SESSION['errors'] ?? [];
@@ -161,6 +176,11 @@ class AuthController extends BaseController
     ]);
   }
 
+  /**
+   * Process user registration
+   *
+   * @return string JSON response or redirect
+   */
   public function register(): string
   {
     $username = trim((string) ($_POST['username'] ?? ''));
@@ -237,6 +257,11 @@ class AuthController extends BaseController
     return '';
   }
 
+  /**
+   * Log out current user
+   *
+   * @return string Redirect response
+   */
   public function logout(): string
   {
     unset($_SESSION['user']);
@@ -245,6 +270,11 @@ class AuthController extends BaseController
     return '';
   }
 
+  /**
+   * Display forgot password form
+   *
+   * @return string Rendered form view
+   */
   public function showForgotPassword(): string
   {
     if ($this->authUser() !== null) {
@@ -264,6 +294,11 @@ class AuthController extends BaseController
     ]);
   }
 
+  /**
+   * Send password reset link to email
+   *
+   * @return string JSON response
+   */
   public function sendResetLink(): string
   {
     $email = trim($_POST['email'] ?? '');
@@ -318,6 +353,11 @@ class AuthController extends BaseController
     return '';
   }
 
+  /**
+   * Display password reset form
+   *
+   * @return string Rendered form view
+   */
   public function showResetPassword(): string
   {
     if ($this->authUser() !== null) {
@@ -363,6 +403,11 @@ class AuthController extends BaseController
     ]);
   }
 
+  /**
+   * Process password reset
+   *
+   * @return string JSON response or redirect
+   */
   public function resetPassword(): string
   {
     $token = $_POST['token'] ?? '';
@@ -432,6 +477,11 @@ class AuthController extends BaseController
     MailService::sendVerificationEmail($email, $username, $verifyLink);
   }
 
+  /**
+   * Verify user email address
+   *
+   * @return string Verification response or redirect
+   */
   public function verifyEmail(): string
   {
     $token = $_GET['token'] ?? '';
@@ -473,6 +523,11 @@ class AuthController extends BaseController
     return '';
   }
 
+  /**
+   * Display email verification resend form
+   *
+   * @return string Rendered form view
+   */
   public function showResendVerification(): string
   {
     if ($this->authUser() !== null) {
@@ -492,6 +547,11 @@ class AuthController extends BaseController
     ]);
   }
 
+  /**
+   * Resend verification email
+   *
+   * @return string JSON response
+   */
   public function resendVerification(): string
   {
     $email = trim($_POST['email'] ?? '');

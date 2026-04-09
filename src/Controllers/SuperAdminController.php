@@ -37,6 +37,11 @@ namespace App\Controllers;
  */
 class SuperAdminController extends BaseController
 {
+  /**
+   * Display super admin dashboard
+   *
+   * @return string Rendered dashboard view
+   */
   public function index(): string
   {
     $this->requireRole('super_admin');
@@ -47,6 +52,11 @@ class SuperAdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display admin management page
+   *
+   * @return string Rendered admin management view
+   */
   public function manageAdmins(): string
   {
     $this->requireRole('super_admin');
@@ -63,6 +73,11 @@ class SuperAdminController extends BaseController
     ]);
   }
 
+  /**
+   * Display all markets listing
+   *
+   * @return string Rendered markets view
+   */
   public function listMarkets(): string
   {
     $this->requireRole('admin');
@@ -83,6 +98,11 @@ class SuperAdminController extends BaseController
     ]);
   }
 
+  /**
+   * Show market creation form
+   *
+   * @return string Rendered form view
+   */
   public function showCreateMarket(): string
   {
     $this->requireRole('admin');
@@ -94,6 +114,11 @@ class SuperAdminController extends BaseController
     ]);
   }
 
+  /**
+   * Create new market
+   *
+   * @return void
+   */
   public function createMarket(): void
   {
     $this->requireRole('admin');
@@ -254,6 +279,11 @@ class SuperAdminController extends BaseController
     }
   }
 
+  /**
+   * Show market edit form
+   *
+   * @return string Rendered form view
+   */
   public function showEditMarket(): string
   {
     $this->requireRole('admin');
@@ -282,6 +312,11 @@ class SuperAdminController extends BaseController
     ]);
   }
 
+  /**
+   * Update existing market
+   *
+   * @return void
+   */
   public function updateMarket(): void
   {
     $this->requireRole('admin');
@@ -436,6 +471,11 @@ class SuperAdminController extends BaseController
     }
   }
 
+  /**
+   * Toggle market featured status
+   *
+   * @return void
+   */
   public function toggleFeatured(): void
   {
     $this->requireRole('admin');
@@ -491,6 +531,11 @@ class SuperAdminController extends BaseController
     }
   }
 
+  /**
+   * Delete market image
+   *
+   * @return void
+   */
   public function deleteMarketImage(): void
   {
     $this->requireRole('admin');

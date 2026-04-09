@@ -55,6 +55,11 @@ class WeatherController extends BaseController
    * 
    * Returns JSON response with temperature, condition, wind speed, etc.
    */
+  /**
+   * Get current weather for market location
+   *
+   * @return string JSON response with weather data
+   */
   public function currentWeather(): string
   {
     header('Content-Type: application/json');
@@ -119,6 +124,11 @@ class WeatherController extends BaseController
    * 
    * Returns JSON response with hourly forecast data
    */
+  /**
+   * Get weather forecast for market date
+   *
+   * @return string JSON response with forecast data
+   */
   public function forecast(): string
   {
     header('Content-Type: application/json');
@@ -174,6 +184,11 @@ class WeatherController extends BaseController
    * based on current weather data from OpenWeatherMap
    * 
    * Returns count of updated dates and any errors
+   */
+  /**
+   * Synchronize weather data for all market dates
+   *
+   * @return string JSON response
    */
   public function syncMarketDates(): string
   {
@@ -252,6 +267,11 @@ class WeatherController extends BaseController
    * 
    * POST params:
    * - market_date_id: ID of market date to sync
+   */
+  /**
+   * Synchronize weather data for single market date
+   *
+   * @return string JSON response
    */
   public function syncSingleMarketDate(): string
   {
@@ -342,6 +362,11 @@ class WeatherController extends BaseController
    * Check if weather service is properly configured and operational
    * 
    * Returns configuration status and any issue information
+   */
+  /**
+   * Get weather service status
+   *
+   * @return string JSON response with service status
    */
   public function status(): string
   {

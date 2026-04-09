@@ -28,6 +28,11 @@ namespace App\Controllers;
  */
 class HomeController extends BaseController
 {
+  /**
+   * Display home page with featured content
+   *
+   * @return string Rendered homepage view
+   */
   public function index(): string
   {
     $stats = [
@@ -106,6 +111,11 @@ class HomeController extends BaseController
     ]);
   }
 
+  /**
+   * Display about page
+   *
+   * @return string Rendered about view
+   */
   public function about(): string
   {
     $stats = [
@@ -138,6 +148,11 @@ class HomeController extends BaseController
     ]);
   }
 
+  /**
+   * Display contact page
+   *
+   * @return string Rendered contact view
+   */
   public function contact(): string
   {
     return $this->render('home/contact', [
@@ -150,6 +165,11 @@ class HomeController extends BaseController
     ]);
   }
 
+  /**
+   * Display FAQ page
+   *
+   * @return string Rendered FAQ view
+   */
   public function faq(): string
   {
     return $this->render('home/faq', [
@@ -157,6 +177,11 @@ class HomeController extends BaseController
     ]);
   }
 
+  /**
+   * Display privacy policy page
+   *
+   * @return string Rendered privacy view
+   */
   public function privacy(): string
   {
     return $this->render('home/privacy', [
@@ -164,6 +189,11 @@ class HomeController extends BaseController
     ]);
   }
 
+  /**
+   * Display terms of service page
+   *
+   * @return string Rendered terms view
+   */
   public function terms(): string
   {
     return $this->render('home/terms', [

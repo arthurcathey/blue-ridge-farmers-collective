@@ -27,6 +27,11 @@ namespace App\Controllers;
  */
 class DashboardController extends BaseController
 {
+  /**
+   * Display user dashboard with account overview
+   *
+   * @return string Rendered dashboard view
+   */
   public function index(): string
   {
     $this->requireAuth();
