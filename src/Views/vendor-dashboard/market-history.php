@@ -1,5 +1,8 @@
 <section class="card">
-  <h1><?= h($title ?? 'Market Applications') ?></h1>
+  <div class="mb-6 flex items-center justify-between">
+    <h1><?= h($title ?? 'Market Applications') ?></h1>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
+  </div>
 
   <p><a href="<?= url('/vendor/markets/apply') ?>" class="link-primary">Apply to a new market</a></p>
 

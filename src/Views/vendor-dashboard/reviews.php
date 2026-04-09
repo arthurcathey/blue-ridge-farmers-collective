@@ -71,7 +71,6 @@
             </div>
           </div>
 
-
           <?php if (!empty($review['review_text_vre'])): ?>
             <div class="mb-4 rounded border border-gray-200 bg-gray-50 p-4">
               <p class="text-description">
@@ -79,7 +78,6 @@
               </p>
             </div>
           <?php endif; ?>
-
 
           <?php if (!empty($review['response_text_rre'])): ?>
             <div class="mb-4 rounded border-l-4 border-brand-primary bg-brand-primary/10 p-4">

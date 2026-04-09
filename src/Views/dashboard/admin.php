@@ -41,6 +41,7 @@
           <p class="dashboard-trend-indicator">+<?= h((string) $vendorTrend) ?> this month</p>
         <?php endif; ?>
       </div>
+      <a href="<?= url('/admin/vendors') ?>" class="btn-metric">Manage</a>
     </div>
 
     <div class="metric-card metric-card-active-product">

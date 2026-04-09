@@ -84,7 +84,7 @@
                         <?= h($review['customer_name_vre'] ?: $review['username_acc'] ?: 'Anonymous') ?>
                       </span>
                       <?php if ($review['is_featured_vre']): ?>
-                        <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800">
+                        <span class=\"inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-xs text-white\">
                           ★ Featured
                         </span>
                       <?php endif; ?>

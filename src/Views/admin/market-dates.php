@@ -78,7 +78,7 @@
                     <?= !empty($date['location_mda']) ? h($date['location_mda']) : '<span class="text-gray-600">Default</span>' ?>
                   </td>
                   <td class="p-2">
-                    <span class="px-2 py-1 text-sm rounded <?= $date['status_mda'] === 'cancelled' ? 'bg-red-100 text-red-700' : ($date['status_mda'] === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700') ?>">
+                    <span class="px-2 py-1 text-sm rounded <?= $date['status_mda'] === 'cancelled' ? 'bg-red-100 text-red-700' : ($date['status_mda'] === 'confirmed' ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-700') ?>">
                       <?= h(ucfirst($date['status_mda'])) ?>
                     </span>
                   </td>

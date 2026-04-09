@@ -1,5 +1,8 @@
 <section class="card">
-  <h1><?= h($title ?? 'My Products') ?></h1>
+  <div class="mb-6 flex items-center justify-between">
+    <h1><?= h($title ?? 'My Products') ?></h1>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
+  </div>
 
   <?php if (!empty($message)): ?>
     <div class="alert-success" data-flash>
@@ -27,13 +30,13 @@
             <div>Status: <?= !empty($product['is_active_prd']) ? 'Active' : 'Inactive' ?></div>
             <?php if (!empty($product['seasonal_months'])): ?>
               <div>
-                <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-green-100 text-green-800">
+                <span class="inline-flex items-center rounded bg-green-100 px-2 py-1 text-xs text-white">
                   Seasonal: <?= h(format_seasonal_months($product['seasonal_months'])) ?>
                 </span>
               </div>
             <?php else: ?>
               <div>
-                <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
+                <span class="inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-xs text-white">
                   Year-round
                 </span>
               </div>

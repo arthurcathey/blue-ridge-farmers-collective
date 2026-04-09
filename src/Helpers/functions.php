@@ -169,6 +169,25 @@ if (!function_exists('asset_url')) {
   }
 }
 
+if (!function_exists('slugify')) {
+  /**
+   * Convert a string to a URL-friendly slug
+   * 
+   * Converts to lowercase, removes special characters, 
+   * replaces spaces/hyphens with single hyphens.
+   * 
+   * @param string $value The string to slugify
+   * @return string The slugified string
+   */
+  function slugify(string $value): string
+  {
+    $value = strtolower(trim($value));
+    $value = preg_replace('/[^a-z0-9\s-]/', '', $value) ?? '';
+    $value = preg_replace('/[\s-]+/', '-', $value) ?? '';
+    return trim($value, '-');
+  }
+}
+
 if (!function_exists('request_method')) {
   /**
    * Get the HTTP request method

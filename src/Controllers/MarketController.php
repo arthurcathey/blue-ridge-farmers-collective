@@ -8,8 +8,6 @@ class MarketController extends BaseController
 {
   public function index(): string
   {
-    require_once __DIR__ . '/../Helpers/cache.php';
-
     $viewSlug = (string) ($_GET['view'] ?? '');
     if (!empty($viewSlug)) {
       return $this->show($viewSlug);
@@ -81,8 +79,6 @@ class MarketController extends BaseController
 
   public function show(string $slug): string
   {
-    require_once __DIR__ . '/../Helpers/cache.php';
-
     $market = null;
     $vendors = [];
 
@@ -255,16 +251,16 @@ class MarketController extends BaseController
       $stmt = $db->prepare('
         SELECT 
           DATE(mda.date_mda) as date,
-          COUNT(DISTINCT mda.id_mda) as event_count,
-          GROUP_CONCAT(DISTINCT m.name_mkt SEPARATOR ", ") as market_names
+          mda.id_mda,
+          m.name_mkt,
+          mda.weather_status_mda
         FROM market_date_mda mda
         JOIN market_mkt m ON m.id_mkt = mda.id_mkt_mda
         WHERE mda.date_mda >= :start 
           AND mda.date_mda <= :end
           AND m.is_active_mkt = 1
           AND mda.status_mda NOT IN (\'cancelled\', \'completed\')
-        GROUP BY DATE(mda.date_mda)
-        ORDER BY date ASC
+        ORDER BY DATE(mda.date_mda) ASC, m.name_mkt ASC
       ');
 
       if (!$stmt->execute([
@@ -281,11 +277,23 @@ class MarketController extends BaseController
       if (is_array($results)) {
         foreach ($results as $row) {
           if (!empty($row['date'])) {
-            $marketDates[$row['date']] = [
-              'date' => $row['date'],
-              'event_count' => (int) ($row['event_count'] ?? 0),
-              'market_names' => $row['market_names'] ?? '',
+            if (!isset($marketDates[$row['date']])) {
+              $marketDates[$row['date']] = [
+                'date' => $row['date'],
+                'event_count' => 0,
+                'market_names' => '',
+                'markets' => []
+              ];
+            }
+            $marketDates[$row['date']]['markets'][] = [
+              'name' => $row['name_mkt'] ?? '',
+              'weather' => $row['weather_status_mda'] ?? null,
             ];
+            $marketDates[$row['date']]['event_count']++;
+            if (!empty($marketDates[$row['date']]['market_names'])) {
+              $marketDates[$row['date']]['market_names'] .= ', ';
+            }
+            $marketDates[$row['date']]['market_names'] .= $row['name_mkt'];
           }
         }
       }

@@ -1,5 +1,8 @@
 <section class="card">
-  <h1><?= h($title ?? 'Product Details') ?></h1>
+  <div class="mb-6 flex items-center justify-between">
+    <h1><?= h($title ?? 'Product Details') ?></h1>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
+  </div>
 
   <p><a href="<?= url('/vendor/products') ?>" class="link-primary">Back to products</a></p>
 
@@ -10,14 +13,14 @@
     <?php if (!empty($product['seasonal_months'])): ?>
       <p>
         <strong>Seasonal:</strong>
-        <span class="inline-flex items-center px-2 py-1 rounded text-sm bg-green-100 text-green-800">
+        <span class="inline-flex items-center px-2 py-1 rounded text-sm bg-green-100 text-white">
           <?= h(format_seasonal_months($product['seasonal_months'])) ?>
         </span>
       </p>
     <?php else: ?>
       <p>
         <strong>Availability:</strong>
-        <span class="inline-flex items-center px-2 py-1 rounded text-sm bg-blue-100 text-blue-800">
+        <span class="inline-flex items-center px-2 py-1 rounded text-sm bg-brand-secondary text-white">
           Year-round
         </span>
       </p>
@@ -27,7 +30,7 @@
     <?php endif; ?>
     <?php if (!empty($product['photo_path_prd'])): ?>
       <div class="mt-3">
-        <img src="<?= asset_url((string) $product['photo_path_prd']) ?>" alt="<?= h((string) ($product['name_prd'] ?? '')) ?> product photo" class="form-image">
+        <img src="<?= asset_url((string) $product['photo_path_prd']) ?>" alt="<?= h((string) ($product['name_prd'] ?? '')) ?> product photo" width="300" height="200" class="form-image">
       </div>
     <?php endif; ?>
   </div>

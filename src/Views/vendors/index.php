@@ -1,4 +1,4 @@
-<section class="card">
+<section class="card mt-8">
   <h1><?= h($title ?? 'Vendors') ?></h1>
   <p>Explore local farms and makers.</p>
   <div class="mt-4 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
@@ -7,7 +7,7 @@
         <div class="card card-grid-hover">
           <div class="card-image-container">
             <?php if (!empty($vendor['photo'])): ?>
-              <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?> farm photo" class="card-image" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?>" />
+              <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?> farm photo" width="220" height="220" loading="lazy" class="card-image" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?>" />
             <?php else: ?>
               <div class="card-image-placeholder">
                 No photo

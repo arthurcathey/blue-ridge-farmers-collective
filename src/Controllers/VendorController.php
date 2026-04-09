@@ -130,6 +130,8 @@ class VendorController extends BaseController
     $accountId = (int) ($user['id'] ?? 0);
     $application = $this->fetchApplication($accountId);
 
+    $photoResult = ['path' => null, 'error' => null];
+
     if (!$errors) {
       $photoResult = $this->uploadPhoto('vendors', $_FILES['farm_photo'] ?? null, $application['photo_path_ven'] ?? null);
       if (!empty($photoResult['error'])) {
@@ -163,12 +165,24 @@ class VendorController extends BaseController
       $status = (string) ($application['application_status_ven'] ?? '');
 
       if ($status === 'approved') {
-        $this->flash('error', 'Your vendor account is already approved.');
-        $this->redirect('/vendor/apply');
-      }
+        $update = $this->db()->prepare('UPDATE vendor_ven SET farm_name_ven = :farm_name, farm_description_ven = :description, address_ven = :address, city_ven = :city, state_ven = :state, phone_ven = :phone, website_ven = :website, photo_path_ven = :photo_path, primary_categories_ven = :categories, production_methods_ven = :methods, years_in_operation_ven = :years, food_safety_info_ven = :food_safety, updated_at_ven = NOW() WHERE id_ven = :id');
+        $update->execute([
+          ':farm_name' => $farmName,
+          ':description' => $description,
+          ':address' => $address,
+          ':city' => $city,
+          ':state' => $state,
+          ':phone' => $phone,
+          ':website' => $website,
+          ':photo_path' => $photoPath,
+          ':categories' => $categoriesJson,
+          ':methods' => $methodsJson,
+          ':years' => $yearsInOperation,
+          ':food_safety' => $foodSafetyInfo,
+          ':id' => $application['id_ven'],
+        ]);
 
-      if ($status === 'pending') {
-        $this->flash('error', 'Your application is already pending review.');
+        $this->flash('success', 'Profile updated successfully!');
         $this->redirect('/vendor/apply');
       }
 
@@ -1604,6 +1618,50 @@ class VendorController extends BaseController
       error_log('Unsave vendor error: ' . $e->getMessage());
       http_response_code(500);
       return json_encode(['error' => 'Database error']);
+    }
+  }
+
+  public function deletePhoto(): void
+  {
+    $this->requireAuth();
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/vendor/apply');
+      return;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $_SESSION['form_errors'] = ['general' => 'Invalid session token'];
+      $this->redirect('/vendor/apply');
+      return;
+    }
+
+    try {
+      $user = $this->authUser();
+      $userId = (int) ($user['id'] ?? 0);
+      $db = $this->db();
+
+      $stmt = $db->prepare('SELECT photo_path_ven FROM vendor_ven WHERE id_acc_ven = :user_id LIMIT 1');
+      $stmt->execute([':user_id' => $userId]);
+      $vendor = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      if ($vendor && !empty($vendor['photo_path_ven'])) {
+        $photoPath = $_SERVER['DOCUMENT_ROOT'] . $vendor['photo_path_ven'];
+        if (file_exists($photoPath)) {
+          unlink($photoPath);
+        }
+
+        $stmt = $db->prepare('UPDATE vendor_ven SET photo_path_ven = NULL WHERE id_acc_ven = :user_id');
+        $stmt->execute([':user_id' => $userId]);
+
+        $_SESSION['message'] = 'Photo deleted successfully';
+      }
+
+      $this->redirect('/vendor/apply');
+    } catch (\Throwable $e) {
+      error_log('VendorController::deletePhoto() error: ' . $e->getMessage());
+      $_SESSION['form_errors'] = ['general' => 'Failed to delete photo'];
+      $this->redirect('/vendor/apply');
     }
   }
 }

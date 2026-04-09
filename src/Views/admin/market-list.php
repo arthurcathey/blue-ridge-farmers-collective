@@ -31,6 +31,7 @@
             <th class="p-2 text-left">Contact</th>
             <th class="p-2 text-left">Coordinates</th>
             <th class="p-2 text-left">Status</th>
+            <th class="p-2 text-center">Featured</th>
             <th class="p-2 text-left">Actions</th>
           </tr>
         </thead>
@@ -79,14 +80,21 @@
                 <?php endif; ?>
               </td>
               <td class="p-2">
-                <span class="px-2 py-1 text-sm rounded <?= $market['is_active_mkt'] ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700' ?>">
+                <span class="px-2 py-1 text-sm rounded <?= $market['is_active_mkt'] ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-700' ?>">
                   <?= $market['is_active_mkt'] ? 'Active' : 'Inactive' ?>
                 </span>
               </td>
+              <td class="p-2 text-center">
+                <form method="POST" action="<?= url('/admin/markets/toggle-featured') ?>" style="display: inline;">
+                  <?= csrf_field() ?>
+                  <input type="hidden" name="market_id" value="<?= h((string) $market['id_mkt']) ?>">
+                  <button type="submit" class="px-3 py-1 text-sm rounded font-semibold transition-colors <?= $market['is_featured_mkt'] ?? 0 ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-gray-100 hover:bg-gray-200' ?>">
+                    <?= ($market['is_featured_mkt'] ?? 0) ? '⭐ Featured' : '☆ Feature' ?>
+                  </button>
+                </form>
+              </td>
               <td class="p-2">
-                <a href="<?= url('/admin/markets/edit') ?>?id=<?= h((string) $market['id_mkt']) ?>" class="text-brand-primary hover:text-brand-primary-hover">
-                  Edit
-                </a>
+                <a href="<?= url('/admin/markets/edit') ?>?id=<?= h((string) $market['id_mkt']) ?>" class="text-brand-primary hover:text-brand-primary-hover">Edit</a>
               </td>
             </tr>
           <?php endforeach; ?>

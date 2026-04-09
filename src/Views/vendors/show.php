@@ -16,7 +16,7 @@
   <div class="two-column">
     <div>
       <?php if (!empty($vendor['photo'])): ?>
-        <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?>" class="detail-image detail-image-md" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?> farm photo" />
+        <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?>" width="500" height="400" class="detail-image detail-image-md" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?> farm photo" />
       <?php else: ?>
         <div class="placeholder-image placeholder-image-md">
           <p class="font-semibold text-gray-700">No image available</p>
@@ -80,14 +80,24 @@
 
             <div class="card-image-container">
               <?php if (!empty($product['photo'])): ?>
-                <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="card-image" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
+                <?= picture_tag(
+                  $product['photo'],
+                  h($product['name']),
+                  'card-image',
+                  [
+                    'data-lightbox' => asset_url($product['photo']),
+                    'data-caption' => h($product['name']),
+                    'width' => '200',
+                    'height' => '200',
+                    'loading' => 'lazy'
+                  ]
+                ) ?>
               <?php else: ?>
                 <div class="card-image-placeholder">
                   <p class="font-semibold text-gray-700">No image</p>
                 </div>
               <?php endif; ?>
             </div>
-
 
             <div class="card-content">
               <h3 class="card-title">
@@ -105,13 +115,12 @@
                 </span>
               </div>
 
-
               <?php if (!empty($product['seasonal_months'])): ?>
-                <div class="badge-sm badge-success mb-2">
+                <div class="mb-2 inline-flex items-center rounded bg-brand-accent px-2 py-1 text-xs text-neutral-dark">
                   Seasonal: <?= h(format_seasonal_months($product['seasonal_months'])) ?>
                 </div>
               <?php else: ?>
-                <div class="badge-sm badge-info mb-2">
+                <div class="mb-2 inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-xs text-white">
                   Year-round
                 </div>
               <?php endif; ?>
@@ -188,7 +197,7 @@
               </div>
               <div class="my-2 flex justify-center gap-1">
                 <?php for ($i = 1; $i <= 5; $i++): ?>
-                  <span class="<?= $i <= round($vendor['average_rating']) ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
+                  <span class="<?= $i <= round($vendor['average_rating']) ? 'text-brand-primary' : 'text-gray-600' ?>">★</span>
                 <?php endfor; ?>
               </div>
               <div class="text-muted text-sm">
@@ -239,7 +248,7 @@
                   <div class="flex items-center gap-3">
                     <div class="flex gap-0.5">
                       <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <span class="<?= $i <= $review['rating_vre'] ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
+                        <span class="<?= $i <= $review['rating_vre'] ? 'text-brand-primary' : 'text-gray-600' ?>">★</span>
                       <?php endfor; ?>
                     </div>
                     <span class="text-muted text-sm">

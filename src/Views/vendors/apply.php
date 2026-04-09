@@ -63,6 +63,17 @@ if (!is_array($selectedMethods)) {
     </div>
   <?php endif; ?>
 
+  <?php if (!empty($errors)): ?>
+    <div class="alert-error mb-6">
+      <p class="font-semibold">There were errors with your submission:</p>
+      <ul class="mt-2 list-inside list-disc">
+        <?php foreach ($errors as $field => $errorMsg): ?>
+          <li><?= h($errorMsg) ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
+
   <?php if ($application !== null): ?>
     <div class="card mb-6">
       <p class="mb-2 text-sm text-neutral-medium">Application Status</p>
@@ -197,7 +208,10 @@ if (!is_array($selectedMethods)) {
         <label for="farm_photo">Farm photo or logo</label>
         <?php if (!empty($prefill['photo_path'])): ?>
           <div class="form-image-preview">
-            <img src="<?= asset_url($prefill['photo_path']) ?>" alt="<?= h($prefill['farm_name'] ?? '') ?> farm photo or logo" class="form-image">
+            <?= picture_tag($prefill['photo_path'], h($prefill['farm_name'] ?? '') . ' farm photo or logo', 'form-image', ['width' => '300', 'height' => '200']) ?>
+          </div>
+          <div>
+            <button type="button" class="mb-4 text-sm font-semibold text-brand-primary hover:text-brand-primary-hover hover:underline" onclick="deleteVendorPhoto()">Delete current photo</button>
           </div>
         <?php endif; ?>
         <input id="farm_photo" name="farm_photo" type="file" accept="image/*" <?= !empty($errors['photo']) ? 'aria-describedby="error-photo" aria-invalid="true"' : '' ?>>

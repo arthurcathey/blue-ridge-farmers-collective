@@ -8,7 +8,7 @@
     </div>
   <?php endif; ?>
 
-  <form method="post" action="<?= url('/admin/markets/edit') ?>" class="max-w-4xl">
+  <form method="post" action="<?= url('/admin/markets/edit') ?>" class="max-w-4xl" enctype="multipart/form-data">
     <?= csrf_field() ?>
     <input type="hidden" name="id" value="<?= h($market['id_mkt'] ?? '') ?>">
 
@@ -190,6 +190,23 @@
           <span class="error-message"><?= h($errors['longitude']) ?></span>
         <?php endif; ?>
         <small class="text-gray-600">Recommended: Required for weather sync and map features</small>
+      </div>
+    </fieldset>
+
+    <fieldset class="mb-8">
+      <legend class="mb-6 text-lg font-bold">Hero Image</legend>
+      <div class="field">
+        <label for="hero_image">Market Hero Image</label>
+        <?php if (!empty($market['hero_image_path_mkt'])): ?>
+          <div class="mb-4">
+            <img src="<?= asset_url($market['hero_image_path_mkt']) ?>" alt="<?= h($market['name_mkt']) ?>" width="250" height="180" style="max-width: 250px; height: auto; border-radius: 0.5rem;">
+          </div>
+          <div class="mb-4">
+            <button type="button" class="text-brand-primary hover:text-brand-primary-hover hover:underline text-sm font-semibold" onclick="deleteMarketImage(<?= h($market['id_mkt']) ?>)">Delete current image</button>
+          </div>
+        <?php endif; ?>
+        <input id="hero_image" name="hero_image" type="file" accept="image/*">
+        <small class="text-gray-600">Upload an image to display on the featured markets section (max 5MB). Recommended size: 250x180px</small>
       </div>
     </fieldset>
 

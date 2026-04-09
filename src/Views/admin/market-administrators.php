@@ -74,7 +74,7 @@ $availableAccounts = $availableAccounts ?? [];
                 </div>
 
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex items-center rounded bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
+                  <span class="inline-flex items-center rounded bg-orange-600 px-2 py-1 text-xs font-medium text-black">
                     <?= h(ucfirst($admin['admin_role_mad'] ?? 'Market Admin')) ?>
                   </span>
 
@@ -97,7 +97,7 @@ $availableAccounts = $availableAccounts ?? [];
                     </button>
                     <button
                       onclick="removeAdmin(<?= $admin['id_mad'] ?>, '<?= h($admin['username_acc']) ?>')"
-                      class="text-xs text-red-600 hover:text-red-800">
+                      class="link-primary text-xs">
                       Remove
                     </button>
                   </div>
@@ -108,7 +108,6 @@ $availableAccounts = $availableAccounts ?? [];
         <?php endif; ?>
       </section>
     </div>
-
 
     <div>
       <section class="card">
@@ -143,7 +142,6 @@ $availableAccounts = $availableAccounts ?? [];
           <button type="submit" class="btn-action-blue w-full">Add Administrator</button>
         </form>
 
-
         <div class="mt-6 space-y-3 border-t border-gray-200 pt-4 text-xs">
           <div class="mb-2 font-semibold">Roles</div>
           <div>
@@ -162,7 +160,6 @@ $availableAccounts = $availableAccounts ?? [];
       </section>
     </div>
   </div>
-
 
   <div id="editAdminModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
     <div class="w-full max-w-md rounded-lg bg-white p-6">

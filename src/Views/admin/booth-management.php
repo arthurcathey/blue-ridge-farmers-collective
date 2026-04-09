@@ -38,7 +38,7 @@
                     <span class="font-medium"><?= h($layout['name_mla']) ?></span>
                     <span class="text-muted"><?= $layout['booth_count_mla'] ?> booths</span>
                     <?php if ($layout['is_active_mla']): ?>
-                      <span class="inline-flex items-center rounded bg-green-100 px-2 py-1 text-xs text-green-800">✓ Active</span>
+                      <span class="inline-flex items-center rounded bg-brand-primary px-2 py-1 text-xs text-white">✓ Active</span>
                     <?php else: ?>
                       <span class="inline-flex items-center rounded bg-gray-100 px-2 py-1 text-xs text-gray-800">Inactive</span>
                     <?php endif; ?>

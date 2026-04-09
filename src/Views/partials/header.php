@@ -16,7 +16,7 @@ $exploreLinks = [
 $accountLinks = [];
 
 if ($user) {
-  if (!in_array($user['role'] ?? '', ['admin', 'super_admin'])) {
+  if (!in_array($user['role'] ?? '', ['admin', 'super_admin', 'vendor'])) {
     $accountLinks[] = ['label' => 'Dashboard', 'href' => url('/dashboard')];
   }
 
@@ -53,15 +53,15 @@ if ($user) {
   <div class="container">
     <nav class="site-nav" aria-label="Primary">
       <a href="<?= url('/') ?>" class="nav-brand no-underline" aria-label="Blue Ridge Farmers Collective home">
-        <img src="<?= asset_url('/images/logo-default.svg') ?>" alt="Blue Ridge Farmers Collective" class="nav-logo h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[280px] md:h-16 md:max-w-[320px]" data-scroll-logo="default" data-logo-default="<?= asset_url('/images/logo-default.svg') ?>" data-logo-scroll="<?= asset_url('/images/logo-scroll.svg') ?>" />
+        <img src="<?= asset_url('/images/banners/logo2.png') ?>" alt="Blue Ridge Farmers Collective" width="320" height="50" class="nav-logo h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[280px] md:h-16 md:max-w-[320px]" data-scroll-logo="default" data-logo-default="<?= asset_url('/images/banners/logo2.png') ?>" data-logo-scroll="<?= asset_url('/images/banners/logo.png') ?>" />
       </a>
       <div class="nav-links" data-nav>
         <?php foreach ($primaryLinks as $link): ?>
-          <a class="nav-link text-lg sm:text-xl md:text-3xl lg:text-4xl" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
+          <a class="nav-link text-sm sm:text-base md:text-lg" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
         <?php endforeach; ?>
 
         <div class="nav-item" data-dropdown="explore">
-          <button type="button" class="nav-link nav-trigger text-lg sm:text-xl md:text-3xl lg:text-4xl" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
+          <button type="button" class="nav-link nav-trigger text-sm sm:text-base md:text-lg" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
             Explore <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -73,21 +73,30 @@ if ($user) {
           </div>
         </div>
 
-        <div class="nav-item" data-dropdown="account">
-          <button type="button" class="nav-link nav-trigger text-lg sm:text-xl md:text-3xl lg:text-4xl" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
-            Account <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
-            <?php foreach ($accountLinks as $link): ?>
-              <a class="nav-menu-link text-sm sm:text-base" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
-            <?php endforeach; ?>
+        <?php if ($user): ?>
+          <div class="nav-item" data-dropdown="account">
+            <button type="button" class="nav-link nav-trigger text-sm sm:text-base md:text-lg" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
+              Account <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
+              <?php foreach ($accountLinks as $link): ?>
+                <a class="nav-menu-link text-sm sm:text-base" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
+              <?php endforeach; ?>
+            </div>
           </div>
-        </div>
+        <?php endif; ?>
+
+        <?php if (!$user): ?>
+          <div class="auth-buttons">
+            <a href="<?= url('/login') ?>" class="btn-action-green no-underline">Sign In</a>
+            <a href="<?= url('/register') ?>" class="btn-secondary no-underline">Register</a>
+          </div>
+        <?php endif; ?>
       </div>
     </nav>
-    <button type="button" class="nav-toggle" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
+    <button type="button" class="nav-toggle md:hidden" data-menu-toggle aria-label="Toggle menu" aria-expanded="false">
       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>

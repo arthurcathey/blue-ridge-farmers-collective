@@ -1,5 +1,8 @@
 <section class="form-card">
-  <h1><?= h($title ?? 'Edit Product') ?></h1>
+  <div class="mb-6 flex items-center justify-between">
+    <h1><?= h($title ?? 'Edit Product') ?></h1>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
+  </div>
 
   <?php if (!empty($errors['general'])): ?>
     <div class="alert-error" data-flash>
@@ -90,7 +93,7 @@
       <label for="photo">Photo (optional)</label>
       <?php if (!empty($product['photo_path_prd'])): ?>
         <div class="form-image-preview">
-          <img src="<?= asset_url((string) $product['photo_path_prd']) ?>" alt="<?= h((string) ($product['name_prd'] ?? '')) ?> product photo" class="form-image">
+          <img src="<?= asset_url((string) $product['photo_path_prd']) ?>" alt="<?= h((string) ($product['name_prd'] ?? '')) ?> product photo" width="300" height="200" class="form-image">
         </div>
       <?php endif; ?>
       <input id="photo" name="photo" type="file" accept="image/*">

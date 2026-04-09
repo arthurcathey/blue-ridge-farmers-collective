@@ -41,19 +41,19 @@
 
     <div class="mb-6 flex flex-wrap gap-2">
       <a href="<?= url('/admin/vendor-transfer-requests') ?>"
-        class="px-4 py-2 rounded text-sm font-medium <?= !$statusFilter || $statusFilter === 'pending' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
+        class="px-4 py-2 rounded text-sm font-medium <?= !$statusFilter || $statusFilter === 'pending' ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
         Pending
       </a>
       <a href="<?= url('/admin/vendor-transfer-requests?status=approved') ?>"
-        class="px-4 py-2 rounded text-sm font-medium <?= $statusFilter === 'approved' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
+        class="px-4 py-2 rounded text-sm font-medium <?= $statusFilter === 'approved' ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
         Approved
       </a>
       <a href="<?= url('/admin/vendor-transfer-requests?status=rejected') ?>"
-        class="px-4 py-2 rounded text-sm font-medium <?= $statusFilter === 'rejected' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
+        class="px-4 py-2 rounded text-sm font-medium <?= $statusFilter === 'rejected' ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
         Rejected
       </a>
       <a href="<?= url('/admin/vendor-transfer-requests?status=all') ?>"
-        class="px-4 py-2 rounded text-sm font-medium <?= $statusFilter === 'all' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
+        class="px-4 py-2 rounded text-sm font-medium <?= $statusFilter === 'all' ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' ?>">
         All
       </a>
     </div>
@@ -147,7 +147,7 @@
               <div class="flex flex-col gap-3 border-t border-gray-200 pt-4 sm:flex-row sm:gap-2">
                 <button
                   onclick="approveTransfer(<?= (int) $request['id_vtr'] ?>, '<?= h(addslashes($request['farm_name_ven'])) ?>')"
-                  class="flex-1 rounded bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700">
+                  class="flex-1 rounded bg-brand-primary px-4 py-2 text-sm font-medium text-white hover:bg-brand-primary-hover">
                   Approve
                 </button>
                 <button

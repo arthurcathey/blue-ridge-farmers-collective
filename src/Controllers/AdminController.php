@@ -6,18 +6,6 @@ namespace App\Controllers;
 
 class AdminController extends BaseController
 {
-  private function requireMethod(string $method): void
-  {
-    $expected = strtoupper($method);
-    $actual = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
-
-    if ($actual !== $expected) {
-      http_response_code(405);
-      header('Allow: ' . $expected);
-      exit;
-    }
-  }
-
   private function vendorRoleId(): ?int
   {
     $stmt = $this->db()->prepare('SELECT id_rol FROM role_rol WHERE name_rol = :name LIMIT 1');
@@ -299,6 +287,7 @@ class AdminController extends BaseController
     $applicationId = (int) ($_POST['application_id'] ?? 0);
     $action = (string) ($_POST['action'] ?? '');
     $adminNote = trim((string) ($_POST['admin_notes'] ?? ''));
+    $isFeatured = (int) (!empty($_POST['is_featured_ven']));
 
     if ($applicationId <= 0 || !in_array($action, ['approve', 'reject', 'request_changes'], true)) {
       $this->flash('error', 'Invalid request.');
@@ -326,10 +315,11 @@ class AdminController extends BaseController
         $this->redirect($redirectPath);
       }
 
-      $update = $this->db()->prepare('UPDATE vendor_ven SET application_status_ven = "approved", admin_notes_ven = :notes, updated_at_ven = NOW() WHERE id_ven = :id');
+      $update = $this->db()->prepare('UPDATE vendor_ven SET application_status_ven = "approved", admin_notes_ven = :notes, is_featured_ven = :featured, updated_at_ven = NOW() WHERE id_ven = :id');
       $update->execute([
         ':id' => $applicationId,
         ':notes' => $adminNote !== '' ? $adminNote : null,
+        ':featured' => $isFeatured,
       ]);
 
       $accountUpdate = $this->db()->prepare('UPDATE account_acc SET id_rol_acc = :role WHERE id_acc = :account_id');
@@ -354,11 +344,12 @@ class AdminController extends BaseController
     }
 
     $status = $action === 'request_changes' ? 'rejected' : 'rejected';
-    $reject = $this->db()->prepare('UPDATE vendor_ven SET application_status_ven = :status, admin_notes_ven = :notes, updated_at_ven = NOW() WHERE id_ven = :id');
+    $reject = $this->db()->prepare('UPDATE vendor_ven SET application_status_ven = :status, admin_notes_ven = :notes, is_featured_ven = :featured, updated_at_ven = NOW() WHERE id_ven = :id');
     $reject->execute([
       ':id' => $applicationId,
       ':status' => $status,
       ':notes' => $adminNote !== '' ? $adminNote : null,
+      ':featured' => $isFeatured,
     ]);
 
     if (!empty($application['email_acc'])) {
@@ -379,6 +370,71 @@ class AdminController extends BaseController
     $this->flash('success', $action === 'request_changes' ? 'Changes requested from vendor.' : 'Vendor application rejected.');
     $this->redirect($redirectPath);
     return '';
+  }
+
+  public function vendorManagement(): string
+  {
+    $this->requireRole('admin');
+
+    $db = $this->db();
+    $stmt = $db->query('
+      SELECT 
+        v.id_ven, 
+        v.farm_name_ven, 
+        v.photo_path_ven,
+        v.city_ven, 
+        v.state_ven,
+        v.is_featured_ven,
+        v.application_status_ven,
+        a.email_acc,
+        COUNT(p.id_prd) as product_count,
+        COALESCE(AVG(r.rating_vre), 0) as avg_rating
+      FROM vendor_ven v
+      LEFT JOIN account_acc a ON a.id_acc = v.id_acc_ven
+      LEFT JOIN product_prd p ON p.id_ven_prd = v.id_ven AND p.is_active_prd = 1
+      LEFT JOIN vendor_review_vre r ON r.id_ven_vre = v.id_ven AND r.is_approved_vre = 1
+      WHERE v.application_status_ven = "approved"
+      GROUP BY v.id_ven
+      ORDER BY v.farm_name_ven ASC
+    ');
+    $vendors = $stmt ? $stmt->fetchAll() : [];
+
+    $message = $this->flash('success');
+    $error = $this->flash('error');
+
+    return $this->render('admin/vendor-management', [
+      'title' => 'Vendor Management',
+      'vendors' => $vendors,
+      'message' => $message,
+      'error' => $error,
+    ]);
+  }
+
+  public function toggleVendorFeatured(): void
+  {
+    $this->requireRole('admin');
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $this->flash('error', 'Invalid session token.');
+      $this->redirect('/admin/vendors');
+    }
+
+    $vendorId = (int) ($_POST['vendor_id'] ?? 0);
+    $isFeatured = (int) ($_POST['is_featured'] ?? 0);
+
+    if ($vendorId <= 0) {
+      $this->flash('error', 'Invalid vendor.');
+      $this->redirect('/admin/vendors');
+    }
+
+    $stmt = $this->db()->prepare('UPDATE vendor_ven SET is_featured_ven = :featured, updated_at_ven = NOW() WHERE id_ven = :id');
+    $stmt->execute([
+      ':id' => $vendorId,
+      ':featured' => $isFeatured,
+    ]);
+
+    $this->flash('success', $isFeatured ? 'Vendor marked as featured.' : 'Vendor marked as not featured.');
+    $this->redirect('/admin/vendors');
   }
 
   public function marketDates(): string

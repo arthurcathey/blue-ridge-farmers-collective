@@ -2,7 +2,33 @@
 module.exports = {
   content: [
     './src/Views/**/*.php',
+    './src/Controllers/**/*.php',
     './public/js/**/*.js'
+  ],
+  safelist: [
+    // Category badge variants
+    'badge-category-produce',
+    'badge-category-dairy',
+    'badge-category-baked',
+    'badge-category-meat',
+    'badge-category-seafood',
+    'badge-category-pantry',
+    'badge-category-beverages',
+    'badge-category-flowers',
+    'badge-category-prepared',
+    'badge-category-honey',
+    'badge-category-grains',
+    'badge-category-herbs',
+    'badge-category-specialty',
+    // Status classes
+    'bg-brand-primary',
+    'bg-gray-300',
+    'text-brand-accent',
+    'text-neutral-medium',
+    // Carousel states
+    'is-open',
+    'is-scrolled',
+    'show',
   ],
   theme: {
     extend: {

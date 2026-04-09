@@ -25,7 +25,6 @@
         <form method="POST" action="<?= url('/vendor/transfer/request') ?>" class="space-y-6">
           <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 
-
           <div class="field">
             <label for="from_market" class="field-label">Transfer From (Current Market)</label>
             <select name="from_market_id" id="from_market" class="form-control" required>
@@ -41,7 +40,6 @@
               <p class="form-error"><?= h($errors['from_market_id']) ?></p>
             <?php endif; ?>
           </div>
-
 
           <div class="field">
             <label for="to_market" class="field-label">Transfer To (Target Market)</label>
@@ -60,7 +58,6 @@
             <p class="text-muted mt-2 text-sm">Only markets where you don't currently have membership</p>
           </div>
 
-
           <div class="field">
             <label for="reason" class="field-label">Reason for Transfer (Optional)</label>
             <textarea
@@ -73,7 +70,6 @@
             <p class="text-muted mt-1 text-sm">Max 1000 characters</p>
           </div>
 
-
           <div class="rounded border-l-4 border-blue-500 bg-blue-50 p-4">
             <p class="text-sm font-semibold text-blue-900">What happens next?</p>
             <ul class="mt-2 list-inside space-y-1 text-sm text-blue-800">
@@ -83,7 +79,6 @@
               <li>• Your previous market membership will be ended</li>
             </ul>
           </div>
-
 
           <button type="submit" class="btn-action-blue w-full">Submit Transfer Request</button>
         </form>

@@ -1,4 +1,4 @@
-<section class="card">
+<section class="card mt-8">
   <h1><?= h($title ?? 'Products') ?></h1>
   <p>Seasonal goods from our vendors.</p>
 
@@ -113,15 +113,50 @@
 
   <div class="mt-4 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
     <?php if (empty($products)): ?>
-      <div class="no-products-message">
-        <p>No products found matching your search. Try adjusting your filters.</p>
+      <div class="no-products-message col-span-full">
+        <?php if (!empty($active_filters)): ?>
+          <p class="mb-4 text-lg">No products found matching your search.</p>
+
+          <div class="mb-4 rounded-lg border border-green-200 bg-green-50 p-4">
+            <p class="mb-3 font-semibold text-green-900">Active filters:</p>
+            <div class="flex flex-wrap gap-2">
+              <?php foreach ($active_filters as $filterType): ?>
+                <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm text-white">
+                  <?= htmlspecialchars($filter_names[$filterType] ?? 'Unknown', ENT_QUOTES, 'UTF-8') ?>
+                  <a href="<?= htmlspecialchars($remove_filter_urls[$filterType] ?? '#', ENT_QUOTES, 'UTF-8') ?>"
+                    class="font-semibold hover:text-green-600 hover:underline"
+                    title="Remove <?= htmlspecialchars($filter_names[$filterType] ?? 'this filter', ENT_QUOTES, 'UTF-8') ?>">
+                    ✕
+                  </a>
+                </span>
+              <?php endforeach; ?>
+            </div>
+          </div>
+
+          <p class="text-gray-700">
+            <strong>Tip:</strong> Try removing one of the filters above to see more products, or <a href="<?= url('/products') ?>" class="font-semibold text-brand-primary hover:text-brand-primary-hover hover:underline">clear all filters</a>.
+          </p>
+        <?php else: ?>
+          <p>No products found matching your search. Try a different search term or browse by <a href="<?= url('/markets') ?>" class="text-green-600 hover:underline">markets</a>.</p>
+        <?php endif; ?>
       </div>
     <?php else: ?>
       <?php foreach ($products as $product): ?>
         <div class="product-card">
           <div class="product-image-container">
             <?php if (!empty($product['photo'])): ?>
-              <img src="<?= asset_url($product['photo']) ?>" alt="<?= h($product['name']) ?>" class="product-image" data-lightbox="<?= asset_url($product['photo']) ?>" data-caption="<?= h($product['name']) ?>" />
+              <?= picture_tag(
+                $product['photo'],
+                h($product['name']),
+                'product-image',
+                [
+                  'data-lightbox' => asset_url($product['photo']),
+                  'data-caption' => h($product['name']),
+                  'width' => '220',
+                  'height' => '220',
+                  'loading' => 'lazy'
+                ]
+              ) ?>
             <?php else: ?>
               <div class="product-image-placeholder">
                 <p class="font-semibold text-gray-700">No image</p>

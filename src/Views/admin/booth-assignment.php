@@ -51,14 +51,14 @@
             $assignment = $assignments[$booth['id_blo']] ?? null;
             $isAssigned = !empty($assignment);
             ?>
-            <div class="booth-card <?= $isAssigned ? 'bg-green-100 border-green-400' : 'bg-white border-gray-300' ?> border-2 rounded p-3 cursor-pointer text-center text-sm"
+            <div class="booth-card <?= $isAssigned ? 'bg-brand-primary border-brand-primary' : 'bg-white border-gray-300' ?> border-2 rounded p-3 cursor-pointer text-center text-sm"
               onclick="openAssignmentModal(<?= $booth['id_blo'] ?>)"
               title="<?= h($booth['location_description_blo'] ?? '') ?>">
               <div class="text-lg font-bold"><?= h($booth['number_blo']) ?></div>
               <div class="text-muted text-xs"><?= h($booth['zone_blo'] ?? 'General') ?></div>
               <?php if ($isAssigned): ?>
-                <div class="mt-2 border-t border-green-300 pt-2 text-xs">
-                  <div class="font-semibold text-green-700">✓ <?= h(substr($assignment['farm_name_ven'], 0, 12)) ?></div>
+                <div class="mt-2 border-t border-brand-primary pt-2 text-xs">
+                  <div class="font-semibold text-white">✓ <?= h(substr($assignment['farm_name_ven'], 0, 12)) ?></div>
                 </div>
               <?php else: ?>
                 <div class="mt-2 border-t border-gray-300 pt-2 text-xs text-gray-600">Available</div>
@@ -83,7 +83,7 @@
             </div>
           <?php else: ?>
             <?php foreach ($pendingVendors as $vendor): ?>
-              <div class="cursor-pointer rounded border border-blue-200 bg-blue-50 p-2 text-sm hover:bg-blue-100"
+              <div class="cursor-pointer rounded border border-orange-200 bg-orange-50 p-2 text-sm hover:bg-orange-100"
                 onclick="highlightVendor(<?= $vendor['id_ven'] ?>)">
                 <div class="text-xs font-medium"><?= h($vendor['farm_name_ven']) ?></div>
                 <div class="text-muted text-xs"><?= h($vendor['city_ven'] ?? 'Unknown') ?></div>
@@ -99,7 +99,7 @@
           <span>Available</span>
         </div>
         <div class="flex items-center gap-2">
-          <div class="h-4 w-4 rounded border-2 border-green-400 bg-green-100"></div>
+          <div class="h-4 w-4 rounded border-2 border-brand-primary bg-brand-primary"></div>
           <span>Assigned</span>
         </div>
       </section>

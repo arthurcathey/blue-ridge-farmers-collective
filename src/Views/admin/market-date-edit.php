@@ -144,7 +144,6 @@
           messageDiv.textContent = '✓ ' + data.message;
           syncBtn.textContent = '✓ Synced';
 
-          // Reset button after 3 seconds
           setTimeout(() => {
             syncBtn.disabled = false;
             syncBtn.textContent = originalText;

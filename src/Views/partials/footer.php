@@ -2,6 +2,14 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-section">
+        <h2>Member Access</h2>
+        <ul>
+          <li><a href="<?= url('/login') ?>" class="footer-link">Login</a></li>
+          <li><a href="<?= url('/register') ?>" class="footer-link">Register</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
         <h2>For Vendors</h2>
         <ul>
           <li><a href="<?= url('/vendor/apply') ?>" class="footer-link">Become a Vendor</a></li>

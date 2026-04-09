@@ -4,7 +4,7 @@
       <h1><?= h($market['name_mkt'] ?? 'Market') ?></h1>
       <p class="text-muted text-sm">Booth Assignment for <?= date('F j, Y', strtotime($marketDate['date_mda'])) ?></p>
     </div>
-    <a href="<?= url('/vendor/markets/apply') ?>" class="link-primary">Back</a>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
   </div>
 </section>
 
@@ -77,10 +77,10 @@
               <div class="text-sm">
                 <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium <?php
                                                                                             echo match ($myAssignment['zone_blo'] ?? 'standard') {
-                                                                                              'entrance' => 'bg-red-100 text-red-800',
-                                                                                              'premium' => 'bg-purple-100 text-purple-800',
-                                                                                              'corner' => 'bg-orange-100 text-orange-800',
-                                                                                              default => 'bg-blue-100 text-blue-800'
+                                                                                              'entrance' => 'bg-red-100 text-white',
+                                                                                              'premium' => 'bg-purple-100 text-white',
+                                                                                              'corner' => 'bg-orange-100 text-white',
+                                                                                              default => 'bg-blue-100 text-white'
                                                                                             };
                                                                                             ?>">
                   <?= ucfirst(h($myAssignment['zone_blo'] ?? 'Standard')) ?>

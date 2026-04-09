@@ -5,22 +5,22 @@
 
 <section class="card mb-6">
   <h2>Our Story</h2>
-  <p class="text-muted">Blue Ridge Farmers Collective began with a simple idea: make it easier for families in Western North Carolina to find fresh local food while giving small farms and artisan producers better visibility and support. Today we bring together markets, vendors, and neighbors through one shared platform that helps people discover where to shop, what is in season, and who is growing and making their food.</p>
+  <p class="text-muted">Blue Ridge Farmers Collective began with a simple idea, how to make it easier for families in Western North Carolina to find fresh local food while giving small farms and artisan producers better visibility and support. Today we bring together markets, vendors, and neighbors through one shared platform that helps people discover where to shop, what is in season, and who is growing and making their food.</p>
 </section>
 
 <section class="card mb-6">
   <h2>Our Impact</h2>
   <p class="text-muted">A growing regional network built around transparency, seasonality, and support for local producers.</p>
   <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
-    <div class="rounded-lg border border-neutral-light bg-neutral-light p-4 text-center">
+    <div class="rounded border border-neutral-light bg-neutral-light p-4 text-center">
       <p class="text-3xl font-bold text-brand-primary"><?= h((string) ($stats['markets'] ?? 0)) ?></p>
       <p class="text-muted">active markets</p>
     </div>
-    <div class="rounded-lg border border-neutral-light bg-neutral-light p-4 text-center">
+    <div class="rounded border border-neutral-light bg-neutral-light p-4 text-center">
       <p class="text-3xl font-bold text-brand-primary"><?= h((string) ($stats['vendors'] ?? 0)) ?></p>
       <p class="text-muted">approved vendors</p>
     </div>
-    <div class="rounded-lg border border-neutral-light bg-neutral-light p-4 text-center">
+    <div class="rounded border border-neutral-light bg-neutral-light p-4 text-center">
       <p class="text-3xl font-bold text-brand-primary"><?= h((string) ($stats['products'] ?? 0)) ?></p>
       <p class="text-muted">active products</p>
     </div>

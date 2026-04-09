@@ -1,5 +1,3 @@
-/* Minimal main.css - Most styles moved to tailwind.css */
-
 /* Ensure search wrapper parent is relative for absolute positioning of results */
 .search-form-grid > div:first-child {
   position: relative;

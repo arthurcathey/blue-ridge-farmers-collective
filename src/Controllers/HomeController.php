@@ -22,29 +22,58 @@ class HomeController extends BaseController
       $stats['vendors'] = (int) $db->query('SELECT COUNT(*) FROM vendor_ven')->fetchColumn();
       $stats['products'] = (int) $db->query('SELECT COUNT(*) FROM product_prd')->fetchColumn();
 
-      $stmt = $db->query('SELECT name_mkt FROM market_mkt ORDER BY name_mkt ASC LIMIT 3');
-      $featuredMarkets = $stmt ? array_column($stmt->fetchAll(), 'name_mkt') : [];
+      try {
+        $stmt = $db->query('
+          SELECT 
+            id_mkt,
+            name_mkt,
+            slug_mkt,
+            city_mkt,
+            state_mkt,
+            hero_image_path_mkt,
+            primary_color_mkt
+          FROM market_mkt 
+          WHERE is_active_mkt = 1 AND is_featured_mkt = 1
+          ORDER BY created_at_mkt DESC
+          LIMIT 5
+        ');
 
-      $vendorStmt = $db->query('
-        SELECT 
-          v.id_ven, 
-          v.farm_name_ven, 
-          v.city_ven, 
-          v.state_ven,
-          COUNT(p.id_prd) as product_count,
-          COALESCE(AVG(r.rating_vre), 0) as avg_rating
-        FROM vendor_ven v
-        LEFT JOIN product_prd p ON p.vendor_id_ven = v.id_ven AND p.is_active_prd = 1
-        LEFT JOIN review_vre r ON r.vendor_id_ven = v.id_ven AND r.status_vre = "approved"
-        WHERE v.application_status_ven = "approved"
-        GROUP BY v.id_ven
-        ORDER BY avg_rating DESC, product_count DESC
-        LIMIT 4
-      ');
-      $topVendors = $vendorStmt ? $vendorStmt->fetchAll() : [];
+        if ($stmt) {
+          $featuredMarkets = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } else {
+          $featuredMarkets = [];
+        }
+      } catch (\Throwable $featureError) {
+        error_log("[HomeController] Featured markets query error: " . $featureError->getMessage());
+        $featuredMarkets = [];
+      }
+
+      try {
+        $vendorStmt = $db->query('
+          SELECT 
+            v.id_ven, 
+            v.farm_name_ven, 
+            v.photo_path_ven,
+            v.city_ven, 
+            v.state_ven,
+            v.is_featured_ven,
+            COUNT(p.id_prd) as product_count,
+            COALESCE(AVG(r.rating_vre), 0) as avg_rating
+          FROM vendor_ven v
+          LEFT JOIN product_prd p ON p.id_ven_prd = v.id_ven AND p.is_active_prd = 1
+          LEFT JOIN vendor_review_vre r ON r.id_ven_vre = v.id_ven AND r.is_approved_vre = 1
+          WHERE v.application_status_ven = "approved" AND v.is_featured_ven = 1
+          GROUP BY v.id_ven
+          ORDER BY avg_rating DESC, product_count DESC
+          LIMIT 4
+        ');
+        $topVendors = $vendorStmt ? $vendorStmt->fetchAll() : [];
+      } catch (\Throwable $vendorError) {
+        error_log("[HomeController] Top vendors query error: " . $vendorError->getMessage());
+        $topVendors = [];
+      }
     } catch (\Throwable $e) {
-      $featuredMarkets = [];
-      $topVendors = [];
+      error_log("HomeController::index() stats query error: " . $e->getMessage());
     }
 
     return $this->render('home/index', [

@@ -57,7 +57,6 @@
                 </div>
               </div>
 
-
               <div class="mb-4 grid grid-cols-1 gap-3 text-sm md:grid-cols-2 md:gap-4">
                 <div>
                   <p class="text-muted">From Market</p>
@@ -71,7 +70,6 @@
                 </div>
               </div>
 
-
               <?php if (!empty($transfer['notes_vtr'])): ?>
                 <div class="mb-4 rounded bg-gray-50 p-3">
                   <p class="mb-1 text-sm font-semibold text-gray-700">Your Reason</p>
@@ -79,14 +77,12 @@
                 </div>
               <?php endif; ?>
 
-
               <?php if (!empty($transfer['admin_notes_vtr'])): ?>
                 <div class="mb-4 rounded bg-blue-50 p-3">
                   <p class="mb-1 text-sm font-semibold text-blue-700">Admin Notes</p>
                   <p class="text-sm text-blue-600"><?= nl2br(h($transfer['admin_notes_vtr'])) ?></p>
                 </div>
               <?php endif; ?>
-
 
               <?php if (!empty($transfer['processed_at_vtr'])): ?>
                 <div class="border-t border-gray-200 pt-3">
@@ -98,7 +94,6 @@
                   </p>
                 </div>
               <?php endif; ?>
-
 
               <?php if ($transfer['status_vtr'] === 'pending'): ?>
                 <div class="mt-4 flex gap-3 border-t border-gray-200 pt-4">

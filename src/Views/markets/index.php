@@ -1,4 +1,4 @@
-<section class="card">
+<section class="card mt-8">
   <h1><?= h($title ?? 'Markets') ?></h1>
   <p>Find a market near you.</p>
 </section>

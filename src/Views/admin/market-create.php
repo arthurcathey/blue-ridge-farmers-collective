@@ -8,7 +8,7 @@
     </div>
   <?php endif; ?>
 
-  <form method="post" action="<?= url('/admin/markets/create') ?>" class="max-w-4xl">
+  <form method="post" action="<?= url('/admin/markets/create') ?>" class="max-w-4xl" enctype="multipart/form-data">
     <?= csrf_field() ?>
 
     <fieldset class="mb-8">
@@ -192,8 +192,23 @@
         <?php endif; ?>
         <small class="text-gray-600">Required: For map display and weather features</small>
       </div>
+    </fieldset>
 
+    <fieldset class="mb-8">
+      <legend class="mb-6 text-lg font-bold">Hero Image</legend>
 
+      <div class="field">
+        <label for="hero_image">Market Hero Image</label>
+        <input
+          id="hero_image"
+          name="hero_image"
+          type="file"
+          accept="image/*">
+        <?php if (!empty($errors['hero_image'])): ?>
+          <span class="error-message"><?= h($errors['hero_image']) ?></span>
+        <?php endif; ?>
+        <small class="text-gray-600">Upload an image to display on the featured markets section (max 5MB). Recommended size: 250x180px</small>
+      </div>
     </fieldset>
 
     <fieldset class="mb-8">

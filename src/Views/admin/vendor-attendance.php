@@ -118,7 +118,6 @@ $attendanceStats = $attendanceStats ?? [];
       </section>
     </div>
 
-
     <div class="md:col-span-2">
       <section class="card">
         <div class="mb-4 flex items-center justify-between">
@@ -134,13 +133,13 @@ $attendanceStats = $attendanceStats ?? [];
               onclick="filterByStatus('checked-in')"
               class="btn-secondary"
               id="filterCheckedIn">
-              ✓ Checked In
+              Checked In
             </button>
             <button
               onclick="filterByStatus('pending')"
               class="btn-secondary"
               id="filterPending">
-              ⏳ Pending
+              Pending
             </button>
           </div>
         </div>
@@ -156,10 +155,10 @@ $attendanceStats = $attendanceStats ?? [];
               $status = $vendor['status_vat'] ?? 'intended';
               $isCheckedIn = $status === 'checked_in';
               $statusBadge = match ($status) {
-                'checked_in' => 'bg-green-100 text-green-800',
-                'confirmed' => 'bg-blue-100 text-blue-800',
-                'no_show' => 'bg-red-100 text-red-800',
-                default => 'bg-yellow-100 text-yellow-800'
+                'checked_in' => 'bg-brand-primary text-white',
+                'confirmed' => 'bg-orange-600 text-black',
+                'no_show' => 'bg-red-100 text-white',
+                default => 'bg-yellow-100 text-white'
               };
               $statusLabel = match ($status) {
                 'checked_in' => '✓ Checked In',
@@ -231,7 +230,6 @@ $attendanceStats = $attendanceStats ?? [];
     </div>
   </div>
 
-
   <div id="vendorActionModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
     <div class="w-full max-w-md rounded-lg bg-white p-6">
       <h2 class="mb-4 text-lg font-semibold">Vendor Actions</h2>
@@ -239,13 +237,13 @@ $attendanceStats = $attendanceStats ?? [];
       <div class="space-y-2">
         <button
           onclick="markAsNoShow()"
-          class="w-full rounded border border-red-200 bg-red-50 p-3 text-left text-sm font-medium text-red-800 hover:bg-red-100">
+          class="w-full rounded border border-red-200 bg-red-50 p-3 text-left text-sm font-medium text-white hover:bg-red-100">
           Mark as No-Show
         </button>
 
         <button
           onclick="markAsConfirmed()"
-          class="w-full rounded border border-blue-200 bg-blue-50 p-3 text-left text-sm font-medium text-blue-800 hover:bg-blue-100">
+          class="w-full rounded border border-orange-200 bg-orange-600 p-3 text-left text-sm font-medium text-white hover:bg-orange-700">
           Mark as Confirmed
         </button>
 

@@ -22,7 +22,7 @@
   $mainCssSrc = asset_url($mainCssPath . '?v=' . rawurlencode($mainCssVersion));
   $mainJsSrc = asset_url($mainJsPath . '?v=' . rawurlencode($mainJsVersion));
   ?>
-  <link rel="icon" type="image/svg+xml" href="<?= asset_url('/favicon.svg') ?>">
+  <link rel="icon" type="image/svg+xml" href="<?= asset_url('/images/favicon.svg') ?>">
   <link rel="stylesheet" href="<?= $tailwindSrc ?>">
   <link rel="stylesheet" href="<?= $mainCssSrc ?>">
   <script src="<?= $mainJsSrc ?>" defer></script>

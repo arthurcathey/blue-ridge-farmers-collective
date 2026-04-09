@@ -147,6 +147,18 @@ class SuperAdminController extends BaseController
         return;
       }
 
+      $heroImagePath = null;
+      if (!empty($_FILES['hero_image'])) {
+        $photoUpload = $this->uploadPhoto('market', $_FILES['hero_image']);
+        if (!empty($photoUpload['error'])) {
+          $_SESSION['form_errors'] = ['hero_image' => $photoUpload['error']];
+          $_SESSION['form_data'] = $old;
+          $this->redirect('/admin/markets/new');
+          return;
+        }
+        $heroImagePath = $photoUpload['path'];
+      }
+
       $stmt = $db->prepare('
         INSERT INTO market_mkt (
           name_mkt,
@@ -161,6 +173,7 @@ class SuperAdminController extends BaseController
           latitude_mkt,
           longitude_mkt,
           is_active_mkt,
+          hero_image_path_mkt,
           created_at_mkt
         ) VALUES (
           :name,
@@ -175,6 +188,7 @@ class SuperAdminController extends BaseController
           :latitude,
           :longitude,
           :is_active,
+          :hero_image,
           NOW()
         )
       ');
@@ -192,6 +206,7 @@ class SuperAdminController extends BaseController
         ':latitude' => $old['latitude'],
         ':longitude' => $old['longitude'],
         ':is_active' => $old['is_active'],
+        ':hero_image' => $heroImagePath,
       ]);
 
       unset($_SESSION['form_data'], $_SESSION['form_errors']);
@@ -241,6 +256,12 @@ class SuperAdminController extends BaseController
     $this->requireRole('admin');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/admin');
+      return;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $_SESSION['form_errors'] = ['general' => 'Security token expired. Please try again.'];
       $this->redirect('/admin');
       return;
     }
@@ -322,39 +343,53 @@ class SuperAdminController extends BaseController
         return;
       }
 
+      $heroImagePath = null;
+      if (!empty($_FILES['hero_image'])) {
+        $photoUpload = $this->uploadPhoto('market', $_FILES['hero_image']);
+        if (!empty($photoUpload['error'])) {
+          $_SESSION['form_errors'] = ['hero_image' => $photoUpload['error']];
+          $_SESSION['form_data'] = $old;
+          $this->redirect('/admin/markets/edit?id=' . $marketId);
+          return;
+        }
+        $heroImagePath = $photoUpload['path'];
+      }
+
+      $updateFields = [
+        'name_mkt' => $old['name'],
+        'slug_mkt' => $old['slug'],
+        'city_mkt' => $old['city'],
+        'state_mkt' => $old['state'],
+        'zip_mkt' => $old['zip'],
+        'contact_name_mkt' => $old['contact_name'],
+        'contact_email_mkt' => $old['contact_email'],
+        'contact_phone_mkt' => $old['contact_phone'],
+        'default_location_mkt' => $old['default_location'],
+        'latitude_mkt' => $old['latitude'],
+        'longitude_mkt' => $old['longitude'],
+        'is_active_mkt' => $old['is_active'],
+      ];
+
+      if (!is_null($heroImagePath)) {
+        $updateFields['hero_image_path_mkt'] = $heroImagePath;
+      }
+
+      $setParts = [];
+      $updateParams = [];
+      foreach ($updateFields as $field => $value) {
+        $setParts[] = "$field = :$field";
+        $updateParams[":$field"] = $value;
+      }
+
       $stmt = $db->prepare('
         UPDATE market_mkt SET
-          name_mkt = :name,
-          slug_mkt = :slug,
-          city_mkt = :city,
-          state_mkt = :state,
-          zip_mkt = :zip,
-          contact_name_mkt = :contact_name,
-          contact_email_mkt = :contact_email,
-          contact_phone_mkt = :contact_phone,
-          default_location_mkt = :default_location,
-          latitude_mkt = :latitude,
-          longitude_mkt = :longitude,
-          is_active_mkt = :is_active,
+          ' . implode(', ', $setParts) . ',
           updated_at_mkt = NOW()
         WHERE id_mkt = :id
       ');
 
-      $stmt->execute([
-        ':name' => $old['name'],
-        ':slug' => $old['slug'],
-        ':city' => $old['city'],
-        ':state' => $old['state'],
-        ':zip' => $old['zip'],
-        ':contact_name' => $old['contact_name'],
-        ':contact_email' => $old['contact_email'],
-        ':contact_phone' => $old['contact_phone'],
-        ':default_location' => $old['default_location'],
-        ':latitude' => $old['latitude'],
-        ':longitude' => $old['longitude'],
-        ':is_active' => $old['is_active'],
-        ':id' => $marketId,
-      ]);
+      $updateParams[':id'] = $marketId;
+      $stmt->execute($updateParams);
 
       unset($_SESSION['form_data'], $_SESSION['form_errors']);
 
@@ -367,6 +402,109 @@ class SuperAdminController extends BaseController
       $_SESSION['form_data'] = $old;
       $this->redirect('/admin/markets/edit?id=' . $marketId);
       return;
+    }
+  }
+
+  public function toggleFeatured(): void
+  {
+    $this->requireRole('admin');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/admin/markets');
+      return;
+    }
+
+    if (!isset($_POST['market_id'])) {
+      $_SESSION['error'] = 'Invalid market ID.';
+      $this->redirect('/admin/markets');
+      return;
+    }
+
+    $marketId = (int) $_POST['market_id'];
+
+    try {
+      $db = $this->db();
+
+      $stmt = $db->prepare('SELECT is_featured_mkt FROM market_mkt WHERE id_mkt = :id');
+      $stmt->execute([':id' => $marketId]);
+      $market = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      if (!$market) {
+        $_SESSION['error'] = 'Market not found.';
+        $this->redirect('/admin/markets');
+        return;
+      }
+
+      $newFeaturedStatus = $market['is_featured_mkt'] ? 0 : 1;
+
+      $stmt = $db->prepare('
+        UPDATE market_mkt 
+        SET is_featured_mkt = :is_featured 
+        WHERE id_mkt = :id
+      ');
+
+      $stmt->execute([
+        ':is_featured' => $newFeaturedStatus,
+        ':id' => $marketId,
+      ]);
+
+      $message = $newFeaturedStatus ? 'Market featured successfully!' : 'Feature removed successfully!';
+      $_SESSION['message'] = $message;
+      $this->redirect('/admin/markets');
+      return;
+    } catch (\Throwable $e) {
+      error_log("SuperAdminController::toggleFeatured() error: " . $e->getMessage());
+      $_SESSION['error'] = 'Failed to update market featured status. Please try again.';
+      $this->redirect('/admin/markets');
+      return;
+    }
+  }
+
+  public function deleteMarketImage(): void
+  {
+    $this->requireRole('admin');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/admin/markets');
+      return;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $_SESSION['form_errors'] = ['general' => 'Invalid session token'];
+      $this->redirect('/admin/markets');
+      return;
+    }
+
+    $marketId = (int) ($_POST['market_id'] ?? 0);
+    if ($marketId <= 0) {
+      $this->redirect('/admin/markets');
+      return;
+    }
+
+    try {
+      $db = $this->db();
+
+      $stmt = $db->prepare('SELECT hero_image_path_mkt FROM market_mkt WHERE id_mkt = :id LIMIT 1');
+      $stmt->execute([':id' => $marketId]);
+      $market = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      if ($market && !empty($market['hero_image_path_mkt'])) {
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . $market['hero_image_path_mkt'];
+        if (file_exists($imagePath)) {
+          unlink($imagePath);
+        }
+
+        $stmt = $db->prepare('UPDATE market_mkt SET hero_image_path_mkt = NULL WHERE id_mkt = :id');
+        $stmt->execute([':id' => $marketId]);
+
+        $_SESSION['message'] = 'Image deleted successfully';
+      }
+
+      $this->redirect('/admin/markets/edit?id=' . $marketId);
+    } catch (\Throwable $e) {
+      error_log('SuperAdminController::deleteMarketImage() error: ' . $e->getMessage());
+      $_SESSION['form_errors'] = ['general' => 'Failed to delete image'];
+      $this->redirect('/admin/markets/edit?id=' . $marketId);
     }
   }
 }

@@ -112,7 +112,6 @@
       </div>
     </div>
 
-
     <div class="rounded border border-gray-200 bg-gray-50 p-4">
       <h3 class="mb-4 font-semibold">Highest Rated Reviews</h3>
       <?php if (empty($topReviews)): ?>
@@ -139,7 +138,6 @@
     </div>
   <?php endif; ?>
 </section>
-
 
 <section class="card mt-6">
   <h2 class="mb-4">Market Participation</h2>
@@ -201,14 +199,13 @@
   </section>
 <?php endif; ?>
 
-
 <section class="card mt-6 border-l-4 border-blue-500 bg-blue-50">
   <h2 class="mb-3">Tips to Improve Analytics</h2>
   <ul class="space-y-2 text-sm text-gray-700">
     <li> <strong>Respond to reviews</strong> - A <?= ($metrics['response_rate'] ?? 0) < 80 ? '🔴' : '🟢' ?> <?= ($metrics['response_rate'] ?? 0) ?? 0 ?>% response rate is a great start</li>
-    <li> <strong>Attend markets regularly</strong> - Build customer relationships in person</li>
-    <li> <strong>Update your products</strong> - Fresh products attract more searches</li>
-    <li> <strong>Complete your profile</strong> - High-quality photos increase profile views</li>
-    <li> <strong>Add seasonal products</strong> - Match market demand throughout the year</li>
+    <li> <strong>Attend markets regularly</strong> Build customer relationships in person</li>
+    <li> <strong>Update your products</strong> Fresh products attract more searches</li>
+    <li> <strong>Complete your profile</strong> High-quality photos increase profile views</li>
+    <li> <strong>Add seasonal products</strong> Match market demand throughout the year</li>
   </ul>
 </section>

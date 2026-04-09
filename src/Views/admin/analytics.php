@@ -148,7 +148,6 @@
   </div>
 </section>
 
-
 <section class="card mt-6">
   <h2 class="mb-4">Market Performance</h2>
   <?php if (empty($marketPerformance)): ?>
@@ -188,7 +187,6 @@
     </div>
   <?php endif; ?>
 </section>
-
 
 <section class="card mt-6">
   <h2 class="mb-4">Top Performing Vendors</h2>
@@ -231,7 +229,6 @@
   <?php endif; ?>
 </section>
 
-
 <section class="card mt-6">
   <h2 class="mb-4">Recent Reviews (Pending Approval)</h2>
   <?php if (empty($recentReviews)): ?>
@@ -262,7 +259,6 @@
     </div>
   <?php endif; ?>
 </section>
-
 
 <section class="card mt-6 border-l-4 border-green-500 bg-green-50">
   <h2 class="mb-3">Platform Health</h2>

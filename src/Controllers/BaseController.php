@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use RuntimeException;
+use App\Services\ImageProcessor;
 
 class BaseController
 {
@@ -15,6 +16,19 @@ class BaseController
   {
     $this->basePath = $basePath;
     $this->config = $config;
+    require_once __DIR__ . '/../Helpers/cache.php';
+  }
+
+  protected function requireMethod(string $method): void
+  {
+    $expected = strtoupper($method);
+    $actual = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
+
+    if ($actual !== $expected) {
+      http_response_code(405);
+      header('Allow: ' . $expected);
+      exit;
+    }
   }
 
   protected function render(string $view, array $data = []): string
@@ -140,9 +154,9 @@ class BaseController
       return ['path' => $existingPath, 'error' => 'Photo upload failed.'];
     }
 
-    $maxBytes = 2 * 1024 * 1024;
+    $maxBytes = 5 * 1024 * 1024;
     if (($file['size'] ?? 0) > $maxBytes) {
-      return ['path' => $existingPath, 'error' => 'Photo must be 2MB or smaller.'];
+      return ['path' => $existingPath, 'error' => 'Photo must be 5MB or smaller.'];
     }
 
     $allowed = [
@@ -176,6 +190,81 @@ class BaseController
       return ['path' => $existingPath, 'error' => 'Unable to save photo.'];
     }
 
-    return ['path' => '/uploads/' . $type . '/' . $filename, 'error' => null];
+    $this->optimizeImage($targetPath);
+
+    $uploadPath = '/uploads/' . $type . '/' . $filename;
+
+
+    $this->convertImageToWebP($targetPath);
+
+    return ['path' => $uploadPath, 'error' => null];
+  }
+
+  /**
+   * Optimize uploaded image by resizing if necessary
+   * Reduces file size while maintaining quality
+   * 
+   * @param string $imagePath Full path to the uploaded image
+   * @return void
+   */
+  private function optimizeImage(string $imagePath): void
+  {
+    if (!file_exists($imagePath)) {
+      return;
+    }
+
+    $imageInfo = @getimagesize($imagePath);
+    if ($imageInfo === false) {
+      return;
+    }
+
+    list($width, $height) = $imageInfo;
+
+    $maxWidth = 1200;
+    $maxHeight = 1200;
+
+    if ($width <= $maxWidth && $height <= $maxHeight) {
+      return;
+    }
+
+    $result = ImageProcessor::resizeImageFile(
+      $imagePath,
+      quality: 85,
+      maxWidth: $maxWidth,
+      maxHeight: $maxHeight
+    );
+
+    if (!$result['success']) {
+      error_log('Image optimization failed for ' . basename($imagePath) . ': ' . ($result['error'] ?? 'Unknown error'));
+    }
+  }
+
+  /**
+   * Convert uploaded image to WebP format for optimized delivery
+   * Conversion is non-blocking - failures are logged but don't affect upload
+   * 
+   * @param string $imagePath Full path to the uploaded image
+   * @return void
+   */
+  private function convertImageToWebP(string $imagePath): void
+  {
+    if (!file_exists($imagePath)) {
+      return;
+    }
+
+    if (strtolower(pathinfo($imagePath, PATHINFO_EXTENSION)) === 'webp') {
+      return;
+    }
+
+    $result = ImageProcessor::convertToWebP(
+      $imagePath,
+      quality: 85,
+      maxWidth: 1200,
+      maxHeight: 1200
+    );
+
+    if (!$result['success']) {
+      error_log('WebP conversion failed for ' . basename($imagePath) . ': ' . ($result['error'] ?? 'Unknown error'));
+    }
   }
 }

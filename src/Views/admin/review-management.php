@@ -48,16 +48,16 @@
                   </a>
                 </h2>
                 <?php if ($review['is_approved_vre']): ?>
-                  <span class="inline-flex items-center rounded bg-green-100 px-2 py-1 text-xs text-green-800">
+                  <span class="inline-flex items-center rounded bg-brand-primary px-2 py-1 text-xs text-white">
                     Approved
                   </span>
                 <?php else: ?>
-                  <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-xs text-yellow-800">
+                  <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-xs text-white">
                     Pending Approval
                   </span>
                 <?php endif; ?>
                 <?php if ($review['is_featured_vre']): ?>
-                  <span class="inline-flex items-center rounded bg-blue-100 px-2 py-1 text-xs text-blue-800">
+                  <span class="inline-flex items-center rounded bg-orange-600 px-2 py-1 text-xs text-black">
                     ★ Featured
                   </span>
                 <?php endif; ?>

@@ -52,7 +52,7 @@ $status = (string) ($application['application_status_ven'] ?? '');
     <?php if (!empty($application['photo_path_ven'])): ?>
       <div class="mt-3">
         <p class="m-0 mb-2 font-semibold">Vendor Photo:</p>
-        <img src="<?= asset_url((string) $application['photo_path_ven']) ?>" alt="<?= h((string) $application['farm_name_ven']) ?> photo" class="h-auto max-w-sm rounded-lg border border-gray-200">
+        <img src="<?= asset_url((string) $application['photo_path_ven']) ?>" alt="<?= h((string) $application['farm_name_ven']) ?> photo" width="350" height="250" class="h-auto max-w-sm rounded-lg border border-gray-200">
         <br>
         <a href="<?= asset_url((string) $application['photo_path_ven']) ?>" target="_blank" rel="noopener" class="text-sm" aria-label="View vendor photo full size (opens in new window)">View full size</a>
       </div>
@@ -68,6 +68,12 @@ $status = (string) ($application['application_status_ven'] ?? '');
       <div class="field">
         <label for="admin_notes">Admin notes</label>
         <textarea id="admin_notes" name="admin_notes" rows="4"><?= h((string) ($application['admin_notes_ven'] ?? '')) ?></textarea>
+      </div>
+      <div class="field">
+        <label>
+          <input type="checkbox" name="is_featured_ven" value="1" <?= !empty($application['is_featured_ven']) ? 'checked' : '' ?>>
+          Featured Vendor
+        </label>
       </div>
       <button type="submit" name="action" value="approve">Approve</button>
       <button type="submit" name="action" value="request_changes">Request changes</button>

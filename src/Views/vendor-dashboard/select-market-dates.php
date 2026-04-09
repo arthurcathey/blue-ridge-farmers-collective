@@ -41,7 +41,6 @@ $marketDates = $marketDates ?? [];
         <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 
         <?php
-        // Group dates by market
         $datesByMarket = [];
         foreach ($marketDates as $date) {
           $marketId = $date['id_mkt'];
@@ -85,13 +84,13 @@ $marketDates = $marketDates ?? [];
                   <?php if ($isRegistered): ?>
                     <span class="inline-flex rounded px-2 py-1 text-xs font-semibold">
                       <?php if ($status === 'checked_in'): ?>
-                        <span class="bg-green-100 text-green-800">✓ Checked In</span>
+                        <span class="bg-green-100 text-white">✓ Checked In</span>
                       <?php elseif ($status === 'confirmed'): ?>
-                        <span class="bg-blue-100 text-blue-800">✓ Confirmed</span>
+                        <span class="bg-blue-100 text-white">✓ Confirmed</span>
                       <?php elseif ($status === 'no_show'): ?>
-                        <span class="bg-red-100 text-red-800">✗ No-Show</span>
+                        <span class="bg-red-100 text-white">✗ No-Show</span>
                       <?php else: ?>
-                        <span class="bg-yellow-100 text-yellow-800">⏳ Registered</span>
+                        <span class="bg-yellow-100 text-white">⏳ Registered</span>
                       <?php endif; ?>
                     </span>
                   <?php endif; ?>

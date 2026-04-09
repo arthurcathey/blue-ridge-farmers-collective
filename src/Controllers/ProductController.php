@@ -726,6 +726,37 @@ class ProductController extends BaseController
       $pagination = [];
     }
 
+    $activeFilters = [];
+    $filterNames = [];
+    $removeFilterUrls = [];
+
+    if (!empty($searchTerm)) {
+      $activeFilters[] = 'search';
+      $filterNames['search'] = htmlspecialchars($rawSearchTerm, ENT_QUOTES, 'UTF-8');
+      $removeFilterUrls['search'] = $this->buildFilterUrl(['search' => null, 'page' => null]);
+    }
+
+    if ($categoryId > 0) {
+      $activeFilters[] = 'category';
+      $categoryName = array_values(array_filter($categories, fn($c) => $c['id_pct'] == $categoryId));
+      $filterNames['category'] = $categoryName ? $categoryName[0]['name_pct'] : 'Unknown';
+      $removeFilterUrls['category'] = $this->buildFilterUrl(['category' => null, 'page' => null]);
+    }
+
+    if ($vendorId > 0) {
+      $activeFilters[] = 'vendor';
+      $vendorName = array_values(array_filter($vendors, fn($v) => $v['id_ven'] == $vendorId));
+      $filterNames['vendor'] = $vendorName ? $vendorName[0]['farm_name_ven'] : 'Unknown';
+      $removeFilterUrls['vendor'] = $this->buildFilterUrl(['vendor' => null, 'page' => null]);
+    }
+
+    if ($marketId > 0) {
+      $activeFilters[] = 'market';
+      $marketName = array_values(array_filter($markets, fn($m) => $m['id_mkt'] == $marketId));
+      $filterNames['market'] = $marketName ? $marketName[0]['name_mkt'] : 'Unknown';
+      $removeFilterUrls['market'] = $this->buildFilterUrl(['market' => null, 'page' => null]);
+    }
+
     return $this->render('products/index', [
       'title' => 'Product Catalog',
       'products' => $products,
@@ -734,6 +765,14 @@ class ProductController extends BaseController
       'markets' => $markets,
       'pagination' => $pagination,
       'rate_limit_error' => $rateLimitError,
+      'active_filters' => $activeFilters,
+      'filter_names' => $filterNames,
+      'remove_filter_urls' => $removeFilterUrls,
+      'search_term' => $searchTerm,
+      'category_id' => $categoryId,
+      'vendor_id' => $vendorId,
+      'market_id' => $marketId,
+      'sort_by' => $sortBy,
     ]);
   }
 
@@ -842,5 +881,36 @@ class ProductController extends BaseController
       echo json_encode(['products' => [], 'message' => 'Error searching products']);
       return '';
     }
+  }
+
+  /**
+   * Build a filter URL with specified filter parameters overridden
+   * Keeps all other existing filter parameters unless explicitly cleared
+   *
+   * @param array $overrides Filter parameters to set/override (associative array)
+   *                         Use null values to remove filters
+   *                         Setting a filter to non-null value will reset page to 1
+   * @return string The query string URL with updated filter parameters
+   */
+  private function buildFilterUrl(array $overrides): string
+  {
+    // Start with current query parameters
+    $params = $_GET;
+
+    // Apply override parameters
+    foreach ($overrides as $key => $value) {
+      if ($value === null) {
+        unset($params[$key]);
+      } else {
+        $params[$key] = $value;
+      }
+    }
+
+    if (isset($overrides) && count(array_diff_key($overrides, ['page' => null])) > 0) {
+      $params['page'] = 1;
+    }
+
+    $queryString = http_build_query($params);
+    return '/products' . ($queryString ? '?' . $queryString : '');
   }
 }

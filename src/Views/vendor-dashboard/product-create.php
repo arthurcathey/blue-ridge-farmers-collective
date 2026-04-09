@@ -1,5 +1,8 @@
 <section class="form-card">
-  <h1><?= h($title ?? 'Add Product') ?></h1>
+  <div class="mb-6 flex items-center justify-between">
+    <h1><?= h($title ?? 'Add Product') ?></h1>
+    <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
+  </div>
 
   <?php if (!empty($errors['general'])): ?>
     <div class="alert-error" data-flash>

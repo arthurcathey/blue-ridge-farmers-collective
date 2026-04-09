@@ -305,8 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           break;
         case "password":
-          const passwordErrors = validatePassword(value);
-          errors.push(...passwordErrors);
+          // Password validation disabled - only HTML5 required validation shown
           break;
         case "text":
         case "textarea":
@@ -370,28 +369,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function isValidPhone(phone) {
     const digitCount = phone.replace(/\D/g, "").length;
     return digitCount >= 10;
-  }
-
-  /**
-   * Validates password strength requirements
-   * @param {string} password - Password to validate
-   * @returns {string[]} Array of error messages (empty if valid)
-   */
-  function validatePassword(password) {
-    const errors = [];
-    if (password.length < 8) {
-      errors.push("Password must be at least 8 characters");
-    }
-    if (!/[A-Z]/.test(password)) {
-      errors.push("Password must contain an uppercase letter");
-    }
-    if (!/[a-z]/.test(password)) {
-      errors.push("Password must contain a lowercase letter");
-    }
-    if (!/[0-9]/.test(password)) {
-      errors.push("Password must contain a number");
-    }
-    return errors;
   }
 
   /**
@@ -742,7 +719,6 @@ document.addEventListener("DOMContentLoaded", () => {
    * Live Product Search with Debouncing
    * Updates results in real-time as user types, with AJAX fetch
    */
-  const liveSearchInput = document.querySelector('[data-search-input]');
   const resultsContainer = document.querySelector('[data-search-results]');
   const loadingIndicator = document.querySelector('[data-search-loading]');
 
@@ -801,6 +777,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Auto-save form data to localStorage
    * Prevents data loss on accidental navigation
+   * Skips file inputs and password fields
    */
   const autosaveForms = document.querySelectorAll('[data-autosave]');
 
@@ -814,7 +791,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = JSON.parse(savedData);
         Object.keys(data).forEach((name) => {
           const field = form.querySelector(`[name="${name}"]`);
-          if (field && field.type !== 'password') {
+          if (field && field.type !== 'password' && field.type !== 'file') {
             if (field.type === 'checkbox' || field.type === 'radio') {
               field.checked = data[name] === 'true' || data[name] === true;
             } else {
@@ -842,11 +819,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(form);
       const data = {};
       formData.forEach((value, key) => {
-        if (!key.includes('password') && key !== 'csrf_token') {
+        if (!key.includes('password') && key !== 'csrf_token' && !(value instanceof File)) {
           data[key] = value;
         }
       });
-      localStorage.setItem(storageKey, JSON.stringify(data));
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(data));
+      } catch (e) {
+        console.warn('Could not save form data to localStorage:', e);
+      }
     }, 500);
 
     form.addEventListener('input', saveData);
@@ -864,6 +845,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const calendarContainer = document.querySelector('[data-market-calendar]');
   if (calendarContainer) {
     let currentDate = new Date();
+    let calendarApiData = {};
+    const weatherIcons = {
+      clear: '☀️',
+      cloudy: '☁️',
+      rainy: '🌧️',
+      stormy: '⛈️',
+      snowy: '❄️',
+      cancelled_weather: '🚫'
+    };
+
+    const weatherLabels = {
+      clear: 'Clear',
+      cloudy: 'Cloudy',
+      rainy: 'Rainy',
+      stormy: 'Stormy',
+      snowy: 'Snowy',
+      cancelled_weather: 'Cancelled (Weather)'
+    };
+
+    function getWeatherDisplay(weather) {
+      if (!weather) return '';
+      const icon = weatherIcons[weather] || '';
+      const label = weatherLabels[weather] || weather.replace('_', ' ');
+      return icon ? `${icon} ${label}` : label;
+    }
 
     function renderCalendar() {
       const year = currentDate.getFullYear();
@@ -882,6 +888,8 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!data || typeof data !== 'object' || !data.dates) {
             throw new Error('Invalid response format');
           }
+
+          calendarApiData = data.dates;
 
           const firstDate = new Date(year, month - 1, 1);
           const lastDate = new Date(year, month, 0);
@@ -967,7 +975,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
           calendarContainer.addEventListener('calendarDateSelected', (e) => {
-            const { date, markets } = e.detail;
+            const { date } = e.detail;
             const [year, month, day] = date.split('-').map(Number);
             const dateObj = new Date(year, month - 1, day);
             const formattedDate = dateObj.toLocaleDateString('en-US', { 
@@ -985,10 +993,16 @@ document.addEventListener("DOMContentLoaded", () => {
               document.body.appendChild(modal);
             }
 
-            const marketList = markets
-              .split(',')
-              .map(m => m.trim())
-              .filter(m => m.length > 0);
+            const dateData = calendarApiData[date];
+            const marketsWithWeather = dateData?.markets || [];
+
+            const marketListHtml = marketsWithWeather.map(market => {
+              const weatherDisplay = getWeatherDisplay(market.weather);
+              return `<li style="margin-bottom: 0.75rem; color: #111827;">
+                <strong>${market.name}</strong>
+                ${weatherDisplay ? `<span style="display: inline-block; margin-left: 0.5rem; color: #4b5563;">${weatherDisplay}</span>` : ''}
+              </li>`;
+            }).join('');
 
             modal.innerHTML = `
               <div class="lightbox-overlay" data-close></div>
@@ -998,7 +1012,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <h2 style="margin: 0 0 1rem 0; font-size: 1.5rem; color: #3F4F47;">${formattedDate}</h2>
                   <p style="margin: 0 0 1rem 0; color: #4b5563;">Markets on this date:</p>
                   <ul style="margin: 0 0 1.5rem 0; padding-left: 1.5rem; list-style: disc;">
-                    ${marketList.map(market => `<li style="margin-bottom: 0.5rem; color: #111827;">${market}</li>`).join('')}
+                    ${marketListHtml}
                   </ul>
                   <p style="margin: 0; color: #6b7280; font-size: 0.875rem;">Click a market to view details or apply.</p>
                 </div>
@@ -1052,11 +1066,126 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  /**
+   * Carousel Functionality for Featured Vendors
+   * Mobile-first responsive carousel with touch support
+   */
+  const initCarousel = () => {
+    const carousels = document.querySelectorAll('[data-carousel]');
+    
+    carousels.forEach(carousel => {
+      const track = carousel.querySelector('.carousel-track');
+      const slides = carousel.querySelectorAll('.carousel-slide');
+      const prevBtn = carousel.querySelector('.carousel-prev');
+      const nextBtn = carousel.querySelector('.carousel-next');
+      const dots = carousel.querySelectorAll('.carousel-dot');
+      
+      if (!track || slides.length === 0) return;
+      
+      let currentIndex = 0;
+      const slideCount = slides.length;
+      
+      const updateCarousel = () => {
+        const offset = -currentIndex * 100;
+        track.style.transform = `translateX(${offset}%)`;
+        
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('bg-brand-primary', idx === currentIndex);
+          dot.classList.toggle('bg-gray-300', idx !== currentIndex);
+        });
+      };
+      
+      const goToSlide = (idx) => {
+        currentIndex = Math.max(0, Math.min(idx, slideCount - 1));
+        updateCarousel();
+      };
+      
+      const nextSlide = () => {
+        if (currentIndex < slideCount - 1) {
+          currentIndex++;
+        } else {
+          currentIndex = 0; 
+        }
+        updateCarousel();
+      };
+      
+      const prevSlide = () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+        } else {
+          currentIndex = slideCount - 1; 
+        }
+        updateCarousel();
+      };
+      
+      let isDragging = false;
+      let startX = 0;
+      
+      track.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+      });
+      
+      document.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diff = startX - e.clientX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) nextSlide();
+          else prevSlide();
+        }
+      });
+      
+      track.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      });
+      
+      track.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) nextSlide();
+          else prevSlide();
+        }
+      });
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          prevSlide();
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          nextSlide();
+        });
+      }
+      
+      dots.forEach((dot, idx) => {
+        dot.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          goToSlide(idx);
+        });
+      });
+      
+      updateCarousel();
+    });
+  };
+  
+  const syncWeatherBtn = document.getElementById('syncWeatherBtn');
+  if (syncWeatherBtn) {
+    syncWeatherBtn.addEventListener('click', syncMarketWeather);
+  }
+  
+  initCarousel();
 });
 
-// ======================
 // Vendor Attendance Functions
-// ======================
 
 let currentVendorId = null;
 let currentDateId = null;
@@ -1326,17 +1455,7 @@ window.openCreateLayoutModal = function(marketId) {
   }
 };
 
-// ======================
 // Weather Management
-// ======================
-
-document.addEventListener('DOMContentLoaded', () => {
-  const syncWeatherBtn = document.getElementById('syncWeatherBtn');
-  
-  if (syncWeatherBtn) {
-    syncWeatherBtn.addEventListener('click', syncMarketWeather);
-  }
-});
 
 /**
  * Sync weather data for all upcoming market dates (admin only)
@@ -1407,24 +1526,12 @@ window.closeCreateLayoutModal = function() {
   }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-  const createLayoutModal = document.getElementById('createLayoutModal');
-  if (createLayoutModal) {
-    createLayoutModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeCreateLayoutModal();
-      }
-    });
-  }
-});
-
 /**
  * Vendor Transfer Request Management
  * Handles approval and rejection of vendor market transfer requests
  */
 
 window.approveTransfer = function(transferId, vendorName) {
-  const baseUrl = '<?php echo url(""); ?>' || '';
   if (confirm(`Approve transfer for ${vendorName}?`)) {
     const csrfToken = document.querySelector('[name="csrf_token"]')?.value || '';
     fetch('/admin/vendor-transfer-requests/approve', {
@@ -1506,7 +1613,6 @@ window.saveVendor = function(vendorId) {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      // Update button state
       button.classList.remove('btn-action-green');
       button.classList.add('btn-action-red');
       button.textContent = 'Remove from Saved';
@@ -1550,5 +1656,84 @@ window.unsaveVendor = function(vendorId) {
   })
   .catch(error => {
     alert('Error: ' + error);
+  });
+};
+
+/**
+ * Delete Market Image Functionality
+ * Removes hero image from market and reloads the edit page
+ */
+window.deleteMarketImage = function(marketId) {
+  if (!confirm('Are you sure you want to delete this image?')) {
+    return;
+  }
+  
+  const form = document.querySelector('form');
+  if (!form) {
+    alert('Form not found. Please refresh the page.');
+    return;
+  }
+  
+  const csrfField = form.querySelector('input[name="csrf_token"]');
+  if (!csrfField) {
+    alert('Security token missing. Please refresh the page.');
+    return;
+  }
+  
+  const csrfToken = csrfField.value;
+  
+  const formData = new FormData();
+  formData.append('market_id', marketId);
+  formData.append('csrf_token', csrfToken);
+  
+  fetch('/admin/markets/delete-image', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      return response.text().then(text => {
+        console.error('Response:', text);
+        alert('Failed to delete image. Please try again.');
+      });
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred. Please try again.');
+  });
+};
+
+/**
+ * Delete Vendor Photo Functionality
+ * Removes farm photo from vendor profile and reloads the page
+ */
+window.deleteVendorPhoto = function() {
+  if (!confirm('Are you sure you want to delete your farm photo?')) {
+    return;
+  }
+  
+  const form = document.querySelector('form');
+  const csrfToken = form.querySelector('input[name="csrf_token"]').value;
+  
+  const formData = new FormData();
+  formData.append('csrf_token', csrfToken);
+  
+  fetch('/vendor/delete-photo', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      alert('Failed to delete photo. Please try again.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred. Please try again.');
   });
 };
