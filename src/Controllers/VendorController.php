@@ -196,14 +196,6 @@ class VendorController extends BaseController
     $this->redirect('/vendor/apply');
   }
 
-  private function fetchApplication(int $accountId): ?array
-  {
-    $stmt = $this->db()->prepare('SELECT id_ven, farm_name_ven, farm_description_ven, city_ven, state_ven, phone_ven, website_ven, address_ven, application_status_ven, applied_date_ven, photo_path_ven, primary_categories_ven, production_methods_ven, years_in_operation_ven, food_safety_info_ven, admin_notes_ven FROM vendor_ven WHERE id_acc_ven = :id LIMIT 1');
-    $stmt->execute([':id' => $accountId]);
-    $row = $stmt->fetch();
-    return $row ?: null;
-  }
-
 
 
   public function apply(): string
@@ -633,7 +625,8 @@ class VendorController extends BaseController
 
     try {
       $db = $this->db();
-      $stmt = $db->query('SELECT id_ven, farm_name_ven, farm_description_ven, city_ven, state_ven, photo_path_ven, is_featured_ven FROM vendor_ven ORDER BY farm_name_ven ASC');
+      $stmt = $db->prepare('SELECT id_ven, farm_name_ven, farm_description_ven, city_ven, state_ven, photo_path_ven, is_featured_ven FROM vendor_ven WHERE application_status_ven = :status ORDER BY is_featured_ven DESC, farm_name_ven ASC');
+      $stmt->execute([':status' => 'approved']);
       $rows = $stmt ? $stmt->fetchAll() : [];
       $vendors = array_map(function (array $row): array {
         $slug = $this->slugify((string) $row['farm_name_ven']);
@@ -671,7 +664,9 @@ class VendorController extends BaseController
     try {
       $db = $this->db();
 
-      $stmt = $db->query('SELECT id_ven, farm_name_ven, farm_description_ven, philosophy_ven, city_ven, state_ven, phone_ven, website_ven, photo_path_ven, latitude_ven, longitude_ven FROM vendor_ven ORDER BY farm_name_ven ASC');
+      // Use prepared statement and filter by approval status
+      $stmt = $db->prepare('SELECT id_ven, farm_name_ven, farm_description_ven, philosophy_ven, city_ven, state_ven, phone_ven, website_ven, photo_path_ven, latitude_ven, longitude_ven FROM vendor_ven WHERE application_status_ven = :status ORDER BY farm_name_ven ASC');
+      $stmt->execute([':status' => 'approved']);
       $rows = $stmt ? $stmt->fetchAll() : [];
 
       $vendorId = null;
@@ -704,12 +699,26 @@ class VendorController extends BaseController
         $stmt = $db->prepare('SELECT p.id_prd, p.name_prd, p.description_prd, p.photo_path_prd, c.name_pct AS category FROM product_prd p JOIN product_category_pct c ON c.id_pct = p.id_pct_prd WHERE p.id_ven_prd = :vendor AND p.is_active_prd = 1 ORDER BY p.name_prd ASC');
         $stmt->execute([':vendor' => $vendorId]);
         $productRows = $stmt ? $stmt->fetchAll() : [];
-        $products = array_map(function (array $row) use ($db): array {
 
-          $seasonalStmt = $db->prepare('SELECT month_pse FROM product_seasonality_pse WHERE id_prd_pse = :product_id ORDER BY month_pse');
-          $seasonalStmt->execute([':product_id' => $row['id_prd']]);
+        // Load all seasonal data at once to prevent N+1 queries
+        $productIds = array_column($productRows, 'id_prd');
+        $seasonalMap = [];
+        if (!empty($productIds)) {
+          $placeholders = implode(',', array_fill(0, count($productIds), '?'));
+          $seasonalStmt = $db->prepare("SELECT id_prd_pse, month_pse FROM product_seasonality_pse WHERE id_prd_pse IN ($placeholders) ORDER BY month_pse");
+          $seasonalStmt->execute($productIds);
           $seasonalRows = $seasonalStmt ? $seasonalStmt->fetchAll() : [];
-          $seasonalMonths = array_map(fn($r) => (int)$r['month_pse'], $seasonalRows);
+          foreach ($seasonalRows as $sRow) {
+            $productId = (int) $sRow['id_prd_pse'];
+            if (!isset($seasonalMap[$productId])) {
+              $seasonalMap[$productId] = [];
+            }
+            $seasonalMap[$productId][] = (int) $sRow['month_pse'];
+          }
+        }
+
+        $products = array_map(function (array $row) use ($seasonalMap): array {
+          $seasonalMonths = $seasonalMap[$row['id_prd']] ?? [];
 
           return [
             'name' => $row['name_prd'],
