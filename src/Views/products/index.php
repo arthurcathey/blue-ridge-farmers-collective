@@ -176,7 +176,7 @@
                 ? "badge-category badge-category-{$categoryName}"
                 : 'badge-category';
               ?>
-              <span class="<?= $badgeClass ?>">
+              <span class="<?= htmlspecialchars($badgeClass, ENT_QUOTES, 'UTF-8') ?>">
                 <?= h($product['category']) ?>
               </span>
             </div>
