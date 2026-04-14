@@ -410,10 +410,14 @@ class AuthController extends BaseController
    */
   public function resetPassword(): string
   {
-    $token = $_POST['token'] ?? '';
+    $token = trim((string) ($_POST['token'] ?? ''));
     $password = $_POST['password'] ?? '';
     $confirm = $_POST['confirm_password'] ?? '';
     $errors = [];
+
+    if (!$token || !preg_match('/^[a-f0-9]{32,}$/', $token)) {
+      $errors['token'] = 'Invalid token format.';
+    }
 
     if (strlen($password) < 8) {
       $errors['password'] = 'Password must be at least 8 characters.';

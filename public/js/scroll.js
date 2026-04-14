@@ -33,13 +33,13 @@ export const ScrollEffects = (() => {
       });
     }
 
-    const backToTopBtn = document.querySelector("[data-back-to-top]");
+    const backToTopBtn = document.querySelector("#back-to-top");
     if (backToTopBtn) {
       window.addEventListener("scroll", () => {
         if (window.scrollY > 300) {
-          backToTopBtn.style.display = "block";
+          backToTopBtn.classList.add("show");
         } else {
-          backToTopBtn.style.display = "none";
+          backToTopBtn.classList.remove("show");
         }
       });
 

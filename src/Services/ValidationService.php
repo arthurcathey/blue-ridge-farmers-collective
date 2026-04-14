@@ -250,4 +250,55 @@ class ValidationService
 
     return ['valid' => true, 'error' => null];
   }
+
+  /**
+   * Validate latitude coordinate (-90 to 90)
+   *
+   * @param float|null $latitude Latitude value
+   * @return bool True if valid
+   */
+  public static function isValidLatitude(?float $latitude): bool
+  {
+    if ($latitude === null) {
+      return true;
+    }
+    return $latitude >= -90 && $latitude <= 90;
+  }
+
+  /**
+   * Validate longitude coordinate (-180 to 180)
+   *
+   * @param float|null $longitude Longitude value
+   * @return bool True if valid
+   */
+  public static function isValidLongitude(?float $longitude): bool
+  {
+    if ($longitude === null) {
+      return true;
+    }
+    return $longitude >= -180 && $longitude <= 180;
+  }
+
+  /**
+   * Validate page number and return bounded value
+   *
+   * @param int $page Page number
+   * @param int $maxPage Maximum allowed page (default: 10000)
+   * @return int Validated page number
+   */
+  public static function validatePageNumber(int $page, int $maxPage = 10000): int
+  {
+    return min(max(1, $page), $maxPage);
+  }
+
+  /**
+   * Sanitize checkbox to 0 or 1
+   *
+   * @param mixed $value Value to sanitize
+   * @return int Returns 1 if truthy, 0 otherwise
+   */
+  public static function sanitizeCheckbox($value): int
+  {
+    return isset($value) && $value ? 1 : 0;
+  }
 }

@@ -337,7 +337,7 @@ class ProductController extends BaseController
     $name = trim((string) ($_POST['name'] ?? ''));
     $description = trim((string) ($_POST['description'] ?? ''));
     $categoryId = (int) ($_POST['category_id'] ?? 0);
-    $isActive = isset($_POST['is_active']) ? 1 : 0;
+    $isActive = ValidationService::sanitizeCheckbox($_POST['is_active'] ?? null);
     $seasonalMonths = array_map('intval', (array) ($_POST['seasonal_months'] ?? []));
     $seasonalMonths = array_filter($seasonalMonths, function ($month) {
       return $month >= 1 && $month <= 12;
@@ -628,10 +628,16 @@ class ProductController extends BaseController
       $page = max(1, (int) ($_GET['page'] ?? 1));
       $perPage = 12;
 
+      error_log('=== PRODUCT SEARCH DEBUG ===');
+      error_log('Raw search term: ' . var_export($rawSearchTerm, true));
+
       $searchTerm = '';
       if (!empty($rawSearchTerm)) {
         $searchTerm = ValidationService::sanitizeSearchInput($rawSearchTerm);
       }
+
+      error_log('After sanitization: ' . var_export($searchTerm, true));
+      error_log('Category: ' . $categoryId . ', Vendor: ' . $vendorId . ', Market: ' . $marketId);
 
       if (!empty($searchTerm)) {
         if ($this->isRateLimited()) {
@@ -650,13 +656,9 @@ class ProductController extends BaseController
           FROM product_prd p 
           JOIN product_category_pct c ON c.id_pct = p.id_pct_prd 
           JOIN vendor_ven v ON v.id_ven = p.id_ven_prd 
-          WHERE p.is_active_prd = 1 ORDER BY " . $orderBy . " LIMIT :limit OFFSET :offset";
+          WHERE p.is_active_prd = 1 ORDER BY " . $orderBy . " LIMIT " . intval($perPage) . " OFFSET " . intval($offset);
 
-        $stmt = $db->prepare($simpleQuery);
-        $stmt->execute([
-          ':limit' => $perPage,
-          ':offset' => $offset,
-        ]);
+        $stmt = $db->query($simpleQuery);
         $rows = $stmt ? $stmt->fetchAll() : [];
       } else {
         $query = 'SELECT DISTINCT p.id_prd, p.name_prd, p.description_prd, p.photo_path_prd, c.name_pct AS category, v.farm_name_ven AS vendor 
@@ -727,10 +729,7 @@ class ProductController extends BaseController
         $totalCount = (int) ($countStmt->fetchColumn() ?? 0);
 
         $offset = ($page - 1) * $perPage;
-        $query .= ' LIMIT :limit OFFSET :offset';
-
-        $params[':limit'] = $perPage;
-        $params[':offset'] = $offset;
+        $query .= ' LIMIT ' . intval($perPage) . ' OFFSET ' . intval($offset);
 
         $stmt = $db->prepare($query);
         $stmt->execute($params);

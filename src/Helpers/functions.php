@@ -417,3 +417,81 @@ if (!function_exists('picture_tag')) {
     return '<img src="' . $imgUrl . '" alt="' . $altText . '" class="' . $classes . '"' . $attrString . ' />';
   }
 }
+
+if (!function_exists('validate_text_length')) {
+  /**
+   * Validate text field length and return error if invalid
+   *
+   * @param string $value Text to validate
+   * @param int $minLength Minimum allowed length
+   * @param int $maxLength Maximum allowed length
+   * @param string $fieldName Field name for error message
+   * @return string|null Error message or null if valid
+   */
+  function validate_text_length(string $value, int $minLength, int $maxLength, string $fieldName): ?string
+  {
+    $length = strlen(trim($value));
+    if ($length < $minLength) {
+      return "$fieldName must be at least $minLength characters.";
+    }
+    if ($length > $maxLength) {
+      return "$fieldName cannot exceed $maxLength characters.";
+    }
+    return null;
+  }
+}
+
+if (!function_exists('validate_coordinates')) {
+  /**
+   * Validate latitude and longitude for geographic coordinates
+   *
+   * @param float|null $latitude Latitude value (-90 to 90)
+   * @param float|null $longitude Longitude value (-180 to 180)
+   * @return array Array of error messages (empty if valid)
+   */
+  function validate_coordinates(?float $latitude, ?float $longitude): array
+  {
+    $errors = [];
+
+    if ($latitude !== null) {
+      if ($latitude < -90 || $latitude > 90) {
+        $errors['latitude'] = 'Latitude must be between -90 and 90 degrees.';
+      }
+    }
+
+    if ($longitude !== null) {
+      if ($longitude < -180 || $longitude > 180) {
+        $errors['longitude'] = 'Longitude must be between -180 and 180 degrees.';
+      }
+    }
+
+    return $errors;
+  }
+}
+
+if (!function_exists('validate_page_number')) {
+  /**
+   * Validate and constrain page number to reasonable bounds
+   *
+   * @param int $page Page number from user input
+   * @param int $maxPage Maximum allowed page number (default: 10000)
+   * @return int Validated page number
+   */
+  function validate_page_number(int $page, int $maxPage = 10000): int
+  {
+    return min(max(1, $page), $maxPage);
+  }
+}
+
+if (!function_exists('sanitize_checkbox')) {
+  /**
+   * Standardized checkbox sanitization
+   *
+   * @param mixed $value Value from POST/GET
+   * @return int Returns 1 if truthy, 0 otherwise
+   */
+  function sanitize_checkbox($value): int
+  {
+    return isset($value) && $value ? 1 : 0;
+  }
+}

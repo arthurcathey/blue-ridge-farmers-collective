@@ -73,7 +73,7 @@ $attendanceStats = $attendanceStats ?? [];
 
       <div class="rounded bg-red-50 p-4 text-center">
         <p class="text-xs font-medium text-red-600">No-Shows</p>
-        <p class="text-2xl font-bold text-red-900"><?= $attendanceStats['no_show'] ?? 0 ?></p>
+        <p class="text-2xl font-bold text-red-900"><?= $attendanceStats['no_shows'] ?? 0 ?></p>
       </div>
     </div>
 
@@ -126,18 +126,21 @@ $attendanceStats = $attendanceStats ?? [];
             <button
               onclick="filterByStatus('all')"
               class="btn-secondary"
+              data-status-filter="all"
               id="filterAll">
               All
             </button>
             <button
-              onclick="filterByStatus('checked-in')"
+              onclick="filterByStatus('checked_in')"
               class="btn-secondary"
+              data-status-filter="checked_in"
               id="filterCheckedIn">
               Checked In
             </button>
             <button
               onclick="filterByStatus('pending')"
               class="btn-secondary"
+              data-status-filter="pending"
               id="filterPending">
               Pending
             </button>
@@ -168,7 +171,7 @@ $attendanceStats = $attendanceStats ?? [];
               };
               ?>
               <div class="vendor-row flex items-center justify-between rounded border border-gray-200 p-4 transition hover:bg-gray-50"
-                data-status="<?= $status ?>"
+                data-vendor-status="<?= $status ?>"
                 data-vendor-id="<?= $vendor['id_ven'] ?>"
                 data-farm-name="<?= h(strtolower($vendor['farm_name_ven'])) ?>">
 
@@ -237,7 +240,7 @@ $attendanceStats = $attendanceStats ?? [];
       <div class="space-y-2">
         <button
           onclick="markAsNoShow()"
-          class="w-full rounded border border-red-200 bg-red-50 p-3 text-left text-sm font-medium text-white hover:bg-red-100">
+          class="w-full rounded border border-red-200 bg-red-50 p-3 text-left text-sm font-medium text-red-700 hover:bg-red-100">
           Mark as No-Show
         </button>
 

@@ -3,10 +3,10 @@
     <h1><?= h($title ?? 'Manage Market Dates') ?></h1>
     <div class="flex flex-wrap gap-2">
       <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
-      <button id="syncWeatherBtn" class="form-submit inline-block bg-blue-600 hover:bg-blue-700" title="Auto-fetch weather for upcoming dates">
+      <button id="syncWeatherBtn" onclick="syncWeather()" class="form-submit inline-block bg-blue-600 hover:bg-blue-700" title="Auto-fetch weather for upcoming dates">
         Sync Weather
       </button>
-      <a href="<?= url('/admin/market-dates/new') ?>" class="form-submit inline-block">Add Market Date</a>
+      <a href="<?= url('/admin/market-dates/new') ?>" class="form-submit inline-block text-center">Add Market Date</a>
     </div>
   </div>
 

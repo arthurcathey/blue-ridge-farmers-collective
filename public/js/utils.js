@@ -24,15 +24,23 @@ export const debounce = (func, delay) => {
 /**
  * Initialize flash message auto-removal
  *
- * Removes flash message element after 5 second timeout
+ * Removes flash message element after 7 second timeout.
+ * Users can also close manually by clicking the message.
  *
  * @returns {void}
  */
 export const initFlashMessages = () => {
   const flash = document.querySelector("[data-flash]");
   if (flash) {
-    setTimeout(() => {
+    flash.style.cursor = 'pointer';
+    flash.addEventListener('click', () => {
       flash.remove();
-    }, 5000);
+    });
+
+    setTimeout(() => {
+      if (flash.parentElement) {
+        flash.remove();
+      }
+    }, 7000);
   }
 };

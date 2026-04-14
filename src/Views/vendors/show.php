@@ -4,7 +4,7 @@
   <div class="mb-4 flex gap-3">
     <a href="<?= url('/vendors') ?>" class="btn-secondary">Back to Vendors</a>
     <?php if ($authUser): ?>
-      <button id="saveVendorBtn" class="btn-action-green" onclick="saveVendor(<?= (int) $vendor['id'] ?>)">
+      <button id="saveVendorBtn" class="btn-action-green" onclick="saveVendor(<?= (int) $vendor['id'] ?>, this)">
         Save Vendor
       </button>
       <input type="hidden" id="csrfToken" value="<?= h(csrf_token()) ?>">

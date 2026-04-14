@@ -87,6 +87,18 @@ class ImageProcessor
    * 
    * @return array Conversion result
    */
+  /**
+   * Convert image using ImageMagick (recommended)
+   * 
+   * @param string $source Original image path
+   * @param string $destination WebP output path
+   * @param int $quality Quality level (0-100)
+   * @param int|null $maxWidth Maximum width
+   * @param int|null $maxHeight Maximum height
+   * 
+   * @return array Conversion result
+   * @phpstan-ignore-next-line
+   */
   private static function convertWithImageMagick(
     string $source,
     string $destination,
@@ -95,19 +107,27 @@ class ImageProcessor
     ?int $maxHeight
   ): array {
     try {
-      /** @phpstan-ignore-next-line */
+      /**
+       * @phpstan-ignore-next-line
+       * @var \Imagick $image
+       */
       $image = new \Imagick($source);
 
       if ($maxWidth || $maxHeight) {
+        /** @phpstan-ignore-next-line */
         self::resizeImage($image, $maxWidth, $maxHeight);
       }
 
       /** @phpstan-ignore-next-line */
       $image->setImageCompression(\Imagick::COMPRESSION_JPEG);
+      /** @phpstan-ignore-next-line */
       $image->setImageCompressionQuality($quality);
 
+      /** @phpstan-ignore-next-line */
       $image->setImageFormat('webp');
+      /** @phpstan-ignore-next-line */
       $image->writeImage($destination);
+      /** @phpstan-ignore-next-line */
       $image->destroy();
 
       return [
@@ -253,9 +273,21 @@ class ImageProcessor
    * 
    * @return void
    */
+  /**
+   * Resize an Imagick image while maintaining aspect ratio
+   * 
+   * @param object $image Imagick image object
+   * @param int|null $maxWidth Maximum width
+   * @param int|null $maxHeight Maximum height
+   * 
+   * @return void
+   * @phpstan-ignore-next-line
+   */
   private static function resizeImage($image, ?int $maxWidth, ?int $maxHeight): void
   {
+    /** @phpstan-ignore-next-line */
     $width = $image->getImageWidth();
+    /** @phpstan-ignore-next-line */
     $height = $image->getImageHeight();
 
     list($newWidth, $newHeight) = self::calculateDimensions($width, $height, $maxWidth, $maxHeight);
@@ -271,6 +303,12 @@ class ImageProcessor
    * 
    * @return bool True if WebP is supported
    */
+  /**
+   * Check if server supports WebP conversion
+   * 
+   * @return bool True if WebP is supported
+   * @phpstan-ignore-next-line
+   */
   public static function supportsWebP(): bool
   {
     if (extension_loaded('gd') && function_exists('imagewebp')) {
@@ -281,6 +319,7 @@ class ImageProcessor
       try {
         /** @phpstan-ignore-next-line */
         $formats = \Imagick::queryFormats();
+        /** @phpstan-ignore-next-line */
         return in_array('WEBP', $formats);
       } catch (\Exception $e) {
         return false;
@@ -326,7 +365,7 @@ class ImageProcessor
     }
 
     if (!$maxWidth && !$maxHeight) {
-      return ['success' => true, 'error' => null];  // No resize needed
+      return ['success' => true, 'error' => null];
     }
 
     try {
@@ -338,14 +377,19 @@ class ImageProcessor
       list($width, $height, $type) = $imageInfo;
 
       if (($maxWidth && $width <= $maxWidth) && ($maxHeight && $height <= $maxHeight)) {
-        return ['success' => true, 'error' => null];  // Image is small enough
+        return ['success' => true, 'error' => null];
       }
 
       if (extension_loaded('imagick')) {
         try {
-          /** @phpstan-ignore-next-line */
+          /**
+           * @phpstan-ignore-next-line
+           * @var \Imagick $image
+           */
           $image = new \Imagick($imagePath);
+          /** @phpstan-ignore-next-line */
           $currentWidth = $image->getImageWidth();
+          /** @phpstan-ignore-next-line */
           $currentHeight = $image->getImageHeight();
 
           list($newWidth, $newHeight) = self::calculateDimensions(
@@ -361,10 +405,14 @@ class ImageProcessor
           }
 
           $ext = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
+          /** @phpstan-ignore-next-line */
           $image->setImageCompression(\Imagick::COMPRESSION_JPEG);
+          /** @phpstan-ignore-next-line */
           $image->setImageCompressionQuality($quality);
 
+          /** @phpstan-ignore-next-line */
           $image->writeImage($imagePath);
+          /** @phpstan-ignore-next-line */
           $image->destroy();
 
           return ['success' => true, 'error' => null];
@@ -408,7 +456,7 @@ class ImageProcessor
           $success = imagewebp($image, $imagePath, $quality);
         } elseif ($ext === 'png') {
           $success = imagepng($image, $imagePath);
-        } else {  // jpg/jpeg
+        } else {
           $success = imagejpeg($image, $imagePath, $quality);
         }
 

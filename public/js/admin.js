@@ -308,9 +308,15 @@ export const Admin = (() => {
    * Save vendor to user's collection
    *
    * @param {number} vendorId - Vendor ID to save
+   * @param {HTMLElement} button - The button element that triggered the action
    * @returns {void}
    */
-  const saveVendor = function(vendorId) {
+  const saveVendor = function(vendorId, button) {
+    // If button not passed, try to find it
+    if (!button) {
+      button = document.getElementById('saveVendorBtn');
+    }
+
     const csrfField = document.getElementById('csrfToken');
     if (!csrfField) {
       alert('Security token missing. Please refresh the page.');
@@ -322,19 +328,21 @@ export const Admin = (() => {
     formData.append('vendor_id', vendorId);
     formData.append('csrf_token', csrfToken);
 
-    fetch('/save-vendor', {
+    fetch('/vendors/save', {
       method: 'POST',
       body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          const button = event?.target;
           if (button) {
-            button.textContent = 'Saved';
+            button.textContent = 'Saved ✓';
             button.disabled = true;
-            button.onclick = () => unsaveVendor(vendorId);
+            button.classList.remove('btn-action-green');
+            button.classList.add('btn-disabled');
+            button.onclick = () => unsaveVendor(vendorId, button);
           }
+          alert('Vendor saved successfully!');
         } else {
           alert('Error: ' + (data.error || 'Could not save vendor'));
         }
@@ -349,9 +357,15 @@ export const Admin = (() => {
    * Remove vendor from user's collection
    *
    * @param {number} vendorId - Vendor ID to unsave
+   * @param {HTMLElement} button - The button element that triggered the action
    * @returns {void}
    */
-  const unsaveVendor = function(vendorId) {
+  const unsaveVendor = function(vendorId, button) {
+    // If button not passed, try to find it
+    if (!button) {
+      button = document.getElementById('saveVendorBtn');
+    }
+
     const csrfField = document.getElementById('csrfToken');
     if (!csrfField) {
       alert('Security token missing. Please refresh the page.');
@@ -363,19 +377,21 @@ export const Admin = (() => {
     formData.append('vendor_id', vendorId);
     formData.append('csrf_token', csrfToken);
 
-    fetch('/unsave-vendor', {
+    fetch('/vendors/unsave', {
       method: 'POST',
       body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          const button = event?.target;
           if (button) {
             button.textContent = 'Save Vendor';
             button.disabled = false;
-            button.onclick = () => saveVendor(vendorId);
+            button.classList.remove('btn-disabled');
+            button.classList.add('btn-action-green');
+            button.onclick = () => saveVendor(vendorId, button);
           }
+          alert('Vendor removed from saved list');
         } else {
           alert('Error: ' + (data.error || 'Could not unsave vendor'));
         }
@@ -784,6 +800,51 @@ export const Admin = (() => {
   };
 
   /**
+   * Sync weather data for upcoming market dates
+   *
+   * @returns {void}
+   */
+  const syncWeather = function() {
+    if (!confirm('Sync weather data for all upcoming market dates? This may take a moment.')) return;
+
+    const button = document.getElementById('syncWeatherBtn');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Syncing...';
+    }
+
+    const formData = new FormData();
+    formData.append('csrf_token', getCsrfToken());
+
+    fetch('/api/admin/weather/sync-market-dates', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (data.error) {
+          alert('Error: ' + data.error);
+        } else {
+          alert(data.message || 'Weather data synced successfully!');
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.error('Error syncing weather:', err);
+        alert('Failed to sync weather data. See console for details.');
+      })
+      .finally(() => {
+        if (button) {
+          button.disabled = false;
+          button.textContent = 'Sync Weather';
+        }
+      });
+  };
+
+  /**
    * Initialize Admin module and expose functions to window object
    *
    * Sets up all window event handlers for onclick attributes
@@ -824,6 +885,7 @@ export const Admin = (() => {
     window.openEditAdminModal = openEditAdminModal;
     window.closeEditAdminModal = closeEditAdminModal;
     window.closeBoothEditor = closeBoothEditor;
+    window.syncWeather = syncWeather;
 
     isInitialized = true;
   };

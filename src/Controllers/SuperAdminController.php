@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\ValidationService;
+
 /**
  * Super Admin Controller
  * 
@@ -141,7 +143,7 @@ class SuperAdminController extends BaseController
       'default_location' => trim($_POST['default_location'] ?? ''),
       'latitude' => !empty($_POST['latitude']) ? (float) $_POST['latitude'] : null,
       'longitude' => !empty($_POST['longitude']) ? (float) $_POST['longitude'] : null,
-      'is_active' => isset($_POST['is_active']) ? 1 : 0,
+      'is_active' => ValidationService::sanitizeCheckbox($_POST['is_active'] ?? null),
     ];
 
     if (empty($old['name'])) {
@@ -174,14 +176,14 @@ class SuperAdminController extends BaseController
 
     if (empty($old['latitude'])) {
       $errors['latitude'] = 'Latitude is required for weather features';
-    } elseif ($old['latitude'] < -90 || $old['latitude'] > 90) {
-      $errors['latitude'] = 'Latitude must be between -90 and 90';
+    } elseif (!ValidationService::isValidLatitude($old['latitude'])) {
+      $errors['latitude'] = 'Latitude must be between -90 and 90 degrees';
     }
 
     if (empty($old['longitude'])) {
       $errors['longitude'] = 'Longitude is required for weather features';
-    } elseif ($old['longitude'] < -180 || $old['longitude'] > 180) {
-      $errors['longitude'] = 'Longitude must be between -180 and 180';
+    } elseif (!ValidationService::isValidLongitude($old['longitude'])) {
+      $errors['longitude'] = 'Longitude must be between -180 and 180 degrees';
     }
 
     if (!empty($errors)) {
@@ -351,7 +353,7 @@ class SuperAdminController extends BaseController
       'default_location' => trim($_POST['default_location'] ?? ''),
       'latitude' => !empty($_POST['latitude']) ? (float) $_POST['latitude'] : null,
       'longitude' => !empty($_POST['longitude']) ? (float) $_POST['longitude'] : null,
-      'is_active' => isset($_POST['is_active']) ? 1 : 0,
+      'is_active' => ValidationService::sanitizeCheckbox($_POST['is_active'] ?? null),
     ];
 
     if (empty($old['name'])) {
@@ -382,12 +384,12 @@ class SuperAdminController extends BaseController
       $errors['contact_email'] = 'Invalid email format';
     }
 
-    if ($old['latitude'] !== null && ($old['latitude'] < -90 || $old['latitude'] > 90)) {
-      $errors['latitude'] = 'Latitude must be between -90 and 90';
+    if ($old['latitude'] !== null && !ValidationService::isValidLatitude($old['latitude'])) {
+      $errors['latitude'] = 'Latitude must be between -90 and 90 degrees';
     }
 
-    if ($old['longitude'] !== null && ($old['longitude'] < -180 || $old['longitude'] > 180)) {
-      $errors['longitude'] = 'Longitude must be between -180 and 180';
+    if ($old['longitude'] !== null && !ValidationService::isValidLongitude($old['longitude'])) {
+      $errors['longitude'] = 'Longitude must be between -180 and 180 degrees';
     }
 
     if (!empty($errors)) {

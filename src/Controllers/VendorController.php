@@ -87,6 +87,14 @@ class VendorController extends BaseController
       $errors['farm_name'] = 'Farm name must be 3-100 characters.';
     }
 
+    if (!empty($data['address']) && !ValidationService::isValidLength($data['address'], 0, 150)) {
+      $errors['address'] = 'Address cannot exceed 150 characters.';
+    }
+
+    if (!empty($data['city']) && !ValidationService::isValidLength($data['city'], 0, 100)) {
+      $errors['city'] = 'City cannot exceed 100 characters.';
+    }
+
     if ($data['state'] !== '' && !ValidationService::isValidStateCode($data['state'])) {
       $errors['state'] = 'State must be a 2-letter code.';
     }

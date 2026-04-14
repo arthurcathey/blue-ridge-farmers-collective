@@ -11,7 +11,7 @@ function cache_get(string $key)
   $file = __DIR__ . '/../../storage/cache/' . md5($key) . '.cache';
   if (!file_exists($file)) return null;
   $data = file_get_contents($file);
-  $payload = @unserialize($data);
+  $payload = @json_decode($data, true);
   if (!$payload || !isset($payload['expires'])) return null;
   if ($payload['expires'] < time()) {
     unlink($file);
@@ -35,5 +35,5 @@ function cache_set(string $key, $value, int $ttl = 300): void
     'expires' => time() + $ttl,
     'value' => $value,
   ];
-  file_put_contents($file, serialize($payload));
+  file_put_contents($file, json_encode($payload));
 }

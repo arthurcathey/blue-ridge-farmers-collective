@@ -660,7 +660,8 @@
     @apply space-y-2.5;
   }
   .footer-link {
-    @apply text-gray-100 no-underline transition-colors hover:text-white;
+    @apply text-gray-100 no-underline transition-all hover:text-white;
+    @apply hover:underline hover:decoration-brand-accent hover:decoration-2;
     @apply text-base sm:text-lg lg:text-xl;
     line-height: 1.55;
   }

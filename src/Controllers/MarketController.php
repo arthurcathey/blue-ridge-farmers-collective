@@ -53,8 +53,9 @@ class MarketController extends BaseController
     }
 
     $markets = [];
-    $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-    $perPage = isset($_GET['perPage']) ? max(1, (int)$_GET['perPage']) : 10;
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $page = \App\Services\ValidationService::validatePageNumber($page, 10000);
+    $perPage = isset($_GET['perPage']) ? max(1, min((int)$_GET['perPage'], 100)) : 10;
     $offset = ($page - 1) * $perPage;
     $total = 0;
 

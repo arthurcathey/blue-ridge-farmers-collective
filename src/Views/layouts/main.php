@@ -14,9 +14,9 @@
   $mainCssFile = __DIR__ . '/../../../public' . $mainCssPath;
   $mainJsFile = __DIR__ . '/../../../public' . $mainJsPath;
 
-  $tailwindVersion = (string) (@filemtime($tailwindFile) ?: time());
-  $mainCssVersion = (string) (@filemtime($mainCssFile) ?: time());
-  $mainJsVersion = (string) (@filemtime($mainJsFile) ?: time());
+  $tailwindVersion = (string) (file_exists($tailwindFile) ? filemtime($tailwindFile) : time());
+  $mainCssVersion = (string) (file_exists($mainCssFile) ? filemtime($mainCssFile) : time());
+  $mainJsVersion = (string) (file_exists($mainJsFile) ? filemtime($mainJsFile) : time());
 
   $tailwindSrc = asset_url($tailwindPath . '?v=' . rawurlencode($tailwindVersion));
   $mainCssSrc = asset_url($mainCssPath . '?v=' . rawurlencode($mainCssVersion));
@@ -31,7 +31,7 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <?php require __DIR__ . '/../partials/header.php'; ?>
-  <main id="main-content" tabindex="-1" class="container">
+  <main id="main-content" tabindex="-1" class="container pt-6">
     <?= $content ?>
   </main>
   <?php require __DIR__ . '/../partials/footer.php'; ?>
