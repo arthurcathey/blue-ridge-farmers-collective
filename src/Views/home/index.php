@@ -32,30 +32,30 @@
                       <?php if ((int)$vendor['is_featured_ven'] === 1): ?>
                         <span class="badge-featured mb-2 inline-block">Featured</span>
                       <?php endif; ?>
-                      <h3 class="card-title text-base font-bold text-gray-900 md:text-sm"><?= h($vendor['farm_name_ven']) ?></h3>
+                      <h3 class="card-title text-fluid-base font-bold text-gray-900"><?= h($vendor['farm_name_ven']) ?></h3>
 
                       <?php if (!empty($vendor['city_ven']) && !empty($vendor['state_ven'])): ?>
-                        <p class="text-muted mt-1 text-xs md:mt-0.5">
+                        <p class="text-muted mt-1 text-fluid-xs">
                           <?= h($vendor['city_ven']) ?>, <?= h($vendor['state_ven']) ?>
                         </p>
                       <?php endif; ?>
 
                       <div class="mt-3 flex items-center gap-2 md:mt-2 md:gap-1.5">
                         <div class="flex-1">
-                          <div class="text-xl font-bold text-brand-primary md:text-lg">
+                          <div class="text-fluid-xl font-bold text-brand-primary">
                             <?= number_format($vendor['avg_rating'], 1) ?>
                           </div>
-                          <div class="text-muted text-xs">Rating</div>
+                          <div class="text-muted text-fluid-xs">Rating</div>
                         </div>
                         <div class="flex-1">
-                          <div class="text-xl font-bold text-brand-primary md:text-lg">
+                          <div class="text-fluid-xl font-bold text-brand-primary">
                             <?= $vendor['product_count'] ?>
                           </div>
-                          <div class="text-muted text-xs">Products</div>
+                          <div class="text-muted text-fluid-xs">Products</div>
                         </div>
                       </div>
 
-                      <a href="<?= url('/vendors?view=' . urlencode(slugify($vendor['farm_name_ven']))) ?>" class="mt-2 inline-block text-xs font-semibold text-brand-primary hover:text-brand-primary-hover md:mt-1.5">
+                      <a href="<?= url('/vendors?view=' . urlencode(slugify($vendor['farm_name_ven']))) ?>" class="mt-2 inline-block text-fluid-xs font-semibold text-brand-primary hover:text-brand-primary-hover">
                         View Vendor</a>
                     </div>
                   </div>
@@ -89,7 +89,7 @@
     </div>
   <?php else: ?>
     <div class="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-800">
-      <p class="text-sm">No featured vendors available yet.</p>
+      <p class="text-fluid-sm">No featured vendors available yet.</p>
     </div>
   <?php endif; ?>
 
@@ -104,21 +104,21 @@
       <img src="<?= asset_url('/images/icons/fresh-local.svg') ?>" alt="Fresh & Local" width="48" height="48">
     </div>
     <h3 class="section-header-md">Fresh & Local</h3>
-    <p class="text-muted text-sm">Seasonal produce and artisan goods sourced from trusted farms across Western North Carolina.</p>
+    <p class="text-muted text-fluid-sm">Seasonal produce and artisan goods sourced from trusted farms across Western North Carolina.</p>
   </div>
   <div class="card card-with-accent">
     <div class="mb-3">
       <img src="<?= asset_url('/images/icons/community-first.svg') ?>" alt="Community First" width="48" height="48">
     </div>
     <h3 class="section-header-md">Community First</h3>
-    <p class="text-muted text-sm">We help neighbors connect directly with farmers and support a resilient local food economy.</p>
+    <p class="text-muted text-fluid-sm">We help neighbors connect directly with farmers and support a resilient local food economy.</p>
   </div>
   <div class="card card-with-accent">
     <div class="mb-3">
       <img src="<?= asset_url('/images/icons/easy-explore.svg') ?>" alt="Easy to Explore" width="48" height="48">
     </div>
     <h3 class="section-header-md">Easy to Explore</h3>
-    <p class="text-muted text-sm">Find nearby markets, discover vendors, and browse products in one place.</p>
+    <p class="text-muted text-fluid-sm">Find nearby markets, discover vendors, and browse products in one place.</p>
   </div>
 </section>
 
@@ -138,13 +138,13 @@
               </div>
             <?php endif; ?>
             <div class="p-3 md:p-2 lg:p-1.5">
-              <h3 class="card-title text-base font-bold text-gray-900 md:text-sm"><?= h($market['name_mkt']) ?></h3>
+              <h3 class="card-title text-fluid-base font-bold text-gray-900"><?= h($market['name_mkt']) ?></h3>
               <?php if (!empty($market['city_mkt']) && !empty($market['state_mkt'])): ?>
-                <p class="text-muted mt-1 text-xs md:mt-0.5">
+                <p class="text-muted mt-1 text-fluid-xs">
                   <?= h($market['city_mkt']) ?>, <?= h($market['state_mkt']) ?>
                 </p>
               <?php endif; ?>
-              <p class="mt-2 text-xs font-semibold text-brand-primary md:mt-1.5">View Market</p>
+              <p class="mt-2 text-fluid-xs font-semibold text-brand-primary">View Market</p>
             </div>
           </div>
         </a>
@@ -153,7 +153,7 @@
   <?php else: ?>
     <div class="rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-800">
       <p class="mb-2 font-semibold">No Featured Markets Yet</p>
-      <p class="text-sm">Admins can feature markets from the admin dashboard to showcase them here.</p>
+      <p class="text-fluid-sm">Admins can feature markets from the admin dashboard to showcase them here.</p>
     </div>
   <?php endif; ?>
   <div class="mt-6">

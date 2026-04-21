@@ -41,46 +41,46 @@
               <td class="p-2">
                 <strong><?= h($market['name_mkt']) ?></strong>
                 <br>
-                <span class="text-sm text-gray-600">
+                <span class="text-fluid-sm text-gray-600">
                   <?= h($market['slug_mkt']) ?>
                 </span>
               </td>
               <td class="p-2">
                 <?= h($market['city_mkt'] ?? '') ?><?= !empty($market['state_mkt']) ? ', ' . h($market['state_mkt']) : '' ?>
                 <br>
-                <span class="text-sm text-gray-600">
+                <span class="text-fluid-sm text-gray-600">
                   <?= !empty($market['zip_mkt']) ? h($market['zip_mkt']) : '-' ?>
                 </span>
               </td>
               <td class="p-2">
-                <div class="text-sm">
+                <div class="text-fluid-sm">
                   <?= !empty($market['contact_name_mkt']) ? h($market['contact_name_mkt']) : '<span class="text-gray-600">-</span>' ?>
                 </div>
                 <?php if (!empty($market['contact_email_mkt'])): ?>
-                  <a href="mailto:<?= h($market['contact_email_mkt']) ?>" class="text-sm text-brand-primary hover:text-brand-primary-hover">
+                  <a href="mailto:<?= h($market['contact_email_mkt']) ?>" class="text-fluid-sm text-brand-primary hover:text-brand-primary-hover">
                     <?= h($market['contact_email_mkt']) ?>
                   </a>
                   <br>
                 <?php endif; ?>
                 <?php if (!empty($market['contact_phone_mkt'])): ?>
-                  <span class="text-sm text-gray-600">
+                  <span class="text-fluid-sm text-gray-600">
                     <?= h($market['contact_phone_mkt']) ?>
                   </span>
                 <?php endif; ?>
               </td>
               <td class="p-2">
                 <?php if (!empty($market['latitude_mkt']) && !empty($market['longitude_mkt'])): ?>
-                  <span class="text-sm">
+                  <span class="text-fluid-sm">
                     <?= h(number_format($market['latitude_mkt'], 4)) ?>,
                     <br>
                     <?= h(number_format($market['longitude_mkt'], 4)) ?>
                   </span>
                 <?php else: ?>
-                  <span class="text-sm text-gray-600">Not set</span>
+                  <span class="text-fluid-sm text-gray-600">Not set</span>
                 <?php endif; ?>
               </td>
               <td class="p-2">
-                <span class="px-2 py-1 text-sm rounded <?= $market['is_active_mkt'] ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-700' ?>">
+                <span class="px-2 py-1 text-fluid-sm rounded <?= $market['is_active_mkt'] ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-700' ?>">
                   <?= $market['is_active_mkt'] ? 'Active' : 'Inactive' ?>
                 </span>
               </td>
@@ -88,7 +88,7 @@
                 <form method="POST" action="<?= url('/admin/markets/toggle-featured') ?>" style="display: inline;">
                   <?= csrf_field() ?>
                   <input type="hidden" name="market_id" value="<?= h((string) $market['id_mkt']) ?>">
-                  <button type="submit" class="px-3 py-1 text-sm rounded font-semibold transition-colors <?= $market['is_featured_mkt'] ?? 0 ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-gray-100 hover:bg-gray-200' ?>">
+                  <button type="submit" class="px-3 py-1 text-fluid-sm rounded font-semibold transition-colors <?= $market['is_featured_mkt'] ?? 0 ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-gray-100 hover:bg-gray-200' ?>">
                     <?= ($market['is_featured_mkt'] ?? 0) ? '⭐ Featured' : '☆ Feature' ?>
                   </button>
                 </form>

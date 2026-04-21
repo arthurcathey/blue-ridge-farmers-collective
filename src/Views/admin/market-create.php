@@ -12,7 +12,7 @@
     <?= csrf_field() ?>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Basic Information</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Basic Information</legend>
 
       <div class="field">
         <label for="name">Market Name *</label>
@@ -94,7 +94,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Contact Information</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Contact Information</legend>
 
       <div class="field">
         <label for="contact_name">Contact Name</label>
@@ -140,7 +140,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Default Location & Hours</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Default Location & Hours</legend>
 
       <div class="field">
         <label for="default_location">Default Location Address</label>
@@ -195,7 +195,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Hero Image</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Hero Image</legend>
 
       <div class="field">
         <label for="hero_image">Market Hero Image</label>
@@ -212,7 +212,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Settings</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Settings</legend>
 
       <div class="field">
         <label class="flex items-center gap-3">

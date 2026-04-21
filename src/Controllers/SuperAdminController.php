@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\ValidationService;
+use App\Services\AuditService;
+use App\Services\NotificationService;
+use App\Services\MailService;
 
 /**
  * Super Admin Controller
@@ -63,16 +66,298 @@ class SuperAdminController extends BaseController
   {
     $this->requireRole('super_admin');
 
-    $admins = [
-      ['name' => 'Admin User', 'username' => 'admin', 'status' => 'active'],
-      ['name' => 'Market Ops', 'username' => 'marketops', 'status' => 'invited'],
-      ['name' => 'Content Lead', 'username' => 'contentlead', 'status' => 'active'],
-    ];
+    $db = $this->db();
+    try {
+      $stmt = $db->prepare('
+        SELECT 
+          a.id_acc,
+          a.username_acc,
+          a.email_acc,
+          a.is_active_acc,
+          a.created_at_acc,
+          a.last_login_acc,
+          r.name_rol
+        FROM account_acc a
+        JOIN role_rol r ON a.id_rol_acc = r.id_rol
+        WHERE r.name_rol IN ("admin", "super_admin")
+        ORDER BY 
+          CASE WHEN r.name_rol = "super_admin" THEN 0 ELSE 1 END,
+          a.created_at_acc DESC
+      ');
+      $stmt->execute();
+      $admins = $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+    } catch (\Throwable $e) {
+      error_log('Failed to fetch admins: ' . $e->getMessage());
+      $admins = [];
+    }
+
+    $message = $_SESSION['message'] ?? null;
+    $error = $_SESSION['error'] ?? null;
+    $old = $_SESSION['form_data'] ?? [];
+    $errors = $_SESSION['form_errors'] ?? [];
+
+    unset($_SESSION['message'], $_SESSION['error'], $_SESSION['form_data'], $_SESSION['form_errors']);
 
     return $this->render('admin/manage-admins', [
       'title' => 'Admin Management',
       'admins' => $admins,
+      'message' => $message,
+      'error' => $error,
+      'old' => $old,
+      'errors' => $errors,
     ]);
+  }
+
+  /**
+   * Create new admin account
+   *
+   * @return void Redirects to admin management page
+   */
+  public function createAdmin(): void
+  {
+    $this->requireRole('super_admin');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $this->flash('error', 'Invalid session token. Please try again.');
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    $data = [
+      'username' => trim($_POST['username'] ?? ''),
+      'email' => trim(strtolower($_POST['email'] ?? '')),
+      'role' => trim($_POST['role'] ?? 'admin'),
+    ];
+
+    $errors = [];
+
+    if (empty($data['username'])) {
+      $errors['username'] = 'Username is required.';
+    } elseif (strlen($data['username']) < 3 || strlen($data['username']) > 50) {
+      $errors['username'] = 'Username must be 3-50 characters.';
+    } elseif (!preg_match('/^[a-zA-Z0-9_-]+$/', $data['username'])) {
+      $errors['username'] = 'Username can only contain letters, numbers, hyphens, and underscores.';
+    }
+
+    if (empty($data['email'])) {
+      $errors['email'] = 'Email is required.';
+    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+      $errors['email'] = 'Please enter a valid email address.';
+    }
+
+    if (!in_array($data['role'], ['admin', 'super_admin'], true)) {
+      $errors['role'] = 'Invalid role selected.';
+    }
+
+    if (!$errors) {
+      $db = $this->db();
+      try {
+        $stmt = $db->prepare('SELECT id_acc FROM account_acc WHERE username_acc = :username LIMIT 1');
+        $stmt->execute([':username' => $data['username']]);
+        if ($stmt->fetchColumn()) {
+          $errors['username'] = 'This username is already taken.';
+        }
+      } catch (\Throwable $e) {
+        error_log('Username check error: ' . $e->getMessage());
+      }
+    }
+
+    if (!$errors) {
+      $db = $this->db();
+      try {
+        $stmt = $db->prepare('SELECT id_acc FROM account_acc WHERE email_acc = :email LIMIT 1');
+        $stmt->execute([':email' => $data['email']]);
+        if ($stmt->fetchColumn()) {
+          $errors['email'] = 'This email is already registered.';
+        }
+      } catch (\Throwable $e) {
+        error_log('Email check error: ' . $e->getMessage());
+      }
+    }
+
+    if ($errors) {
+      $_SESSION['form_data'] = $data;
+      $_SESSION['form_errors'] = $errors;
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    $tempPassword = bin2hex(random_bytes(8));
+    $passwordHash = password_hash($tempPassword, PASSWORD_BCRYPT, ['cost' => 12]);
+
+    $db = $this->db();
+    $roleId = null;
+    try {
+      $stmt = $db->prepare('SELECT id_rol FROM role_rol WHERE name_rol = :role LIMIT 1');
+      $stmt->execute([':role' => $data['role']]);
+      $roleId = (int) ($stmt->fetchColumn() ?: 0);
+    } catch (\Throwable $e) {
+      error_log('Role lookup error: ' . $e->getMessage());
+      $this->flash('error', 'Unable to find role.');
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    if ($roleId <= 0) {
+      $this->flash('error', 'Invalid role configuration.');
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    try {
+      $stmt = $db->prepare('
+        INSERT INTO account_acc (username_acc, email_acc, password_hash_acc, id_rol_acc, is_active_acc, created_at_acc)
+        VALUES (:username, :email, :password, :role_id, 1, NOW())
+      ');
+      $stmt->execute([
+        ':username' => $data['username'],
+        ':email' => $data['email'],
+        ':password' => $passwordHash,
+        ':role_id' => $roleId,
+      ]);
+
+      $this->flash('success', "Admin account created! Temporary password: <code>$tempPassword</code><br>Share this with the admin securely. They will be prompted to change it on first login.");
+
+      $auditService = new AuditService($db);
+      $auditService->logAction(
+        'super_admin',
+        AuditService::ACTION_CREATE,
+        'account_admin',
+        null,
+        "Admin account '{$data['username']}' created",
+        ['email' => $data['email'], 'role' => $data['role']]
+      );
+
+      $notificationService = new NotificationService($db, new MailService());
+      $notificationService->initializeDefaultPreferences((int) $db->lastInsertId(), 'admin');
+    } catch (\Throwable $e) {
+      error_log('Admin creation error: ' . $e->getMessage());
+      $this->flash('error', 'Failed to create admin account.');
+    }
+
+    $this->redirect('/admin-management');
+  }
+
+  /**
+   * Toggle admin account status (active/inactive)
+   *
+   * @return void JSON response or redirect
+   */
+  public function toggleAdminStatus(): void
+  {
+    $this->requireRole('super_admin');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      http_response_code(405);
+      exit;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      http_response_code(403);
+      exit;
+    }
+
+    $accountId = (int) ($_POST['account_id'] ?? 0);
+    $newStatus = (int) ($_POST['is_active'] ?? 0);
+
+    if ($accountId <= 0) {
+      http_response_code(400);
+      exit;
+    }
+
+    $currentUser = $this->authUser();
+    if ((int) ($currentUser['id'] ?? 0) === $accountId) {
+      http_response_code(400);
+      echo json_encode(['error' => 'Cannot deactivate your own account']);
+      exit;
+    }
+
+    $db = $this->db();
+    try {
+      $stmt = $db->prepare('UPDATE account_acc SET is_active_acc = :status WHERE id_acc = :id');
+      $stmt->execute([
+        ':status' => $newStatus,
+        ':id' => $accountId,
+      ]);
+
+      $statusText = $newStatus ? 'activated' : 'deactivated';
+      $this->flash('success', "Admin account $statusText successfully.");
+
+      $auditService = new AuditService($db);
+      $auditService->logAccountStatusChange((int) ($currentUser['id'] ?? 0), $accountId, (bool) $newStatus);
+    } catch (\Throwable $e) {
+      error_log('Admin status toggle error: ' . $e->getMessage());
+      $this->flash('error', 'Failed to update admin status.');
+    }
+
+    $this->redirect('/admin-management');
+  }
+
+  /**
+   * Delete admin account
+   *
+   * @return void Redirects to admin management
+   */
+  public function deleteAdmin(): void
+  {
+    $this->requireRole('super_admin');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $this->flash('error', 'Invalid session token.');
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    $accountId = (int) ($_POST['account_id'] ?? 0);
+
+    if ($accountId <= 0) {
+      $this->flash('error', 'Invalid account ID.');
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    $currentUser = $this->authUser();
+    if ((int) ($currentUser['id'] ?? 0) === $accountId) {
+      $this->flash('error', 'You cannot delete your own account.');
+      $this->redirect('/admin-management');
+      return;
+    }
+
+    $db = $this->db();
+    try {
+      $stmt = $db->prepare('SELECT username_acc, email_acc FROM account_acc WHERE id_acc = :id LIMIT 1');
+      $stmt->execute([':id' => $accountId]);
+      $admin = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      if (!$admin) {
+        $this->flash('error', 'Admin account not found.');
+        $this->redirect('/admin-management');
+        return;
+      }
+
+      $stmt = $db->prepare('DELETE FROM account_acc WHERE id_acc = :id');
+      $stmt->execute([':id' => $accountId]);
+
+      $this->flash('success', "Admin account ({$admin['username_acc']}) deleted successfully.");
+
+      $auditService = new AuditService($db);
+      $auditService->logAccountDeletion((int) ($currentUser['id'] ?? 0), $accountId, $admin['username_acc']);
+    } catch (\Throwable $e) {
+      error_log('Admin deletion error: ' . $e->getMessage());
+      $this->flash('error', 'Failed to delete admin account.');
+    }
+
+    $this->redirect('/admin-management');
   }
 
   /**

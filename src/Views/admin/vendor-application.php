@@ -54,7 +54,7 @@ $status = (string) ($application['application_status_ven'] ?? '');
         <p class="m-0 mb-2 font-semibold">Vendor Photo:</p>
         <img src="<?= asset_url((string) $application['photo_path_ven']) ?>" alt="<?= h((string) $application['farm_name_ven']) ?> photo" width="350" height="250" class="h-auto max-w-sm rounded-lg border border-gray-200">
         <br>
-        <a href="<?= asset_url((string) $application['photo_path_ven']) ?>" target="_blank" rel="noopener" class="text-sm" aria-label="View vendor photo full size (opens in new window)">View full size</a>
+        <a href="<?= asset_url((string) $application['photo_path_ven']) ?>" target="_blank" rel="noopener" class="text-fluid-sm" aria-label="View vendor photo full size (opens in new window)">View full size</a>
       </div>
     <?php endif; ?>
   </div>

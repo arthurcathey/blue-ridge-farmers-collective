@@ -13,7 +13,7 @@ $stats = $stats ?? [];
   <div class="mb-6 flex items-center justify-between">
     <div>
       <h1><?= h($title) ?></h1>
-      <p class="text-muted text-sm">Track your market attendance and check-in history</p>
+      <p class="text-muted text-fluid-sm">Track your market attendance and check-in history</p>
     </div>
     <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
   </div>
@@ -32,23 +32,23 @@ $stats = $stats ?? [];
 
   <div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
     <div class="rounded bg-blue-50 p-4 text-center">
-      <p class="text-xs font-medium text-blue-600">Registered</p>
-      <p class="text-2xl font-bold text-blue-900"><?= $stats['registered'] ?? 0 ?></p>
+      <p class="text-fluid-xs font-medium text-blue-600">Registered</p>
+      <p class="text-fluid-2xl font-bold text-blue-900"><?= $stats['registered'] ?? 0 ?></p>
     </div>
 
     <div class="rounded bg-green-50 p-4 text-center">
-      <p class="text-xs font-medium text-green-600">Checked In</p>
-      <p class="text-2xl font-bold text-green-900"><?= $stats['checked_in'] ?? 0 ?></p>
+      <p class="text-fluid-xs font-medium text-green-600">Checked In</p>
+      <p class="text-fluid-2xl font-bold text-green-900"><?= $stats['checked_in'] ?? 0 ?></p>
     </div>
 
     <div class="rounded bg-yellow-50 p-4 text-center">
-      <p class="text-xs font-medium text-yellow-600">Confirmed</p>
-      <p class="text-2xl font-bold text-yellow-900"><?= $stats['confirmed'] ?? 0 ?></p>
+      <p class="text-fluid-xs font-medium text-yellow-600">Confirmed</p>
+      <p class="text-fluid-2xl font-bold text-yellow-900"><?= $stats['confirmed'] ?? 0 ?></p>
     </div>
 
     <div class="rounded bg-red-50 p-4 text-center">
-      <p class="text-xs font-medium text-red-600">No Shows</p>
-      <p class="text-2xl font-bold text-red-900"><?= $stats['no_show'] ?? 0 ?></p>
+      <p class="text-fluid-xs font-medium text-red-600">No Shows</p>
+      <p class="text-fluid-2xl font-bold text-red-900"><?= $stats['no_show'] ?? 0 ?></p>
     </div>
   </div>
 
@@ -59,8 +59,8 @@ $stats = $stats ?? [];
       ?>
       <div class="flex-1">
         <div class="mb-1 flex items-center justify-between">
-          <span class="text-sm font-medium">Attendance Rate</span>
-          <span class="text-sm font-bold text-green-600"><?= round($attendanceRate, 1) ?>%</span>
+          <span class="text-fluid-sm font-medium">Attendance Rate</span>
+          <span class="text-fluid-sm font-bold text-green-600"><?= round($attendanceRate, 1) ?>%</span>
         </div>
         <div class="h-3 w-full rounded-full bg-gray-200">
           <div class="h-3 rounded-full bg-green-500" style="width: <?= $attendanceRate ?>%"></div>
@@ -76,7 +76,7 @@ $stats = $stats ?? [];
   <?php if (empty($attendanceRecords)): ?>
     <div class="rounded border border-blue-200 bg-blue-50 p-6 text-center">
       <p class="mb-2 text-gray-600">No attendance records yet.</p>
-      <p class="text-muted text-xs">Apply to markets to register for market dates.</p>
+      <p class="text-muted text-fluid-xs">Apply to markets to register for market dates.</p>
     </div>
   <?php else: ?>
     <div class="space-y-3">
@@ -102,39 +102,39 @@ $stats = $stats ?? [];
           <div class="flex items-start justify-between">
             <div class="flex-1">
               <div class="mb-2 flex items-center gap-3">
-                <h3 class="text-lg font-medium"><?= h($record['market_name']) ?></h3>
-                <span class="inline-flex px-3 py-1 rounded text-xs font-medium <?= $statusBadge ?>">
+                <h3 class="text-fluid-lg font-medium"><?= h($record['market_name']) ?></h3>
+                <span class="inline-flex px-3 py-1 rounded text-fluid-xs font-medium <?= $statusBadge ?>">
                   <?= $statusLabel ?>
                 </span>
               </div>
 
-              <p class="text-muted mb-3 text-sm">
+              <p class="text-muted mb-3 text-fluid-sm">
                 <?= $dateObj->format('F j, Y') ?>
                 • <?= date('g:i A', strtotime($record['start_time_mda'])) ?> - <?= date('g:i A', strtotime($record['end_time_mda'])) ?>
               </p>
 
               <div class="flex flex-wrap gap-2">
                 <?php if (!empty($record['location_mda'])): ?>
-                  <span class="inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-700">
+                  <span class="inline-block rounded bg-gray-100 px-2 py-1 text-fluid-xs text-gray-700">
                     <?= h($record['location_mda']) ?>
                   </span>
                 <?php endif; ?>
 
                 <?php if (!empty($record['booth_number_vat'])): ?>
-                  <span class="inline-block rounded bg-purple-100 px-2 py-1 text-xs text-purple-700">
+                  <span class="inline-block rounded bg-purple-100 px-2 py-1 text-fluid-xs text-purple-700">
                     Booth <?= h($record['booth_number_vat']) ?>
                   </span>
                 <?php endif; ?>
 
                 <?php if (!empty($record['checked_in_at_vat']) && $status === 'checked_in'): ?>
-                  <span class="inline-block px-2 py-1 text-xs text-green-600">
+                  <span class="inline-block px-2 py-1 text-fluid-xs text-green-600">
                     Checked in at <?= date('g:i A', strtotime($record['checked_in_at_vat'])) ?>
                   </span>
                 <?php endif; ?>
               </div>
 
               <?php if (!empty($record['notes_mda'])): ?>
-                <p class="mt-2 text-xs italic text-gray-600">
+                <p class="mt-2 text-fluid-xs italic text-gray-600">
                   Note: <?= h($record['notes_mda']) ?>
                 </p>
               <?php endif; ?>
@@ -149,7 +149,7 @@ $stats = $stats ?? [];
                 default => 'text-yellow-600'
               };
               ?>
-              <div class="text-2xl <?= $statusColor ?>">
+              <div class="text-fluid-2xl <?= $statusColor ?>">
                 <?= match ($status) {
                   'checked_in' => '✓',
                   'confirmed' => '~',
@@ -168,24 +168,24 @@ $stats = $stats ?? [];
 <section class="card mt-6 bg-gray-50">
   <h3 class="mb-3 font-semibold">Status Legend</h3>
 
-  <div class="space-y-2 text-sm">
+  <div class="space-y-2 text-fluid-sm">
     <div class="flex items-center gap-3">
-      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-yellow-100 text-xs text-white">○</span>
+      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-yellow-100 text-fluid-xs text-white">○</span>
       <span><strong>Intended:</strong> You declared intent to attend but haven't checked in yet</span>
     </div>
 
     <div class="flex items-center gap-3">
-      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-blue-100 text-xs text-white">~</span>
+      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-blue-100 text-fluid-xs text-white">~</span>
       <span><strong>Confirmed:</strong> An admin confirmed your attendance</span>
     </div>
 
     <div class="flex items-center gap-3">
-      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-green-100 text-xs text-white">✓</span>
+      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-green-100 text-fluid-xs text-white">✓</span>
       <span><strong>Checked In:</strong> You were checked in by market staff</span>
     </div>
 
     <div class="flex items-center gap-3">
-      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-red-100 text-xs text-white">✗</span>
+      <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-red-100 text-fluid-xs text-white">✗</span>
       <span><strong>No-Show:</strong> You didn't attend (marked by admin)</span>
     </div>
   </div>

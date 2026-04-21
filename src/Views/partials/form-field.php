@@ -19,6 +19,7 @@
  * - $maxlength: maximum length
  * - $min: minimum value (for number type)
  * - $max: maximum value (for number type)
+ * - $spellcheck: enable spell checking (true/false) for text types
  */
 
 $name = $name ?? '';
@@ -33,7 +34,7 @@ $minlength = $minlength ?? '';
 $maxlength = $maxlength ?? '';
 $min = $min ?? '';
 $max = $max ?? '';
-?>
+$spellcheck = $spellcheck ?? false; ?>
 
 <div class="form-field">
   <label for="<?= h($name) ?>" class="form-label"><?= h($label) ?></label>
@@ -49,6 +50,7 @@ $max = $max ?? '';
     <?= $maxlength ? 'maxlength="' . h($maxlength) . '"' : '' ?>
     <?= $min && $type === 'number' ? 'min="' . h($min) . '"' : '' ?>
     <?= $max && $type === 'number' ? 'max="' . h($max) . '"' : '' ?>
+    <?= $spellcheck && in_array($type, ['text', 'email', 'search'], true) ? 'spellcheck="true"' : '' ?>
     <?= !empty($errors[$name]) ? 'aria-describedby="error-' . h($name) . '" aria-invalid="true"' : '' ?>
     <?= $attributes ?> />
   <?php if (!empty($errors[$name])): ?>

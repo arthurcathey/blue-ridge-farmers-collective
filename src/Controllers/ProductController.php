@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\ValidationService;
+use App\Services\SpellCheckerService;
 
 /**
  * Product Controller
@@ -356,6 +357,18 @@ class ProductController extends BaseController
       $errors['category_id'] = 'Select a category.';
     }
 
+    if ($name !== '') {
+      $spellCheckerService = new SpellCheckerService();
+      $spellCheckFields = [
+        'name' => $name,
+        'description' => $description,
+      ];
+      $spellCheckResults = $spellCheckerService->checkFields($spellCheckFields);
+      if (!empty($spellCheckResults)) {
+        $_SESSION['spell_warnings'] = $spellCheckResults;
+      }
+    }
+
     $user = $this->authUser();
     $vendorId = $this->vendorIdForAccount((int) ($user['id'] ?? 0));
 
@@ -500,6 +513,18 @@ class ProductController extends BaseController
 
     if ($categoryId <= 0) {
       $errors['category_id'] = 'Select a category.';
+    }
+
+    if ($name !== '') {
+      $spellCheckerService = new SpellCheckerService();
+      $spellCheckFields = [
+        'name' => $name,
+        'description' => $description,
+      ];
+      $spellCheckResults = $spellCheckerService->checkFields($spellCheckFields);
+      if (!empty($spellCheckResults)) {
+        $_SESSION['spell_warnings'] = $spellCheckResults;
+      }
     }
 
     $user = $this->authUser();

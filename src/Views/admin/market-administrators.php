@@ -16,7 +16,7 @@ $availableAccounts = $availableAccounts ?? [];
   <div class="mb-6 flex items-center justify-between">
     <div>
       <h1><?= h($title) ?></h1>
-      <p class="text-muted text-sm">Assign administrators to manage specific markets</p>
+      <p class="text-muted text-fluid-sm">Assign administrators to manage specific markets</p>
     </div>
     <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
   </div>
@@ -36,7 +36,7 @@ $availableAccounts = $availableAccounts ?? [];
 
   <form method="GET" class="space-y-3">
     <div>
-      <label class="mb-2 block text-sm font-medium">Market</label>
+      <label class="mb-2 block text-fluid-sm font-medium">Market</label>
       <select name="market" class="form-control" onchange="this.form.submit()" required>
         <option value="">Choose a market...</option>
         <?php foreach ($markets as $market): ?>
@@ -55,14 +55,14 @@ $availableAccounts = $availableAccounts ?? [];
     <div class="lg:col-span-2">
       <section class="card">
         <h2 class="mb-4">Market Administrators</h2>
-        <p class="text-muted mb-4 text-sm">
+        <p class="text-muted mb-4 text-fluid-sm">
           <?php $market = array_filter($markets, fn($m) => $m['id_mkt'] == $currentMarket)[0] ?? []; ?>
           <?= h($market['name_mkt'] ?? 'Selected Market') ?>
         </p>
 
         <?php if (empty($marketAdmins)): ?>
           <div class="rounded border border-blue-200 bg-blue-50 p-4 text-center">
-            <p class="text-sm text-gray-600">No administrators assigned to this market yet.</p>
+            <p class="text-fluid-sm text-gray-600">No administrators assigned to this market yet.</p>
           </div>
         <?php else: ?>
           <div class="space-y-3">
@@ -70,11 +70,11 @@ $availableAccounts = $availableAccounts ?? [];
               <div class="flex items-center justify-between rounded border border-gray-200 bg-gray-50 p-4">
                 <div class="flex-1">
                   <div class="font-medium"><?= h($admin['username_acc'] ?? 'Unknown') ?></div>
-                  <div class="text-muted text-xs"><?= h($admin['email_acc'] ?? 'No email') ?></div>
+                  <div class="text-muted text-fluid-xs"><?= h($admin['email_acc'] ?? 'No email') ?></div>
                 </div>
 
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex items-center rounded bg-orange-600 px-2 py-1 text-xs font-medium text-black">
+                  <span class="inline-flex items-center rounded bg-orange-600 px-2 py-1 text-fluid-xs font-medium text-black">
                     <?= h(ucfirst($admin['admin_role_mad'] ?? 'Market Admin')) ?>
                   </span>
 
@@ -84,7 +84,7 @@ $availableAccounts = $availableAccounts ?? [];
                     $permissions = json_decode($admin['permissions_mad'], true) ?? [];
                     $permCount = count($permissions);
                     ?>
-                    <span class="text-muted text-xs" title="Permissions assigned">
+                    <span class="text-muted text-fluid-xs" title="Permissions assigned">
                       <?= $permCount ?> permission<?= $permCount !== 1 ? 's' : '' ?>
                     </span>
                   <?php endif; ?>
@@ -92,12 +92,12 @@ $availableAccounts = $availableAccounts ?? [];
                   <div class="flex gap-2">
                     <button
                       onclick="openEditAdminModal(<?= $admin['id_mad'] ?>, '<?= h($admin['username_acc']) ?>', '<?= h($admin['admin_role_mad'] ?? 'market_admin') ?>')"
-                      class="link-primary text-xs">
+                      class="link-primary text-fluid-xs">
                       Edit
                     </button>
                     <button
                       onclick="removeAdmin(<?= $admin['id_mad'] ?>, '<?= h($admin['username_acc']) ?>')"
-                      class="link-primary text-xs">
+                      class="link-primary text-fluid-xs">
                       Remove
                     </button>
                   </div>
@@ -118,7 +118,7 @@ $availableAccounts = $availableAccounts ?? [];
           <input type="hidden" name="market_id" value="<?= $currentMarket ?>">
 
           <div class="field">
-            <label class="mb-2 block text-sm font-medium">Select Account</label>
+            <label class="mb-2 block text-fluid-sm font-medium">Select Account</label>
             <select name="account_id" id="accountSelect" class="form-control" required>
               <option value="">Choose account...</option>
               <?php foreach ($availableAccounts as $account): ?>
@@ -127,11 +127,11 @@ $availableAccounts = $availableAccounts ?? [];
                 </option>
               <?php endforeach; ?>
             </select>
-            <p class="text-muted mt-1 text-xs">Only accounts not already assigned to this market</p>
+            <p class="text-muted mt-1 text-fluid-xs">Only accounts not already assigned to this market</p>
           </div>
 
           <div class="field">
-            <label class="mb-2 block text-sm font-medium">Admin Role</label>
+            <label class="mb-2 block text-fluid-sm font-medium">Admin Role</label>
             <select name="admin_role" class="form-control" required>
               <option value="market_admin">Market Administrator</option>
               <option value="market_coordinator">Market Coordinator</option>
@@ -142,7 +142,7 @@ $availableAccounts = $availableAccounts ?? [];
           <button type="submit" class="btn-action-blue w-full">Add Administrator</button>
         </form>
 
-        <div class="mt-6 space-y-3 border-t border-gray-200 pt-4 text-xs">
+        <div class="mt-6 space-y-3 border-t border-gray-200 pt-4 text-fluid-xs">
           <div class="mb-2 font-semibold">Roles</div>
           <div>
             <div class="font-medium text-gray-700">Market Administrator</div>
@@ -163,7 +163,7 @@ $availableAccounts = $availableAccounts ?? [];
 
   <div id="editAdminModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
     <div class="w-full max-w-md rounded-lg bg-white p-6">
-      <h2 class="mb-4 text-lg font-semibold">Edit Administrator</h2>
+      <h2 class="mb-4 text-fluid-lg font-semibold">Edit Administrator</h2>
 
       <form method="POST" action="<?= url('/admin/market-administrators/update') ?>" class="space-y-4">
         <?= csrf_field() ?>
@@ -172,12 +172,12 @@ $availableAccounts = $availableAccounts ?? [];
         <input type="hidden" name="market_id" value="<?= $currentMarket ?>">
 
         <div>
-          <label class="mb-2 block text-sm font-medium">Account</label>
-          <div id="editAdminName" class="rounded bg-gray-50 p-3 text-sm font-medium"></div>
+          <label class="mb-2 block text-fluid-sm font-medium">Account</label>
+          <div id="editAdminName" class="rounded bg-gray-50 p-3 text-fluid-sm font-medium"></div>
         </div>
 
         <div class="field">
-          <label class="mb-2 block text-sm font-medium">Admin Role</label>
+          <label class="mb-2 block text-fluid-sm font-medium">Admin Role</label>
           <select name="admin_role" id="editAdminRole" class="form-control" required>
             <option value="market_admin">Market Administrator</option>
             <option value="market_coordinator">Market Coordinator</option>
@@ -186,25 +186,25 @@ $availableAccounts = $availableAccounts ?? [];
         </div>
 
         <div class="field">
-          <label class="mb-2 block text-sm font-medium">Permissions</label>
+          <label class="mb-2 block text-fluid-sm font-medium">Permissions</label>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 text-fluid-sm">
               <input type="checkbox" name="permissions[]" value="manage_booths" class="form-checkbox">
               <span>Manage Booths</span>
             </label>
-            <label class="flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 text-fluid-sm">
               <input type="checkbox" name="permissions[]" value="manage_vendors" class="form-checkbox">
               <span>Manage Vendors</span>
             </label>
-            <label class="flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 text-fluid-sm">
               <input type="checkbox" name="permissions[]" value="manage_dates" class="form-checkbox">
               <span>Manage Market Dates</span>
             </label>
-            <label class="flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 text-fluid-sm">
               <input type="checkbox" name="permissions[]" value="manage_reviews" class="form-checkbox">
               <span>Manage Reviews</span>
             </label>
-            <label class="flex items-center gap-2 text-sm">
+            <label class="flex items-center gap-2 text-fluid-sm">
               <input type="checkbox" name="permissions[]" value="view_analytics" class="form-checkbox">
               <span>View Analytics</span>
             </label>

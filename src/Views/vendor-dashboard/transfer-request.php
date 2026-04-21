@@ -55,7 +55,7 @@
             <?php if (!empty($errors['to_market_id'])): ?>
               <p class="form-error"><?= h($errors['to_market_id']) ?></p>
             <?php endif; ?>
-            <p class="text-muted mt-2 text-sm">Only markets where you don't currently have membership</p>
+            <p class="text-muted mt-2 text-fluid-sm">Only markets where you don't currently have membership</p>
           </div>
 
           <div class="field">
@@ -67,12 +67,12 @@
               rows="4"
               placeholder="Explain why you're requesting this transfer (e.g., changing location, better fit, etc.)"
               maxlength="1000"><?= isset($old['notes']) ? h($old['notes']) : '' ?></textarea>
-            <p class="text-muted mt-1 text-sm">Max 1000 characters</p>
+            <p class="text-muted mt-1 text-fluid-sm">Max 1000 characters</p>
           </div>
 
           <div class="rounded border-l-4 border-blue-500 bg-blue-50 p-4">
-            <p class="text-sm font-semibold text-blue-900">What happens next?</p>
-            <ul class="mt-2 list-inside space-y-1 text-sm text-blue-800">
+            <p class="text-fluid-sm font-semibold text-blue-900">What happens next?</p>
+            <ul class="mt-2 list-inside space-y-1 text-fluid-sm text-blue-800">
               <li>• Your request will be reviewed by market administrators</li>
               <li>• You'll receive email notification of approval or rejection</li>
               <li>• Once approved, your booth assignments and products will transfer to the new market</li>

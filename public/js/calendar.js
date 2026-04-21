@@ -53,14 +53,14 @@ export const Calendar = (() => {
           .map(
             (market) => `
           <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-            <h4 class="mb-2 font-semibold text-brand-primary">${market.name || 'Market'}</h4>
+            <h4 class="mb-2 font-semibold text-fluid-sm text-brand-primary">${market.name || 'Market'}</h4>
             ${
               market.weather
                 ? `<div class="flex items-center space-x-2">
-                    <span class="text-sm font-medium text-gray-700">Weather:</span>
-                    <span class="inline-block rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800">${market.weather}</span>
+                    <span class="text-fluid-sm font-medium text-gray-700">Weather:</span>
+                    <span class="inline-block rounded-full bg-blue-100 px-3 py-1 text-fluid-sm text-blue-800">${market.weather}</span>
                   </div>`
-                : '<p class="text-sm italic text-gray-500">No weather data</p>'
+                : '<p class="text-center text-fluid-sm italic text-gray-500">No weather data</p>'
             }
           </div>
         `
@@ -75,8 +75,8 @@ export const Calendar = (() => {
         <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-2xl">
           <div class="mb-6 flex items-start justify-between border-b border-gray-200 pb-4">
             <div>
-              <h3 class="text-xl font-bold text-gray-900">${formattedDate}</h3>
-              <p class="mt-1 inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">${dateData.event_count || 0} market${dateData.event_count !== 1 ? 's' : ''}</p>
+              <h3 class="text-fluid-xl font-bold text-gray-900">${formattedDate}</h3>
+              <p class="mt-1 inline-block rounded-full bg-green-100 px-3 py-1 text-fluid-sm font-medium text-green-800">${dateData.event_count || 0} market${dateData.event_count !== 1 ? 's' : ''}</p>
             </div>
             <button class="text-3xl font-light text-gray-400 transition-colors hover:text-gray-600" onclick="document.getElementById('marketCalendarModal').classList.add('hidden'); document.getElementById('marketCalendarModal').classList.remove('flex');">
               ×

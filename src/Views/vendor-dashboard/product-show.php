@@ -13,14 +13,14 @@
     <?php if (!empty($product['seasonal_months'])): ?>
       <p>
         <strong>Seasonal:</strong>
-        <span class="inline-flex items-center px-2 py-1 rounded text-sm bg-green-100 text-white">
+        <span class="inline-flex items-center px-2 py-1 rounded text-fluid-sm bg-green-100 text-white">
           <?= h(format_seasonal_months($product['seasonal_months'])) ?>
         </span>
       </p>
     <?php else: ?>
       <p>
         <strong>Availability:</strong>
-        <span class="inline-flex items-center px-2 py-1 rounded text-sm bg-brand-secondary text-white">
+        <span class="inline-flex items-center px-2 py-1 rounded text-fluid-sm bg-brand-secondary text-white">
           Year-round
         </span>
       </p>

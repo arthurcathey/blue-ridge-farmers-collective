@@ -57,32 +57,32 @@ if ($user) {
       </a>
       <div class="nav-links" data-nav>
         <?php foreach ($primaryLinks as $link): ?>
-          <a class="nav-link text-sm sm:text-base md:text-lg" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
+          <a class="nav-link text-fluid-sm sm:text-fluid-base md:text-fluid-lg" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
         <?php endforeach; ?>
 
         <div class="nav-item" data-dropdown="explore">
-          <button type="button" class="nav-link nav-trigger text-sm sm:text-base md:text-lg" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
+          <button type="button" class="nav-link nav-trigger text-fluid-sm sm:text-fluid-base md:text-fluid-lg" aria-label="Explore menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-explore">
             Explore <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
           <div id="nav-menu-explore" class="nav-menu" data-menu="explore" hidden role="menu" aria-label="Explore">
             <?php foreach ($exploreLinks as $link): ?>
-              <a class="nav-menu-link text-sm sm:text-base" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
+              <a class="nav-menu-link text-fluid-sm sm:text-fluid-base" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
             <?php endforeach; ?>
           </div>
         </div>
 
         <?php if ($user): ?>
           <div class="nav-item" data-dropdown="account">
-            <button type="button" class="nav-link nav-trigger text-sm sm:text-base md:text-lg" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
+            <button type="button" class="nav-link nav-trigger text-fluid-sm sm:text-fluid-base md:text-fluid-lg" aria-label="Account menu" aria-haspopup="true" aria-expanded="false" aria-controls="nav-menu-account">
               Account <svg class="nav-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
             </button>
             <div id="nav-menu-account" class="nav-menu" data-menu="account" hidden role="menu" aria-label="Account">
               <?php foreach ($accountLinks as $link): ?>
-                <a class="nav-menu-link text-sm sm:text-base" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
+                <a class="nav-menu-link text-fluid-sm sm:text-fluid-base" href="<?= $link['href'] ?>" role="menuitem"><?= h($link['label']) ?></a>
               <?php endforeach; ?>
             </div>
           </div>

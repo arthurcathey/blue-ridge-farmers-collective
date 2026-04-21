@@ -55,16 +55,16 @@
                     <span class="<?= $i <= $review['rating_vre'] ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
                   <?php endfor; ?>
                 </div>
-                <span class="text-lg font-semibold"><?= h($review['rating_vre'] ?? 0) ?>/5</span>
+                <span class="text-fluid-lg font-semibold"><?= h($review['rating_vre'] ?? 0) ?>/5</span>
               </div>
 
-              <div class="text-muted mb-2 text-sm">
+              <div class="text-muted mb-2 text-fluid-sm">
                 by <strong><?= h($review['customer_name_vre'] ?: 'Anonymous') ?></strong>
                 on <?= date('F j, Y', strtotime($review['created_at_vre'])) ?>
               </div>
 
               <?php if ($review['is_verified_purchase_vre']): ?>
-                <div class="mb-2 inline-flex items-center rounded bg-purple-100 px-2 py-1 text-xs text-purple-800">
+                <div class="mb-2 inline-flex items-center rounded bg-purple-100 px-2 py-1 text-fluid-xs text-purple-800">
                   ✓ Verified Purchase
                 </div>
               <?php endif; ?>
@@ -81,11 +81,11 @@
 
           <?php if (!empty($review['response_text_rre'])): ?>
             <div class="mb-4 rounded border-l-4 border-brand-primary bg-brand-primary/10 p-4">
-              <div class="mb-2 text-sm font-semibold text-brand-primary">Your Response:</div>
+              <div class="mb-2 text-fluid-sm font-semibold text-brand-primary">Your Response:</div>
               <p class="text-description">
                 <?= nl2br(h($review['response_text_rre'])) ?>
               </p>
-              <div class="text-muted mt-2 text-xs">
+              <div class="text-muted mt-2 text-fluid-xs">
                 Responded on <?= date('F j, Y', strtotime($review['updated_at_rre'])) ?>
               </div>
             </div>
@@ -96,12 +96,12 @@
               <input type="hidden" name="review_id" value="<?= h($review['id_vre']) ?>">
 
               <label class="mb-3 block">
-                <span class="mb-1 block text-sm font-semibold text-gray-700">Your Response</span>
+                <span class="mb-1 block text-fluid-sm font-semibold text-gray-700">Your Response</span>
                 <textarea
                   name="response_text"
                   rows="3"
                   placeholder="Share your response to this review... (min 10 chars, max 1000)"
-                  class="w-full rounded border border-gray-300 p-2 text-sm"
+                  class="w-full rounded border border-gray-300 p-2 text-fluid-sm"
                   minlength="10"
                   maxlength="1000"
                   required><?= h(($_SESSION['old']['response_text'] ?? '') ?: '') ?></textarea>
@@ -111,7 +111,7 @@
                 <p class="error-message mb-3"><?= h($errors['response_text']) ?></p>
               <?php endif; ?>
 
-              <button type="submit" class="btn-action-blue text-sm">Post Response</button>
+              <button type="submit" class="btn-action-blue text-fluid-sm">Post Response</button>
             </form>
           <?php endif; ?>
         </div>

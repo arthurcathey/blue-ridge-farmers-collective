@@ -1,9 +1,0 @@
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <!-- Aspen leaf shape in green (site header brand color) -->
-  <path d="M32 8 C 28 12, 22 16, 20 24 C 18 32, 20 40, 32 54 C 44 40, 46 32, 44 24 C 42 16, 36 12, 32 8" fill="#1f6b45" stroke="#1f6b45" stroke-width="0.5"/>
-  <!-- Leaf stem -->
-  <line x1="32" y1="54" x2="32" y2="58" stroke="#1f6b45" stroke-width="1.5"/>
-  <!-- Subtle vein -->
-  <path d="M32 12 Q 28 28, 25 48" fill="none" stroke="#1f6b45" stroke-width="0.8" opacity="0.5"/>
-  <path d="M32 12 Q 36 28, 39 48" fill="none" stroke="#1f6b45" stroke-width="0.8" opacity="0.5"/>
-</svg>

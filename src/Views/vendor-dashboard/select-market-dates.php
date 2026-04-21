@@ -12,7 +12,7 @@ $marketDates = $marketDates ?? [];
   <div class="mb-6 flex items-center justify-between">
     <div>
       <h1><?= h($title ?? 'Select Market Dates') ?></h1>
-      <p class="text-muted text-sm">Choose which market dates you want to participate in</p>
+      <p class="text-muted text-fluid-sm">Choose which market dates you want to participate in</p>
     </div>
     <a href="<?= url('/vendor') ?>" class="link-primary">Back to Dashboard</a>
   </div>
@@ -21,19 +21,19 @@ $marketDates = $marketDates ?? [];
 <?php if (empty($approvedMarkets)): ?>
   <div class="card mt-6 border border-blue-200 bg-blue-50 p-6 text-center">
     <p class="mb-3 font-medium text-gray-700">No approved markets yet</p>
-    <p class="text-muted mb-4 text-sm">You need to apply and get approved for markets before you can select dates.</p>
+    <p class="text-muted mb-4 text-fluid-sm">You need to apply and get approved for markets before you can select dates.</p>
     <a href="<?= url('/vendor/markets/apply') ?>" class="btn-action-blue">Browse Markets</a>
   </div>
 <?php else: ?>
 
   <section class="card mt-6">
     <h2 class="mb-4">Your Approved Markets</h2>
-    <p class="text-muted mb-6 text-sm">You are approved for <?= count($approvedMarkets) ?> market(s). Select which dates you want to attend:</p>
+    <p class="text-muted mb-6 text-fluid-sm">You are approved for <?= count($approvedMarkets) ?> market(s). Select which dates you want to attend:</p>
 
     <?php if (empty($marketDates)): ?>
       <div class="rounded border border-gray-200 bg-gray-50 p-6 text-center">
         <p class="text-gray-600">No upcoming market dates available.</p>
-        <p class="text-muted mt-2 text-sm">Check back soon when markets schedule new dates.</p>
+        <p class="text-muted mt-2 text-fluid-sm">Check back soon when markets schedule new dates.</p>
       </div>
     <?php else: ?>
 
@@ -57,8 +57,8 @@ $marketDates = $marketDates ?? [];
 
         <?php foreach ($datesByMarket as $marketId => $market): ?>
           <div class="rounded-lg border-2 border-gray-200 p-6">
-            <h3 class="mb-2 text-lg font-bold text-brand-primary"><?= h($market['name']) ?></h3>
-            <p class="text-muted mb-4 text-sm"><?= h($market['location']) ?></p>
+            <h3 class="mb-2 text-fluid-lg font-bold text-brand-primary"><?= h($market['name']) ?></h3>
+            <p class="text-muted mb-4 text-fluid-sm"><?= h($market['location']) ?></p>
 
             <div class="space-y-2">
               <?php foreach ($market['dates'] as $date): ?>
@@ -79,10 +79,10 @@ $marketDates = $marketDates ?? [];
                     class="form-checkbox h-5 w-5">
                   <div class="flex-1">
                     <p class="font-medium text-gray-900"><?= $dateStr ?></p>
-                    <p class="text-muted text-sm"><?= $timeStr ?></p>
+                    <p class="text-muted text-fluid-sm"><?= $timeStr ?></p>
                   </div>
                   <?php if ($isRegistered): ?>
-                    <span class="inline-flex rounded px-2 py-1 text-xs font-semibold">
+                    <span class="inline-flex rounded px-2 py-1 text-fluid-xs font-semibold">
                       <?php if ($status === 'checked_in'): ?>
                         <span class="bg-green-100 text-white">✓ Checked In</span>
                       <?php elseif ($status === 'confirmed'): ?>

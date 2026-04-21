@@ -10,8 +10,8 @@
   <?php endif; ?>
 
   <div class="mb-6 rounded bg-gray-50 p-4">
-    <h2 class="mb-2 text-lg font-semibold"><?= h($marketDate['name_mkt']) ?></h2>
-    <p class="text-sm text-gray-600">
+    <h2 class="mb-2 text-fluid-lg font-semibold"><?= h($marketDate['name_mkt']) ?></h2>
+    <p class="text-fluid-sm text-gray-600">
       Original Date: <?= h(date('F j, Y', strtotime($marketDate['date_mda']))) ?>
     </p>
   </div>
@@ -93,7 +93,7 @@
         </button>
       </div>
       <small class="text-gray-600">Optional: Set weather conditions for this date • Click Sync to pull latest data</small>
-      <div id="sync-weather-message" class="mt-2 hidden text-sm"></div>
+      <div id="sync-weather-message" class="mt-2 hidden text-fluid-sm"></div>
     </div>
 
     <div class="field">
@@ -125,7 +125,7 @@
       syncBtn.disabled = true;
       syncBtn.textContent = '⏳ Syncing...';
       messageDiv.classList.remove('hidden');
-      messageDiv.className = 'mt-2 text-sm text-blue-600';
+      messageDiv.className = 'mt-2 text-fluid-sm text-blue-600';
       messageDiv.textContent = 'Fetching weather data...';
 
       try {
@@ -140,7 +140,7 @@
         const data = await response.json();
 
         if (data.success) {
-          messageDiv.className = 'mt-2 text-sm text-green-600 font-medium';
+          messageDiv.className = 'mt-2 text-fluid-sm text-green-600 font-medium';
           messageDiv.textContent = '✓ ' + data.message;
           syncBtn.textContent = '✓ Synced';
 
@@ -149,13 +149,13 @@
             syncBtn.textContent = originalText;
           }, 3000);
         } else {
-          messageDiv.className = 'mt-2 text-sm text-red-600 font-medium';
+          messageDiv.className = 'mt-2 text-fluid-sm text-red-600 font-medium';
           messageDiv.textContent = '✗ ' + (data.error || 'Failed to sync weather');
           syncBtn.disabled = false;
           syncBtn.textContent = originalText;
         }
       } catch (error) {
-        messageDiv.className = 'mt-2 text-sm text-red-600 font-medium';
+        messageDiv.className = 'mt-2 text-fluid-sm text-red-600 font-medium';
         messageDiv.textContent = '✗ Error: ' + error.message;
         syncBtn.disabled = false;
         syncBtn.textContent = originalText;

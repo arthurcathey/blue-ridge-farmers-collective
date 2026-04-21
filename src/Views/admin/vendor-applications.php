@@ -49,7 +49,7 @@
             <?php if (!empty($application['photo_path_ven'])): ?>
               <div class="mt-2">
                 <img src="<?= asset_url((string) $application['photo_path_ven']) ?>" alt="<?= h((string) $application['farm_name_ven']) ?> photo" width="300" height="200" class="mb-1.5 block h-auto max-w-xs rounded-lg border border-gray-200">
-                <a href="<?= asset_url((string) $application['photo_path_ven']) ?>" target="_blank" rel="noopener" class="text-sm" aria-label="View vendor photo full size (opens in new window)">View full size</a>
+                <a href="<?= asset_url((string) $application['photo_path_ven']) ?>" target="_blank" rel="noopener" class="text-fluid-sm" aria-label="View vendor photo full size (opens in new window)">View full size</a>
               </div>
             <?php endif; ?>
             <div>

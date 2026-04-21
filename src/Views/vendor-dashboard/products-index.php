@@ -30,13 +30,13 @@
             <div>Status: <?= !empty($product['is_active_prd']) ? 'Active' : 'Inactive' ?></div>
             <?php if (!empty($product['seasonal_months'])): ?>
               <div>
-                <span class="inline-flex items-center rounded bg-green-100 px-2 py-1 text-xs text-white">
+                <span class="inline-flex items-center rounded bg-green-100 px-2 py-1 text-fluid-xs text-white">
                   Seasonal: <?= h(format_seasonal_months($product['seasonal_months'])) ?>
                 </span>
               </div>
             <?php else: ?>
               <div>
-                <span class="inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-xs text-white">
+                <span class="inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-fluid-xs text-white">
                   Year-round
                 </span>
               </div>

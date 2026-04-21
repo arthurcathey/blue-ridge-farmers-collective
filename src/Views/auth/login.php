@@ -48,21 +48,21 @@
     <div class="mb-4 flex items-center justify-between">
       <label class="flex items-center">
         <input type="checkbox" name="remember" class="mr-2">
-        <span class="text-sm text-neutral-medium">Remember me</span>
+        <span class="text-fluid-sm text-neutral-medium">Remember me</span>
       </label>
-      <a href="<?= url('/forgot-password') ?>" class="text-brand-primary hover:text-brand-primary-hover text-sm">Forgot Password?</a>
+      <a href="<?= url('/forgot-password') ?>" class="text-brand-primary hover:text-brand-primary-hover text-fluid-sm">Forgot Password?</a>
     </div>
 
     <button type="submit" class="form-submit">Sign in</button>
   </form>
 
-  <div class="mt-6 text-center text-sm text-neutral-medium">
+  <div class="mt-6 text-center text-fluid-sm text-neutral-medium">
     Didn't receive verification email?
-    <a href="<?= url('/resend-verification') ?>" class="text-brand-primary hover:text-brand-primary-hover text-sm">Resend verification link</a>
+    <a href="<?= url('/resend-verification') ?>" class="text-brand-primary hover:text-brand-primary-hover text-fluid-sm">Resend verification link</a>
   </div>
 
-  <div class="mt-3 text-center text-sm text-neutral-medium">
+  <div class="mt-3 text-center text-fluid-sm text-neutral-medium">
     New here?
-    <a href="<?= url('/register') ?>" class="text-brand-primary hover:text-brand-primary-hover text-sm">Create an account</a>
+    <a href="<?= url('/register') ?>" class="text-brand-primary hover:text-brand-primary-hover text-fluid-sm">Create an account</a>
   </div>
 </section>

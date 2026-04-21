@@ -1,4 +1,3 @@
-/* Ensure search wrapper parent is relative for absolute positioning of results */
 .search-form-grid > div:first-child {
   position: relative;
 }

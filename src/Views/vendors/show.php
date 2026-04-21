@@ -116,11 +116,11 @@
               </div>
 
               <?php if (!empty($product['seasonal_months'])): ?>
-                <div class="mb-2 inline-flex items-center rounded bg-brand-accent px-2 py-1 text-xs text-neutral-dark">
+                <div class="mb-2 inline-flex items-center rounded bg-brand-accent px-2 py-1 text-fluid-xs text-neutral-dark">
                   Seasonal: <?= h(format_seasonal_months($product['seasonal_months'])) ?>
                 </div>
               <?php else: ?>
-                <div class="mb-2 inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-xs text-white">
+                <div class="mb-2 inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-fluid-xs text-white">
                   Year-round
                 </div>
               <?php endif; ?>
@@ -192,7 +192,7 @@
         <div class="card mb-6">
           <div class="two-column gap-8">
             <div class="text-center">
-              <div class="text-3xl font-bold text-brand-primary sm:text-4xl">
+              <div class="text-fluid-3xl font-bold text-brand-primary">
                 <?= h(number_format($vendor['average_rating'], 1)) ?>
               </div>
               <div class="my-2 flex justify-center gap-1">
@@ -200,7 +200,7 @@
                   <span class="<?= $i <= round($vendor['average_rating']) ? 'text-brand-primary' : 'text-gray-600' ?>">★</span>
                 <?php endfor; ?>
               </div>
-              <div class="text-muted text-sm">
+              <div class="text-muted text-fluid-sm">
                 <?= $vendor['review_count'] ?> review<?= $vendor['review_count'] !== 1 ? 's' : '' ?>
               </div>
             </div>
@@ -212,11 +212,11 @@
                 $percentage = $vendor['review_count'] > 0 ? ($count / $vendor['review_count']) * 100 : 0;
                 ?>
                 <div class="mb-2 flex items-center gap-2">
-                  <span class="w-12 text-sm"><?= $stars ?> star<?= $stars !== 1 ? 's' : '' ?></span>
+                  <span class="w-12 text-fluid-sm"><?= $stars ?> star<?= $stars !== 1 ? 's' : '' ?></span>
                   <div class="h-2 flex-1 rounded-full bg-neutral-light">
                     <div class="h-2 rounded-full bg-brand-accent" style="width: <?= $percentage ?>%"></div>
                   </div>
-                  <span class="text-muted w-12 text-right text-sm"><?= $count ?></span>
+                  <span class="text-muted w-12 text-right text-fluid-sm"><?= $count ?></span>
                 </div>
               <?php endforeach; ?>
             </div>
@@ -235,12 +235,12 @@
                       <?= h($review['customer_name_vre'] ?: $review['username_acc'] ?: 'Anonymous') ?>
                     </span>
                     <?php if (!empty($review['is_verified_purchase_vre'])): ?>
-                      <span class="inline-flex items-center rounded bg-brand-primary px-2 py-1 text-xs text-white">
+                      <span class="inline-flex items-center rounded bg-brand-primary px-2 py-1 text-fluid-xs text-white">
                         Verified Purchase
                       </span>
                     <?php endif; ?>
                     <?php if (!empty($review['is_featured_vre'])): ?>
-                      <span class="inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-xs text-white">
+                      <span class="inline-flex items-center rounded bg-brand-secondary px-2 py-1 text-fluid-xs text-white">
                         ★ Featured
                       </span>
                     <?php endif; ?>
@@ -251,7 +251,7 @@
                         <span class="<?= $i <= $review['rating_vre'] ? 'text-brand-primary' : 'text-gray-600' ?>">★</span>
                       <?php endfor; ?>
                     </div>
-                    <span class="text-muted text-sm">
+                    <span class="text-muted text-fluid-sm">
                       <?= date('F j, Y', strtotime($review['created_at_vre'])) ?>
                     </span>
                   </div>
@@ -269,10 +269,10 @@
                   <div class="flex items-start gap-2">
                     <span class="flex-shrink-0 font-semibold text-brand-primary">Vendor Response:</span>
                     <div class="flex-1">
-                      <p class="text-description text-sm">
+                      <p class="text-description text-fluid-sm">
                         <?= nl2br(h($review['response_text_rre'])) ?>
                       </p>
-                      <p class="text-muted mt-1 text-xs">
+                      <p class="text-muted mt-1 text-fluid-xs">
                         <?= date('F j, Y', strtotime($review['created_at_rre'])) ?>
                       </p>
                     </div>
@@ -340,11 +340,11 @@
                     <?= !empty($errors['rating'] ?? null) ? 'aria-invalid="true"' : '' ?>
                     <?= ($i === $selectedRating) ? 'checked' : '' ?>
                     required>
-                  <span class="text-3xl text-neutral-medium transition-colors" data-star-value="<?= $i ?>">★</span>
+                  <span class="text-fluid-3xl text-neutral-medium transition-colors" data-star-value="<?= $i ?>">★</span>
                 </label>
               <?php endfor; ?>
             </div>
-            <p class="text-muted mt-1 text-sm" data-rating-feedback aria-live="polite">
+            <p class="text-muted mt-1 text-fluid-sm" data-rating-feedback aria-live="polite">
               <?= $selectedRating > 0 ? h((string) $selectedRating) . ' star' . ($selectedRating === 1 ? '' : 's') . ' selected' : 'No rating selected' ?>
             </p>
             <?php if (!empty($errors['rating'] ?? null)): ?>
@@ -362,7 +362,7 @@
               placeholder="Tell us about your experience with this vendor..."
               <?= !empty($errors['review_text'] ?? null) ? 'aria-describedby="error-review_text" aria-invalid="true"' : '' ?>
               maxlength="2000"><?= h($_SESSION['old']['review_text'] ?? '') ?></textarea>
-            <p class="text-muted mt-1 text-xs">Maximum 2000 characters</p>
+            <p class="text-muted mt-1 text-fluid-xs">Maximum 2000 characters</p>
             <?php if (!empty($errors['review_text'] ?? null)): ?>
               <small id="error-review_text" class="form-error" role="alert"><?= h($errors['review_text']) ?></small>
             <?php endif; ?>
@@ -374,7 +374,7 @@
             </button>
           </div>
 
-          <p class="text-muted text-xs">
+          <p class="text-muted text-fluid-xs">
             Your review will be reviewed by our team before being published.
           </p>
         </form>

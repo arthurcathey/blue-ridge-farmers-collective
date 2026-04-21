@@ -53,7 +53,7 @@
     <button type="submit" class="form-submit">Create account</button>
   </form>
 
-  <div class="mt-6 text-center text-sm text-neutral-medium">
+  <div class="mt-6 text-center text-fluid-sm text-neutral-medium">
     Already have an account?
     <a href="<?= url('/login') ?>" class="text-brand-primary hover:text-brand-primary-hover">Sign in</a>
   </div>

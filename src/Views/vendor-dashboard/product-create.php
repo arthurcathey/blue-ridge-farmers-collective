@@ -10,11 +10,31 @@
     </div>
   <?php endif; ?>
 
+  <?php
+  // Display spell check warnings if any exist
+  $spellWarnings = $_SESSION['spell_warnings'] ?? null;
+  unset($_SESSION['spell_warnings']);
+  ?>
+  <?php if (!empty($spellWarnings)): ?>
+    <div class="alert-info mb-6">
+      <p class="font-semibold">Spell Check Suggestions 💡</p>
+      <ul class="mt-2 list-inside list-disc">
+        <?php foreach ($spellWarnings as $field => $warningData): ?>
+          <?php foreach ($warningData['misspellings'] as $misspelling): ?>
+            <li><?= h($misspelling['word']) ?> (in <strong><?= h($field) ?></strong>)
+              - Suggestions: <?= h(implode(', ', $warningData['suggestions'][$misspelling['word']] ?? [])) ?>
+            </li>
+          <?php endforeach; ?>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
+
   <form method="post" action="<?= url('/vendor/products') ?>" enctype="multipart/form-data" data-autosave="product-create">
     <?= csrf_field() ?>
     <div class="field">
       <label for="name">Product name</label>
-      <input id="name" name="name" type="text" required value="<?= h($old['name'] ?? '') ?>" <?= !empty($errors['name']) ? 'aria-describedby="error-name" aria-invalid="true"' : '' ?>>
+      <input id="name" name="name" type="text" required value="<?= h($old['name'] ?? '') ?>" spellcheck="true" <?= !empty($errors['name']) ? 'aria-describedby="error-name" aria-invalid="true"' : '' ?>>
       <?php if (!empty($errors['name'])): ?>
         <small id="error-name" class="form-error" role="alert"><?= h($errors['name']) ?></small>
       <?php endif; ?>
@@ -38,12 +58,12 @@
 
     <div class="field">
       <label for="description">Description</label>
-      <textarea id="description" name="description" rows="4"><?= h($old['description'] ?? '') ?></textarea>
+      <textarea id="description" name="description" rows="4" spellcheck="true"><?= h($old['description'] ?? '') ?></textarea>
     </div>
 
     <div class="field">
       <label>Seasonality (optional)</label>
-      <p class="text-sm text-muted mb-2">Select the months when this product is available:</p>
+      <p class="text-fluid-sm text-muted mb-2">Select the months when this product is available:</p>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         <?php
         $months = [
@@ -70,11 +90,11 @@
               name="seasonal_months[]"
               value="<?= $num ?>"
               <?= $checked ? 'checked' : '' ?>>
-            <span class="text-sm"><?= h($name) ?></span>
+            <span class="text-fluid-sm"><?= h($name) ?></span>
           </label>
         <?php endforeach; ?>
       </div>
-      <p class="text-xs text-muted mt-2">Leave all unchecked if available year-round</p>
+      <p class="text-fluid-xs text-muted mt-2">Leave all unchecked if available year-round</p>
     </div>
 
     <div class="field">

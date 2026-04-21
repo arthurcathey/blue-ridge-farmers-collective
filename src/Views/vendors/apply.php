@@ -49,7 +49,7 @@ if (!is_array($selectedMethods)) {
 ?>
 <section class="form-card">
   <h1><?= h($title ?? $pageHeading) ?></h1>
-  <p class="mb-6 text-neutral-medium">Share your farm details to apply as a vendor or keep your profile up to date.</p>
+  <p class="mb-6 text-fluid-sm text-neutral-medium">Share your farm details to apply as a vendor or keep your profile up to date.</p>
 
   <?php if (!empty($message)): ?>
     <div class="alert-success" data-flash>
@@ -74,15 +74,35 @@ if (!is_array($selectedMethods)) {
     </div>
   <?php endif; ?>
 
+  <?php
+  // Display spell check warnings if any exist
+  $spellWarnings = $_SESSION['spell_warnings'] ?? null;
+  unset($_SESSION['spell_warnings']);
+  ?>
+  <?php if (!empty($spellWarnings)): ?>
+    <div class="alert-info mb-6">
+      <p class="font-semibold">Spell Check Suggestions 💡</p>
+      <ul class="mt-2 list-inside list-disc">
+        <?php foreach ($spellWarnings as $field => $warningData): ?>
+          <?php foreach ($warningData['misspellings'] as $misspelling): ?>
+            <li><?= h($misspelling['word']) ?> (in <strong><?= h($field) ?></strong>)
+              - Suggestions: <?= h(implode(', ', $warningData['suggestions'][$misspelling['word']] ?? [])) ?>
+            </li>
+          <?php endforeach; ?>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+  <?php endif; ?>
+
   <?php if ($application !== null): ?>
     <div class="card mb-6">
-      <p class="mb-2 text-sm text-neutral-medium">Application Status</p>
+      <p class="mb-2 text-fluid-sm text-neutral-medium">Application Status</p>
       <p class="font-semibold text-neutral-dark"><?= h($status === '' ? 'pending' : ucfirst($status)) ?></p>
       <?php if (!empty($application['applied_date_ven'])): ?>
-        <div class="mt-1 text-sm text-neutral-medium">Applied on <?= h((string) $application['applied_date_ven']) ?></div>
+        <div class="mt-1 text-fluid-sm text-neutral-medium">Applied on <?= h((string) $application['applied_date_ven']) ?></div>
       <?php endif; ?>
       <?php if (!empty($application['admin_notes_ven'])): ?>
-        <div class="mt-2 text-sm text-neutral-medium">Admin note: <?= h((string) $application['admin_notes_ven']) ?></div>
+        <div class="mt-2 text-fluid-sm text-neutral-medium">Admin note: <?= h((string) $application['admin_notes_ven']) ?></div>
       <?php endif; ?>
     </div>
   <?php endif; ?>
@@ -103,12 +123,13 @@ if (!is_array($selectedMethods)) {
       $type = 'text';
       $value = $prefill['farm_name'];
       $required = true;
+      $spellcheck = true;
       require __DIR__ . '/../partials/form-field.php';
       ?>
 
       <div class="form-field">
         <label for="farm_description">Description</label>
-        <textarea id="farm_description" name="farm_description" rows="4" class="form-textarea" <?= !empty($errors['farm_description']) ? 'aria-describedby="error-farm_description" aria-invalid="true"' : '' ?>><?= h($prefill['farm_description']) ?></textarea>
+        <textarea id="farm_description" name="farm_description" rows="4" class="form-textarea" spellcheck="true" <?= !empty($errors['farm_description']) ? 'aria-describedby="error-farm_description" aria-invalid="true"' : '' ?>><?= h($prefill['farm_description']) ?></textarea>
         <?php if (!empty($errors['farm_description'])): ?>
           <small id="error-farm_description" class="form-error" role="alert"><?= h($errors['farm_description']) ?></small>
         <?php endif; ?>
@@ -170,14 +191,14 @@ if (!is_array($selectedMethods)) {
         <?php if (!empty($errors['primary_categories'])): ?>
           <small id="error-primary_categories" class="form-error" role="alert"><?= h($errors['primary_categories']) ?></small>
         <?php endif; ?>
-        <small class="text-sm text-neutral-medium">Hold Ctrl (Windows) or Command (Mac) to select multiple categories.</small>
+        <small class="text-fluid-sm text-neutral-medium">Hold Ctrl (Windows) or Command (Mac) to select multiple categories.</small>
       </div>
 
       <div class="form-field">
         <label>Production methods</label>
         <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <?php foreach ($methodOptions as $value => $label): ?>
-            <label class="form-label-block text-sm text-neutral-medium">
+            <label class="form-label-block text-fluid-sm text-neutral-medium">
               <input type="checkbox" name="production_methods[]" value="<?= h($value) ?>" <?= in_array($value, $selectedMethods, true) ? 'checked' : '' ?>>
               <?= h($label) ?>
             </label>
@@ -198,7 +219,7 @@ if (!is_array($selectedMethods)) {
 
       <div class="form-field">
         <label for="food_safety_info">Food safety/license info</label>
-        <textarea id="food_safety_info" name="food_safety_info" rows="3" class="form-textarea" <?= !empty($errors['food_safety_info']) ? 'aria-describedby="error-food_safety_info" aria-invalid="true"' : '' ?>><?= h($prefill['food_safety_info']) ?></textarea>
+        <textarea id="food_safety_info" name="food_safety_info" rows="3" class="form-textarea" spellcheck="true" <?= !empty($errors['food_safety_info']) ? 'aria-describedby="error-food_safety_info" aria-invalid="true"' : '' ?>><?= h($prefill['food_safety_info']) ?></textarea>
         <?php if (!empty($errors['food_safety_info'])): ?>
           <small id="error-food_safety_info" class="form-error" role="alert"><?= h($errors['food_safety_info']) ?></small>
         <?php endif; ?>
@@ -211,7 +232,7 @@ if (!is_array($selectedMethods)) {
             <?= picture_tag($prefill['photo_path'], h($prefill['farm_name'] ?? '') . ' farm photo or logo', 'form-image', ['width' => '300', 'height' => '200']) ?>
           </div>
           <div>
-            <button type="button" class="mb-4 text-sm font-semibold text-brand-primary hover:text-brand-primary-hover hover:underline" onclick="deleteVendorPhoto()">Delete current photo</button>
+            <button type="button" class="mb-4 text-fluid-sm font-semibold text-brand-primary hover:text-brand-primary-hover hover:underline" onclick="deleteVendorPhoto()">Delete current photo</button>
           </div>
         <?php endif; ?>
         <input id="farm_photo" name="farm_photo" type="file" accept="image/*" <?= !empty($errors['photo']) ? 'aria-describedby="error-photo" aria-invalid="true"' : '' ?>>

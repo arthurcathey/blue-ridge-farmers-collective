@@ -495,3 +495,89 @@ if (!function_exists('sanitize_checkbox')) {
     return isset($value) && $value ? 1 : 0;
   }
 }
+
+if (!function_exists('audit_log')) {
+  /**
+   * Log an action to the audit trail
+   *
+   * Convenience helper for logging actions to the audit system.
+   * Can be called from anywhere in the application with database connection.
+   *
+   * @param PDO $db Database connection
+   * @param string $performedBy User role performing action
+   * @param string $actionType Type of action (use AuditService constants)
+   * @param string $targetType Type of entity affected
+   * @param int|null $targetId ID of entity affected
+   * @param string $description Human-readable description
+   * @param array|null $metadata Additional JSON metadata
+   * @return bool Success status
+   */
+  function audit_log(
+    \PDO $db,
+    string $performedBy,
+    string $actionType,
+    string $targetType,
+    ?int $targetId,
+    string $description,
+    ?array $metadata = null
+  ): bool {
+    try {
+      $auditService = new \App\Services\AuditService($db);
+      return $auditService->logAction($performedBy, $actionType, $targetType, $targetId, $description, $metadata);
+    } catch (\Throwable $e) {
+      error_log('Audit logging error: ' . $e->getMessage());
+      return false;
+    }
+  }
+}
+
+if (!function_exists('send_notification')) {
+  /**
+   * Send a notification to a user
+   *
+   * Convenience helper for sending notifications through the notification system.
+   *
+   * @param PDO $db Database connection
+   * @param int $userId User ID to notify
+   * @param string $notificationType Notification type constant
+   * @param array $notificationData Data about the notification
+   * @param string $userRole User role (vendor or admin)
+   * @return bool Success status
+   */
+  function send_notification(
+    \PDO $db,
+    int $userId,
+    string $notificationType,
+    array $notificationData,
+    string $userRole = 'vendor'
+  ): bool {
+    try {
+      $mailService = new \App\Services\MailService();
+      $notificationService = new \App\Services\NotificationService($db, $mailService);
+
+      switch ($notificationType) {
+        case \App\Services\NotificationService::NOTIFY_VENDOR_MARKET_CANCELLED:
+          return $notificationService->notifyVendorMarketCancellation($userId, $notificationData);
+
+        case \App\Services\NotificationService::NOTIFY_VENDOR_BOOTH_ASSIGNED:
+          return $notificationService->notifyVendorBoothAssigned($userId, $notificationData);
+
+        case \App\Services\NotificationService::NOTIFY_VENDOR_TRANSFER_RESPONSE:
+          return $notificationService->notifyVendorTransferStatus($userId, $notificationData);
+
+        case \App\Services\NotificationService::NOTIFY_ADMIN_TRANSFER_REQUEST:
+          return $notificationService->notifyAdminTransferRequest($userId, $notificationData);
+
+        case \App\Services\NotificationService::NOTIFY_VENDOR_WEATHER_ALERT:
+          return (bool) $notificationService->notifyVendorsWeatherAlert($userId, $notificationData);
+
+        default:
+          error_log("Unknown notification type: $notificationType");
+          return false;
+      }
+    } catch (\Throwable $e) {
+      error_log('Notification sending error: ' . $e->getMessage());
+      return false;
+    }
+  }
+}

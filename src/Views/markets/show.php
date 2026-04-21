@@ -23,7 +23,7 @@
         <div class="border-l-4 border-brand-primary pl-4 py-2">
           <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p class="font-semibold text-lg">
+              <p class="font-semibold text-fluid-lg">
                 <?= h(date('l, F j, Y', strtotime($date['date_mda']))) ?>
               </p>
               <p class="text-neutral-medium">
@@ -32,22 +32,22 @@
                 <?= h(date('g:i A', strtotime($date['end_time_mda']))) ?>
               </p>
               <?php if (!empty($date['location_mda'])): ?>
-                <p class="text-sm text-neutral-medium mt-1">
+                <p class="text-fluid-sm text-neutral-medium mt-1">
                   Location: <?= h($date['location_mda']) ?>
                 </p>
               <?php endif; ?>
               <?php if (!empty($date['weather_status_mda'])): ?>
-                <p class="text-sm mt-1">
+                <p class="text-fluid-sm mt-1">
                   Weather: <?= h(ucfirst(str_replace('_', ' ', $date['weather_status_mda']))) ?>
                 </p>
               <?php endif; ?>
               <?php if (!empty($date['notes_mda'])): ?>
-                <p class="text-sm text-neutral-medium mt-2 italic">
+                <p class="text-fluid-sm text-neutral-medium mt-2 italic">
                   <?= h($date['notes_mda']) ?>
                 </p>
               <?php endif; ?>
             </div>
-            <span class="px-3 py-1 text-sm rounded <?= $date['status_mda'] === 'confirmed' ? 'bg-brand-primary text-white' : 'bg-neutral-light text-neutral-dark' ?>">
+            <span class="px-3 py-1 text-fluid-sm rounded <?= $date['status_mda'] === 'confirmed' ? 'bg-brand-primary text-white' : 'bg-neutral-light text-neutral-dark' ?>">
               <?= h(ucfirst($date['status_mda'])) ?>
             </span>
           </div>

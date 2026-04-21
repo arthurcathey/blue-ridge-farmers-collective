@@ -5,7 +5,7 @@
 
 <section class="card mt-6">
   <h2>Upcoming Market Dates</h2>
-  <p class="mb-4 text-sm text-neutral-medium">View market events calendar</p>
+  <p class="mb-4 text-fluid-sm text-neutral-medium">View market events calendar</p>
   <div data-market-calendar></div>
 </section>
 
@@ -84,7 +84,7 @@
                         <?= h($review['customer_name_vre'] ?: $review['username_acc'] ?: 'Anonymous') ?>
                       </span>
                       <?php if ($review['is_featured_vre']): ?>
-                        <span class=\"inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-xs text-white\">
+                        <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-fluid-xs text-white">
                           ★ Featured
                         </span>
                       <?php endif; ?>
@@ -95,7 +95,7 @@
                           <span class="<?= $i <= $review['rating_vre'] ? 'text-orange-700' : 'text-gray-600' ?>">★</span>
                         <?php endfor; ?>
                       </div>
-                      <span class="text-muted text-sm">
+                      <span class="text-muted text-fluid-sm">
                         <?= date('F j, Y', strtotime($review['created_at_vre'])) ?>
                       </span>
                     </div>
@@ -113,7 +113,7 @@
                     <div class="flex items-start gap-2">
                       <span class="flex-shrink-0 font-semibold text-brand-primary">Your Response:</span>
                       <div class="flex-1">
-                        <p class="text-description text-sm">
+                        <p class="text-description text-fluid-sm">
                           <?= nl2br(h($review['response_text_rre'])) ?>
                         </p>
                       </div>
@@ -137,7 +137,7 @@
                             required
                             minlength="10"
                             maxlength="1000"></textarea>
-                          <p class="text-muted mt-1 text-xs">10-1000 characters</p>
+                          <p class="text-muted mt-1 text-fluid-xs">10-1000 characters</p>
                         </div>
                         <button type="submit" class="btn-action-green">
                           Post Response

@@ -47,7 +47,7 @@
                 <td class="p-3 text-center"><?= $vendor['product_count'] ?></td>
                 <td class="p-3 text-center"><?= number_format($vendor['avg_rating'], 1) ?> ⭐</td>
                 <td class="p-3">
-                  <span class="inline-block rounded bg-brand-primary px-2.5 py-1 text-sm text-white">
+                  <span class="inline-block rounded bg-brand-primary px-2.5 py-1 text-fluid-sm text-white">
                     <?= h(ucfirst($vendor['application_status_ven'])) ?>
                   </span>
                 </td>

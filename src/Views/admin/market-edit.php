@@ -13,7 +13,7 @@
     <input type="hidden" name="id" value="<?= h($market['id_mkt'] ?? '') ?>">
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Basic Information</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Basic Information</legend>
 
       <div class="field">
         <label for="name">Market Name *</label>
@@ -95,7 +95,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Contact Information</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Contact Information</legend>
 
       <div class="field">
         <label for="contact_name">Contact Name</label>
@@ -141,7 +141,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Default Location & Hours</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Default Location & Hours</legend>
 
       <div class="field">
         <label for="default_location">Default Location Address</label>
@@ -194,7 +194,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Hero Image</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Hero Image</legend>
       <div class="field">
         <label for="hero_image">Market Hero Image</label>
         <?php if (!empty($market['hero_image_path_mkt'])): ?>
@@ -202,7 +202,7 @@
             <img src="<?= asset_url($market['hero_image_path_mkt']) ?>" alt="<?= h($market['name_mkt']) ?>" width="250" height="180" style="max-width: 250px; height: auto; border-radius: 0.5rem;">
           </div>
           <div class="mb-4">
-            <button type="button" class="text-brand-primary hover:text-brand-primary-hover hover:underline text-sm font-semibold" onclick="deleteMarketImage(<?= h($market['id_mkt']) ?>)">Delete current image</button>
+            <button type="button" class="text-brand-primary hover:text-brand-primary-hover hover:underline text-fluid-sm font-semibold" onclick="deleteMarketImage(<?= h($market['id_mkt']) ?>)">Delete current image</button>
           </div>
         <?php endif; ?>
         <input id="hero_image" name="hero_image" type="file" accept="image/*">
@@ -211,7 +211,7 @@
     </fieldset>
 
     <fieldset class="mb-8">
-      <legend class="mb-6 text-lg font-bold">Settings</legend>
+      <legend class="mb-6 text-fluid-lg font-bold">Settings</legend>
 
       <div class="field">
         <label class="flex items-center gap-3">

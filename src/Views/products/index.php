@@ -115,13 +115,13 @@
     <?php if (empty($products)): ?>
       <div class="no-products-message col-span-full">
         <?php if (!empty($active_filters)): ?>
-          <p class="mb-4 text-lg">No products found matching your search.</p>
+          <p class="mb-4 text-fluid-lg">No products found matching your search.</p>
 
           <div class="mb-4 rounded-lg border border-green-200 bg-green-50 p-4">
             <p class="mb-3 font-semibold text-green-900">Active filters:</p>
             <div class="flex flex-wrap gap-2">
               <?php foreach ($active_filters as $filterType): ?>
-                <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm text-white">
+                <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-fluid-xs text-white">
                   <?= htmlspecialchars($filter_names[$filterType] ?? 'Unknown', ENT_QUOTES, 'UTF-8') ?>
                   <a href="<?= htmlspecialchars($remove_filter_urls[$filterType] ?? '#', ENT_QUOTES, 'UTF-8') ?>"
                     class="font-semibold hover:text-green-600 hover:underline"

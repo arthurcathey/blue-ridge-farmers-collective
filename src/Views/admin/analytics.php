@@ -3,7 +3,7 @@
     <h1><?= h($title ?? 'Platform Analytics') ?></h1>
     <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
   </div>
-  <p class="text-muted mb-4 text-sm">Monitor platform health, user engagement, and market performance.</p>
+  <p class="text-muted mb-4 text-fluid-sm">Monitor platform health, user engagement, and market performance.</p>
 </section>
 
 
@@ -13,7 +13,7 @@
     <div class="card-metric">
       <div class="metric-label">Total Vendors</div>
       <div class="metric-value text-brand-primary"><?= number_format($stats['total_vendors'] ?? 0) ?></div>
-      <div class="text-muted mt-1 text-xs">
+      <div class="text-muted mt-1 text-fluid-xs">
         <?= ($stats['active_vendors'] ?? 0) ?> active
       </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="card-metric">
       <div class="metric-label">Active Markets</div>
       <div class="metric-value text-brand-primary"><?= number_format($stats['active_markets'] ?? 0) ?></div>
-      <div class="text-muted mt-1 text-xs">
+      <div class="text-muted mt-1 text-fluid-xs">
         <?= ($stats['total_market_dates'] ?? 0) ?> dates scheduled
       </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="card-metric">
       <div class="metric-label">Total Products</div>
       <div class="metric-value text-brand-primary"><?= number_format($stats['total_products'] ?? 0) ?></div>
-      <div class="text-muted mt-1 text-xs">
+      <div class="text-muted mt-1 text-fluid-xs">
         from <?= ($stats['total_vendors_with_products'] ?? 0) ?> vendors
       </div>
     </div>
@@ -37,7 +37,7 @@
     <div class="card-metric">
       <div class="metric-label">Platform Reviews</div>
       <div class="metric-value text-brand-primary"><?= number_format($stats['total_reviews'] ?? 0) ?></div>
-      <div class="text-muted mt-1 text-xs">
+      <div class="text-muted mt-1 text-fluid-xs">
         <?= number_format($stats['avg_rating'] ?? 0, 1) ?>★ avg rating
       </div>
     </div>
@@ -52,19 +52,19 @@
     <div class="rounded border border-gray-200 bg-gray-50 p-4">
       <h3 class="mb-4 font-semibold">Most Searched Products</h3>
       <?php if (empty($topSearchedProducts)): ?>
-        <p class="text-muted text-sm">No search data yet</p>
+        <p class="text-muted text-fluid-sm">No search data yet</p>
       <?php else: ?>
         <div class="space-y-3">
           <?php foreach (array_slice($topSearchedProducts, 0, 8) as $idx => $product): ?>
             <div class="flex items-center gap-3">
-              <div class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-xs font-bold text-white">
+              <div class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-fluid-xs font-bold text-white">
                 <?= $idx + 1 ?>
               </div>
               <div class="flex-1">
-                <div class="text-sm font-medium"><?= h($product['search_term']) ?></div>
-                <div class="text-muted text-xs"><?= $product['count'] ?> searches</div>
+                <div class="text-fluid-sm font-medium"><?= h($product['search_term']) ?></div>
+                <div class="text-muted text-fluid-xs"><?= $product['count'] ?> searches</div>
               </div>
-              <div class="text-sm font-semibold text-brand-primary">
+              <div class="text-fluid-sm font-semibold text-brand-primary">
                 <?php $percent = round(($product['count'] / ($stats['total_searches'] ?? 1)) * 100); ?>
                 <?= $percent ?>%
               </div>
@@ -78,18 +78,18 @@
     <div class="rounded border border-gray-200 bg-gray-50 p-4">
       <h3 class="mb-4 font-semibold">Popular Categories</h3>
       <?php if (empty($topCategories)): ?>
-        <p class="text-muted text-sm">No category data yet</p>
+        <p class="text-muted text-fluid-sm">No category data yet</p>
       <?php else: ?>
         <div class="space-y-3">
           <?php foreach (array_slice($topCategories, 0, 8) as $category): ?>
             <div class="flex items-center justify-between">
               <div class="flex-1">
-                <div class="text-sm font-medium"><?= h($category['category_name']) ?></div>
+                <div class="text-fluid-sm font-medium"><?= h($category['category_name']) ?></div>
                 <div class="mt-1 h-2 rounded bg-gray-200">
                   <div class="h-2 rounded bg-brand-primary" style="width: <?= round(($category['count'] / ($stats['total_products'] ?? 1)) * 100) ?>%"></div>
                 </div>
               </div>
-              <span class="ml-2 w-12 text-right text-sm font-semibold text-gray-600"><?= $category['count'] ?></span>
+              <span class="ml-2 w-12 text-right text-fluid-sm font-semibold text-gray-600"><?= $category['count'] ?></span>
             </div>
           <?php endforeach; ?>
         </div>
@@ -103,19 +103,19 @@
   <h2 class="mb-4">Review Management</h2>
   <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
     <div class="rounded border border-yellow-200 bg-yellow-50 p-4">
-      <div class="text-sm font-medium text-black">Pending Approval</div>
-      <div class="mt-1 text-3xl font-bold text-black"><?= ($stats['pending_reviews'] ?? 0) ?></div>
+      <div class="text-fluid-sm font-medium text-black">Pending Approval</div>
+      <div class="mt-1 text-fluid-3xl font-bold text-black"><?= ($stats['pending_reviews'] ?? 0) ?></div>
     </div>
 
     <div class="rounded border border-green-200 bg-green-50 p-4">
-      <div class="text-sm font-medium text-green-800">Approved Reviews</div>
-      <div class="mt-1 text-3xl font-bold text-black"><?= ($stats['approved_reviews'] ?? 0) ?></div>
+      <div class="text-fluid-sm font-medium text-green-800">Approved Reviews</div>
+      <div class="mt-1 text-fluid-3xl font-bold text-black"><?= ($stats['approved_reviews'] ?? 0) ?></div>
     </div>
 
-    <div class="rounded border border-blue-200 bg-blue-50 p-4">
-      <div class="text-sm font-medium text-blue-800">Vendor Responses</div>
-      <div class="mt-1 text-3xl font-bold text-blue-600"><?= ($stats['vendor_responses'] ?? 0) ?></div>
-      <div class="mt-1 text-xs text-black">
+    <div class="rounded border border-green-200 bg-green-50 p-4">
+      <div class="text-fluid-sm font-medium text-green-800">Vendor Responses</div>
+      <div class="mt-1 text-fluid-3xl font-bold text-green-600"><?= ($stats['vendor_responses'] ?? 0) ?></div>
+      <div class="mt-1 text-fluid-xs text-black">
         <?php
         $approved = $stats['approved_reviews'] ?? 0;
         $responded = $stats['vendor_responses'] ?? 0;
@@ -137,11 +137,11 @@
         $percent = round(($count / $approved) * 100);
         ?>
         <div class="flex items-center gap-3">
-          <div class="w-12 text-sm font-medium"><?= $star ?>★</div>
+          <div class="w-12 text-fluid-sm font-medium"><?= $star ?>★</div>
           <div class="h-6 flex-1 rounded bg-gray-200">
             <div class="h-6 rounded bg-yellow-400" style="width: <?= $percent ?>%"></div>
           </div>
-          <div class="w-16 text-right text-sm font-semibold"><?= $count ?> (<?= $percent ?>%)</div>
+          <div class="w-16 text-right text-fluid-sm font-semibold"><?= $count ?> (<?= $percent ?>%)</div>
         </div>
       <?php endfor; ?>
     </div>
@@ -160,25 +160,25 @@
         <div class="rounded border border-gray-200 p-4">
           <div class="mb-2 flex items-center justify-between">
             <h3 class="font-semibold"><?= h($market['name_mkt']) ?></h3>
-            <span class="text-muted text-sm"><?= h($market['city_mkt'] ?? 'Unknown') ?></span>
+            <span class="text-muted text-fluid-sm"><?= h($market['city_mkt'] ?? 'Unknown') ?></span>
           </div>
-          <div class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+          <div class="grid grid-cols-2 gap-3 text-fluid-sm sm:grid-cols-4">
             <div>
-              <div class="text-muted text-xs">Next Event</div>
+              <div class="text-muted text-fluid-xs">Next Event</div>
               <div class="font-medium">
                 <?= $market['next_date'] ? date('M j', strtotime($market['next_date'])) : 'TBD' ?>
               </div>
             </div>
             <div>
-              <div class="text-muted text-xs">Total Events</div>
+              <div class="text-muted text-fluid-xs">Total Events</div>
               <div class="font-medium"><?= ($market['event_count'] ?? 0) ?></div>
             </div>
             <div>
-              <div class="text-muted text-xs">Unique Vendors</div>
+              <div class="text-muted text-fluid-xs">Unique Vendors</div>
               <div class="font-medium"><?= ($market['vendor_count'] ?? 0) ?></div>
             </div>
             <div>
-              <div class="text-muted text-xs">Avg Attendance</div>
+              <div class="text-muted text-fluid-xs">Avg Attendance</div>
               <div class="font-medium"><?= ($market['avg_attendance'] ?? 0) ?></div>
             </div>
           </div>
@@ -199,17 +199,17 @@
       <?php foreach ($topVendors as $idx => $vendor): ?>
         <div class="flex items-center justify-between border-b border-gray-200 pb-3 last:border-0">
           <div class="flex items-center gap-3">
-            <div class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-xs font-bold text-white">
+            <div class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary text-fluid-xs font-bold text-white">
               <?= $idx + 1 ?>
             </div>
             <div>
               <div class="font-medium"><?= h($vendor['farm_name_ven']) ?></div>
-              <div class="text-muted text-xs"><?= ($vendor['product_count'] ?? 0) ?> products</div>
+              <div class="text-muted text-fluid-xs"><?= ($vendor['product_count'] ?? 0) ?> products</div>
             </div>
           </div>
           <div class="flex items-center gap-4 text-right">
             <div>
-              <div class="text-muted text-xs">Avg Rating</div>
+              <div class="text-muted text-fluid-xs">Avg Rating</div>
               <div class="font-semibold text-black">
                 <?php if (($vendor['avg_rating'] ?? 0) > 0): ?>
                   ★ <?= number_format($vendor['avg_rating'], 1) ?>
@@ -219,7 +219,7 @@
               </div>
             </div>
             <div>
-              <div class="text-muted text-xs">Reviews</div>
+              <div class="text-muted text-fluid-xs">Reviews</div>
               <div class="font-semibold"><?= ($vendor['review_count'] ?? 0) ?></div>
             </div>
           </div>
@@ -242,7 +242,7 @@
           <div class="mb-2 flex items-center justify-between">
             <div>
               <div class="font-semibold"><?= h($review['farm_name_ven']) ?></div>
-              <div class="text-muted text-sm"><?= $review['customer_name_vre'] ?: 'Anonymous' ?> • <?= date('M j', strtotime($review['created_at_vre'])) ?></div>
+              <div class="text-muted text-fluid-sm"><?= $review['customer_name_vre'] ?: 'Anonymous' ?> • <?= date('M j', strtotime($review['created_at_vre'])) ?></div>
             </div>
             <div class="flex gap-0.5">
               <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -250,9 +250,9 @@
               <?php endfor; ?>
             </div>
           </div>
-          <p class="mb-2 text-sm text-gray-700"><?= nl2br(h(substr($review['review_text_vre'] ?? '', 0, 150))) ?></p>
+          <p class="mb-2 text-fluid-sm text-gray-700"><?= nl2br(h(substr($review['review_text_vre'] ?? '', 0, 150))) ?></p>
           <div class="flex gap-2">
-            <a href="<?= url('/admin/reviews') ?>" class="link-primary text-xs">Review in Dashboard</a>
+            <a href="<?= url('/admin/reviews') ?>" class="link-primary text-fluid-xs">Review in Dashboard</a>
           </div>
         </div>
       <?php endforeach; ?>
@@ -262,7 +262,7 @@
 
 <section class="card mt-6 border-l-4 border-green-500 bg-green-50">
   <h2 class="mb-3">Platform Health</h2>
-  <div class="grid grid-cols-1 gap-4 text-sm text-gray-700 sm:grid-cols-2">
+  <div class="grid grid-cols-1 gap-4 text-fluid-sm text-gray-700 sm:grid-cols-2">
     <div>
       <span class="font-medium">Response Rate:</span>
       <span class="font-bold text-brand-primary">

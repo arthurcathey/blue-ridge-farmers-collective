@@ -15,11 +15,17 @@ export const Admin = (() => {
 
   /**
    * Retrieve CSRF token from form
+   * Looks for any input field with name="csrf_token"
    *
    * @returns {string} CSRF token value or empty string
    */
   const getCsrfToken = () => {
-    return document.querySelector('[name="csrf_token"]')?.value || '';
+    
+    const token = document.querySelector('[name="csrf_token"]')?.value || '';
+    if (!token) {
+      console.warn('CSRF token not found on page');
+    }
+    return token;
   };
 
   /**
@@ -217,25 +223,48 @@ export const Admin = (() => {
   const approveTransfer = function(transferId, vendorName) {
     if (!confirm(`Approve transfer for ${vendorName}?`)) return;
 
+    const csrfToken = getCsrfToken();
+    if (!csrfToken) {
+      alert('Security token missing. Please refresh the page.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('transfer_id', transferId);
-    formData.append('csrf_token', getCsrfToken());
+    formData.append('csrf_token', csrfToken);
 
     fetch('/admin/vendor-transfer-requests/approve', {
       method: 'POST',
       body: formData,
     })
-      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
-      .then((data) => {
+      .then((res) => {
+        return res.text().then(text => {
+          try {
+            const data = JSON.parse(text);
+            return { ok: res.ok, status: res.status, data: data };
+          } catch (e) {
+            console.error('Server returned non-JSON response:', text);
+            return { ok: res.ok, status: res.status, data: { error: 'Server error: ' + text.substring(0, 100) } };
+          }
+        });
+      })
+      .then(({ ok, status, data }) => {
         if (data.error) {
           alert('Error: ' + data.error);
+          console.error('Transfer error:', data.error);
           return;
         }
-        window.location.reload();
+        if (data.success) {
+          alert('Transfer approved successfully!');
+          window.location.reload();
+        } else {
+          alert('Unexpected response from server');
+          console.error('Unexpected response:', data);
+        }
       })
       .catch((err) => {
         console.error('Failed to approve transfer:', err);
-        alert('Failed to approve transfer');
+        alert('Failed to approve transfer. See console for details.');
       });
   };
 
@@ -293,13 +322,36 @@ export const Admin = (() => {
       method: 'POST',
       body: formData,
     })
-      .then((res) => res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`)))
-      .then(() => {
-        window.location.reload();
+      .then((res) => {
+        // Always try to parse as JSON
+        return res.text().then(text => {
+          try {
+            const data = JSON.parse(text);
+            return { ok: res.ok, status: res.status, data: data };
+          } catch (e) {
+            console.error('Server returned non-JSON response:', text);
+            return { ok: res.ok, status: res.status, data: { error: 'Server error: ' + text.substring(0, 100) } };
+          }
+        });
+      })
+      .then(({ ok, status, data }) => {
+        if (data.error) {
+          alert('Error: ' + data.error);
+          console.error('Rejection error:', data.error);
+          return;
+        }
+        if (data.success) {
+          alert('Transfer rejected successfully!');
+          closeRejectModal();
+          window.location.reload();
+        } else {
+          alert('Unexpected response from server');
+          console.error('Unexpected response:', data);
+        }
       })
       .catch((err) => {
         console.error('Failed to reject transfer:', err);
-        alert('Failed to reject transfer');
+        alert('Failed to reject transfer. See console for details.');
       });
   };
 
@@ -311,9 +363,7 @@ export const Admin = (() => {
    * @param {HTMLElement} button - The button element that triggered the action
    * @returns {void}
    */
-  const saveVendor = function(vendorId, button) {
-    // If button not passed, try to find it
-    if (!button) {
+  const saveVendor = function(vendorId, button) {    if (!button) {
       button = document.getElementById('saveVendorBtn');
     }
 
@@ -361,7 +411,6 @@ export const Admin = (() => {
    * @returns {void}
    */
   const unsaveVendor = function(vendorId, button) {
-    // If button not passed, try to find it
     if (!button) {
       button = document.getElementById('saveVendorBtn');
     }

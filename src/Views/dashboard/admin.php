@@ -3,7 +3,7 @@
   <p class="text-muted mb-2">Welcome <?= h($user['display_name'] ?? $user['username']) ?>. System overview:</p>
 
   <?php if (isset($dataRefreshedAt)): ?>
-    <p class="text-small text-muted text-sm">
+    <p class="text-small text-muted text-fluid-sm">
       Data last refreshed: <?= $dataRefreshedAt->format('M d, Y g:i A') ?>
     </p>
   <?php endif; ?>
@@ -12,7 +12,7 @@
     <div class="metric-card metric-card-pending-vendor">
       <div>
         <p class="metric-label">Pending Vendors</p>
-        <p class="text-muted mb-2 text-sm"><?= h((string) ($metrics['pending_vendors'] ?? 0)) ?> awaiting approval</p>
+        <p class="text-muted mb-2 text-fluid-sm"><?= h((string) ($metrics['pending_vendors'] ?? 0)) ?> awaiting approval</p>
       </div>
       <a href="<?= url('/admin/vendor-applications') ?>" class="btn-metric">Review</a>
     </div>
@@ -20,7 +20,7 @@
     <div class="metric-card metric-card-pending-market">
       <div>
         <p class="metric-label">Pending Markets</p>
-        <p class="text-muted mb-2 text-sm"><?= h((string) ($metrics['pending_market_apps'] ?? 0)) ?> awaiting approval</p>
+        <p class="text-muted mb-2 text-fluid-sm"><?= h((string) ($metrics['pending_market_apps'] ?? 0)) ?> awaiting approval</p>
       </div>
       <a href="<?= url('/admin/market-applications') ?>" class="btn-metric">Review</a>
     </div>
@@ -28,7 +28,7 @@
     <div class="metric-card metric-card-pending-review">
       <div>
         <p class="metric-label">Pending Reviews</p>
-        <p class="text-muted mb-2 text-sm"><?= h((string) ($metrics['pending_reviews'] ?? 0)) ?> awaiting moderation</p>
+        <p class="text-muted mb-2 text-fluid-sm"><?= h((string) ($metrics['pending_reviews'] ?? 0)) ?> awaiting moderation</p>
       </div>
       <a href="<?= url('/admin/reviews') ?>" class="btn-metric">Review</a>
     </div>
@@ -97,7 +97,7 @@
     <div class="metric-card metric-card-secondary">
       <div>
         <p class="metric-label">Analytics</p>
-        <p class="text-muted mb-2 text-sm">Detailed platform metrics & insights</p>
+        <p class="text-muted mb-2 text-fluid-sm">Detailed platform metrics & insights</p>
       </div>
       <a href="<?= url('/admin/analytics') ?>" class="btn-metric">View Report</a>
     </div>
@@ -105,7 +105,7 @@
     <div class="metric-card metric-card-secondary">
       <div>
         <p class="metric-label">Booth Management</p>
-        <p class="text-muted mb-2 text-sm">Create market layouts & assign booths</p>
+        <p class="text-muted mb-2 text-fluid-sm">Create market layouts & assign booths</p>
       </div>
       <a href="<?= url('/admin/booth-management') ?>" class="btn-metric">Manage</a>
     </div>
@@ -113,7 +113,7 @@
     <div class="metric-card metric-card-secondary">
       <div>
         <p class="metric-label">Markets</p>
-        <p class="text-muted mb-2 text-sm">Create & manage market locations</p>
+        <p class="text-muted mb-2 text-fluid-sm">Create & manage market locations</p>
       </div>
       <a href="<?= url('/admin/markets') ?>" class="btn-metric">Manage</a>
     </div>
@@ -121,7 +121,7 @@
     <div class="metric-card metric-card-secondary">
       <div>
         <p class="metric-label">Market Admins</p>
-        <p class="text-muted mb-2 text-sm">Assign admins to manage markets</p>
+        <p class="text-muted mb-2 text-fluid-sm">Assign admins to manage markets</p>
       </div>
       <a href="<?= url('/admin/market-administrators') ?>" class="btn-metric">Manage</a>
     </div>
@@ -129,7 +129,7 @@
     <div class="metric-card metric-card-secondary">
       <div>
         <p class="metric-label">Vendor Attendance</p>
-        <p class="text-muted mb-2 text-sm">Check in vendors for market days</p>
+        <p class="text-muted mb-2 text-fluid-sm">Check in vendors for market days</p>
       </div>
       <a href="<?= url('/admin/vendor-attendance') ?>" class="btn-metric">Check In</a>
     </div>
@@ -137,7 +137,7 @@
     <div class="metric-card metric-card-secondary">
       <div>
         <p class="metric-label">Vendor Transfers</p>
-        <p class="text-muted mb-2 text-sm">Review market transfer requests</p>
+        <p class="text-muted mb-2 text-fluid-sm">Review market transfer requests</p>
       </div>
       <a href="<?= url('/admin/vendor-transfer-requests') ?>" class="btn-metric">Review</a>
     </div>

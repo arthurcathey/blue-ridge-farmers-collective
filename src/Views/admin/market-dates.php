@@ -58,14 +58,14 @@
                       </a>
                     </strong>
                     <br>
-                    <span class="text-sm text-gray-600">
+                    <span class="text-fluid-sm text-gray-600">
                       <?= h($date['city_mkt'] ?? '') ?><?= !empty($date['state_mkt']) ? ', ' . h($date['state_mkt']) : '' ?>
                     </span>
                   </td>
                   <td class="p-2">
                     <?= h(date('M j, Y', strtotime($date['date_mda']))) ?>
                     <br>
-                    <span class="text-sm text-gray-600">
+                    <span class="text-fluid-sm text-gray-600">
                       <?= h(date('l', strtotime($date['date_mda']))) ?>
                     </span>
                   </td>
@@ -78,13 +78,13 @@
                     <?= !empty($date['location_mda']) ? h($date['location_mda']) : '<span class="text-gray-600">Default</span>' ?>
                   </td>
                   <td class="p-2">
-                    <span class="px-2 py-1 text-sm rounded <?= $date['status_mda'] === 'cancelled' ? 'bg-red-100 text-red-700' : ($date['status_mda'] === 'confirmed' ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-700') ?>">
+                    <span class="px-2 py-1 text-fluid-sm rounded <?= $date['status_mda'] === 'cancelled' ? 'bg-red-100 text-red-700' : ($date['status_mda'] === 'confirmed' ? 'bg-brand-primary text-white' : 'bg-gray-100 text-gray-700') ?>">
                       <?= h(ucfirst($date['status_mda'])) ?>
                     </span>
                   </td>
                   <td class="p-2">
                     <?php if (!empty($date['weather_status_mda'])): ?>
-                      <span class="text-sm">
+                      <span class="text-fluid-sm">
                         <?= h(ucfirst(str_replace('_', ' ', $date['weather_status_mda']))) ?>
                       </span>
                     <?php else: ?>
@@ -102,7 +102,7 @@
                 </tr>
                 <?php if (!empty($date['notes_mda'])): ?>
                   <tr class="border-t bg-gray-50">
-                    <td colspan="7" class="p-2 text-sm">
+                    <td colspan="7" class="p-2 text-fluid-sm">
                       <strong>Notes:</strong> <?= h($date['notes_mda']) ?>
                     </td>
                   </tr>
@@ -140,7 +140,7 @@
               <?php endforeach; ?>
               <?php if (count($pastDates) > 20): ?>
                 <tr class="border-t">
-                  <td colspan="4" class="p-2 text-center text-sm text-gray-600">
+                  <td colspan="4" class="p-2 text-center text-fluid-sm text-gray-600">
                     Showing 20 of <?= count($pastDates) ?> past dates
                   </td>
                 </tr>

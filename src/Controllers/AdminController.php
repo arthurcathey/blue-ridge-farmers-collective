@@ -2225,12 +2225,15 @@ class AdminController extends BaseController
     $this->requireRole('admin');
     $this->requireMethod('POST');
 
+    error_log('DEBUG: approveVendorTransfer called');
+
     if (!csrf_verify($_POST['csrf_token'] ?? null)) {
       http_response_code(403);
       return json_encode(['error' => 'Invalid token']);
     }
 
     $transferId = (int) ($_POST['transfer_id'] ?? 0);
+    error_log('DEBUG: transferId = ' . $transferId);
 
     if (!$transferId) {
       http_response_code(400);
@@ -2268,7 +2271,7 @@ class AdminController extends BaseController
       if ($transfer['id_mkt_from_vtr']) {
         $endStmt = $db->prepare('
           UPDATE vendor_market_venmkt
-          SET membership_status_venmkt = "transferred",
+          SET membership_status_venmkt = "inactive",
               updated_at_venmkt = NOW()
           WHERE id_ven_venmkt = :vendor_id
             AND id_mkt_venmkt = :from_market
@@ -2301,15 +2304,14 @@ class AdminController extends BaseController
         ]);
       }
 
-      $this->flash('success', 'Transfer request approved');
+      return json_encode(['success' => true, 'message' => 'Transfer approved successfully']);
     } catch (\Throwable $e) {
-      error_log('Approve transfer error: ' . $e->getMessage());
+      $errorMsg = 'Approve transfer error: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine();
+      error_log($errorMsg);
       http_response_code(500);
-      return json_encode(['error' => 'Database error']);
-    }
 
-    $this->redirect('/admin/vendor-transfer-requests');
-    return '';
+      return json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+    }
   }
 
   public function rejectVendorTransfer(): string
@@ -2360,14 +2362,13 @@ class AdminController extends BaseController
         ':notes' => $adminNotes,
       ]);
 
-      $this->flash('success', 'Transfer request rejected');
+      return json_encode(['success' => true, 'message' => 'Transfer rejected successfully']);
     } catch (\Throwable $e) {
-      error_log('Reject transfer error: ' . $e->getMessage());
+      $errorMsg = 'Reject transfer error: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine();
+      error_log($errorMsg);
       http_response_code(500);
-      return json_encode(['error' => 'Database error']);
+      // Return detailed error for debugging
+      return json_encode(['error' => 'Database error: ' . $e->getMessage()]);
     }
-
-    $this->redirect('/admin/vendor-transfer-requests');
-    return '';
   }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\ValidationService;
+use App\Services\SpellCheckerService;
 
 /**
  * Vendor Controller
@@ -258,6 +259,17 @@ class VendorController extends BaseController
     $errors = $this->validateVendorSubmission($data);
 
     $yearsInOperation = $this->parseYearsInOperation($data['years_raw'], $errors);
+
+    $spellCheckerService = new SpellCheckerService();
+    $spellCheckFields = [
+      'farm_name' => $data['farm_name'] ?? '',
+      'farm_description' => $data['description'] ?? '',
+      'food_safety_info' => $data['food_safety'] ?? '',
+    ];
+    $spellCheckResults = $spellCheckerService->checkFields($spellCheckFields);
+    if (!empty($spellCheckResults)) {
+      $_SESSION['spell_warnings'] = $spellCheckResults;
+    }
 
     $user = $this->authUser();
     $accountId = (int) ($user['id'] ?? 0);

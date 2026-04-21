@@ -15,7 +15,7 @@ $attendanceStats = $attendanceStats ?? [];
   <div class="mb-6 flex items-center justify-between">
     <div>
       <h1><?= h($title) ?></h1>
-      <p class="text-muted text-sm">Check in vendors for market days and track attendance</p>
+      <p class="text-muted text-fluid-sm">Check in vendors for market days and track attendance</p>
     </div>
     <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
   </div>
@@ -36,7 +36,7 @@ $attendanceStats = $attendanceStats ?? [];
   <form method="GET" class="space-y-3">
     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
     <div>
-      <label class="mb-2 block text-sm font-medium">Market Date</label>
+      <label class="mb-2 block text-fluid-sm font-medium">Market Date</label>
       <select name="date_id" class="form-control" onchange="this.form.submit()" required>
         <option value="">Choose a date...</option>
         <?php foreach ($marketDates as $date): ?>
@@ -57,23 +57,23 @@ $attendanceStats = $attendanceStats ?? [];
 
     <div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
       <div class="rounded bg-blue-50 p-4 text-center">
-        <p class="text-xs font-medium text-blue-600">Expected</p>
-        <p class="text-2xl font-bold text-blue-900"><?= $attendanceStats['expected_vendors'] ?? 0 ?></p>
+        <p class="text-fluid-xs font-medium text-blue-600">Expected</p>
+        <p class="text-fluid-2xl font-bold text-blue-900"><?= $attendanceStats['expected_vendors'] ?? 0 ?></p>
       </div>
 
       <div class="rounded bg-green-50 p-4 text-center">
-        <p class="text-xs font-medium text-green-600">Checked In</p>
-        <p class="text-2xl font-bold text-green-900"><?= $attendanceStats['checked_in'] ?? 0 ?></p>
+        <p class="text-fluid-xs font-medium text-green-600">Checked In</p>
+        <p class="text-fluid-2xl font-bold text-green-900"><?= $attendanceStats['checked_in'] ?? 0 ?></p>
       </div>
 
       <div class="rounded bg-yellow-50 p-4 text-center">
-        <p class="text-xs font-medium text-yellow-600">Not Checked In</p>
-        <p class="text-2xl font-bold text-yellow-900"><?= $attendanceStats['pending'] ?? 0 ?></p>
+        <p class="text-fluid-xs font-medium text-yellow-600">Not Checked In</p>
+        <p class="text-fluid-2xl font-bold text-yellow-900"><?= $attendanceStats['pending'] ?? 0 ?></p>
       </div>
 
       <div class="rounded bg-red-50 p-4 text-center">
-        <p class="text-xs font-medium text-red-600">No-Shows</p>
-        <p class="text-2xl font-bold text-red-900"><?= $attendanceStats['no_shows'] ?? 0 ?></p>
+        <p class="text-fluid-xs font-medium text-red-600">No-Shows</p>
+        <p class="text-fluid-2xl font-bold text-red-900"><?= $attendanceStats['no_shows'] ?? 0 ?></p>
       </div>
     </div>
 
@@ -84,8 +84,8 @@ $attendanceStats = $attendanceStats ?? [];
         ?>
         <div class="flex-1">
           <div class="mb-1 flex items-center justify-between">
-            <span class="text-sm font-medium">Check-in Rate</span>
-            <span class="text-sm font-bold text-green-600"><?= round($checkInRate, 1) ?>%</span>
+            <span class="text-fluid-sm font-medium">Check-in Rate</span>
+            <span class="text-fluid-sm font-bold text-green-600"><?= round($checkInRate, 1) ?>%</span>
           </div>
           <div class="h-3 w-full rounded-full bg-gray-200">
             <div class="h-3 rounded-full bg-green-500" style="width: <?= $checkInRate ?>%"></div>
@@ -100,7 +100,7 @@ $attendanceStats = $attendanceStats ?? [];
     <div class="md:col-span-1">
       <section class="card sticky top-20">
         <h2 class="mb-4">Quick Check-in</h2>
-        <p class="text-muted mb-3 text-xs">Find vendor by farm name</p>
+        <p class="text-muted mb-3 text-fluid-xs">Find vendor by farm name</p>
 
         <div class="space-y-3">
           <input
@@ -113,7 +113,7 @@ $attendanceStats = $attendanceStats ?? [];
           <div id="searchResults" class="hidden max-h-64 overflow-y-auto rounded border border-gray-200 bg-white">
           </div>
 
-          <p class="text-muted mt-3 text-xs">Or select from the list below →</p>
+          <p class="text-muted mt-3 text-fluid-xs">Or select from the list below →</p>
         </div>
       </section>
     </div>
@@ -149,7 +149,7 @@ $attendanceStats = $attendanceStats ?? [];
 
         <?php if (empty($vendors)): ?>
           <div class="rounded border border-blue-200 bg-blue-50 p-4 text-center">
-            <p class="text-sm text-gray-600">No vendors registered for this market date yet.</p>
+            <p class="text-fluid-sm text-gray-600">No vendors registered for this market date yet.</p>
           </div>
         <?php else: ?>
           <div class="space-y-2">
@@ -177,17 +177,17 @@ $attendanceStats = $attendanceStats ?? [];
 
                 <div class="flex-1">
                   <h3 class="font-medium"><?= h($vendor['farm_name_ven']) ?></h3>
-                  <p class="text-muted text-xs"><?= h($vendor['city_ven'] ?? 'Unknown') ?>, <?= h($vendor['state_ven'] ?? 'N/A') ?></p>
+                  <p class="text-muted text-fluid-xs"><?= h($vendor['city_ven'] ?? 'Unknown') ?>, <?= h($vendor['state_ven'] ?? 'N/A') ?></p>
 
                   <div class="mt-2 flex items-center gap-2">
                     <?php if (!empty($vendor['booth_number_vat'])): ?>
-                      <span class="inline-block rounded bg-purple-100 px-2 py-1 text-xs font-medium text-purple-800">
+                      <span class="inline-block rounded bg-purple-100 px-2 py-1 text-fluid-xs font-medium text-purple-800">
                         Booth <?= h($vendor['booth_number_vat']) ?>
                       </span>
                     <?php endif; ?>
 
                     <?php if ($isCheckedIn): ?>
-                      <span class="inline-block text-xs text-green-600">
+                      <span class="inline-block text-fluid-xs text-green-600">
                         Checked in at <?= date('g:i A', strtotime($vendor['checked_in_at_vat'])) ?>
                       </span>
                     <?php endif; ?>
@@ -195,7 +195,7 @@ $attendanceStats = $attendanceStats ?? [];
                 </div>
 
                 <div class="flex items-center gap-3">
-                  <span class="inline-flex px-3 py-1 rounded text-xs font-medium <?= $statusBadge ?>">
+                  <span class="inline-flex px-3 py-1 rounded text-fluid-xs font-medium <?= $statusBadge ?>">
                     <?= $statusLabel ?>
                   </span>
 
@@ -235,24 +235,24 @@ $attendanceStats = $attendanceStats ?? [];
 
   <div id="vendorActionModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
     <div class="w-full max-w-md rounded-lg bg-white p-6">
-      <h2 class="mb-4 text-lg font-semibold">Vendor Actions</h2>
+      <h2 class="mb-4 text-fluid-lg font-semibold">Vendor Actions</h2>
 
       <div class="space-y-2">
         <button
           onclick="markAsNoShow()"
-          class="w-full rounded border border-red-200 bg-red-50 p-3 text-left text-sm font-medium text-red-700 hover:bg-red-100">
+          class="w-full rounded border border-red-200 bg-red-50 p-3 text-left text-fluid-sm font-medium text-red-700 hover:bg-red-100">
           Mark as No-Show
         </button>
 
         <button
           onclick="markAsConfirmed()"
-          class="w-full rounded border border-orange-200 bg-orange-600 p-3 text-left text-sm font-medium text-white hover:bg-orange-700">
+          class="w-full rounded border border-orange-200 bg-orange-600 p-3 text-left text-fluid-sm font-medium text-white hover:bg-orange-700">
           Mark as Confirmed
         </button>
 
         <button
           onclick="closeVendorActionModal()"
-          class="w-full rounded border border-gray-200 bg-gray-50 p-3 text-left text-sm font-medium text-gray-800 hover:bg-gray-100">
+          class="w-full rounded border border-gray-200 bg-gray-50 p-3 text-left text-fluid-sm font-medium text-gray-800 hover:bg-gray-100">
           Close
         </button>
       </div>

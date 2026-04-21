@@ -29,7 +29,7 @@
   </form>
 
   <div class="mt-6 text-center">
-    <a href="<?= url('/login') ?>" class="text-brand-primary hover:text-brand-primary-hover text-sm">
+    <a href="<?= url('/login') ?>" class="text-brand-primary hover:text-brand-primary-hover text-fluid-sm">
       Back to Login</a>
   </div>
 </section>

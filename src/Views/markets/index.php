@@ -5,7 +5,7 @@
 
 <section class="card mt-6">
   <h2>Market Calendar</h2>
-  <p class="mb-4 text-sm text-neutral-medium">Click a date to see market events</p>
+  <p class="mb-4 text-fluid-sm text-neutral-medium">Click a date to see market events</p>
   <div data-market-calendar></div>
 </section>
 

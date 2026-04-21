@@ -2,7 +2,7 @@
   <div class="mb-6 flex items-center justify-between">
     <div>
       <h1><?= h($layout['name_mla'] ?? 'Booth Layout Editor') ?></h1>
-      <p class="text-muted text-sm"><?= h($market['name_mkt'] ?? 'Market') ?></p>
+      <p class="text-muted text-fluid-sm"><?= h($market['name_mkt'] ?? 'Market') ?></p>
     </div>
     <div class="flex flex-wrap items-center gap-3">
       <a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a>
@@ -23,7 +23,7 @@
   <div class="lg:col-span-3">
     <section class="card">
       <h2 class="mb-4">Layout Editor</h2>
-      <p class="text-muted mb-4 text-sm">Click on booths to edit their position and properties. Total: <?= $layout['booth_count_mla'] ?? 0 ?> booths</p>
+      <p class="text-muted mb-4 text-fluid-sm">Click on booths to edit their position and properties. Total: <?= $layout['booth_count_mla'] ?? 0 ?> booths</p>
 
       <div class="relative min-h-64 overflow-auto rounded border-2 border-gray-300 bg-gray-100 p-3 sm:min-h-96 sm:p-4" id="layoutCanvas"
         data-booth-api-url="<?= url('/api/booth') ?>"
@@ -42,7 +42,7 @@
         <div id=" boothsContainer" class="relative" style="z-index: 1;">
                 <?php if (!empty($booths)): ?>
                   <?php foreach ($booths as $booth): ?>
-                    <div class="booth-item absolute flex cursor-move items-center justify-center rounded border-2 border-blue-500 bg-blue-200 text-sm font-medium transition hover:bg-blue-300"
+                    <div class="booth-item absolute flex cursor-move items-center justify-center rounded border-2 border-blue-500 bg-blue-200 text-fluid-sm font-medium transition hover:bg-blue-300"
                       data-booth-id="<?= $booth['id_blo'] ?>"
                       style="left: <?= (int)$booth['x_position_blo'] ?>px; top: <?= (int)$booth['y_position_blo'] ?>px; width: <?= (int)$booth['width_blo'] ?>px; height: <?= (int)$booth['height_blo'] ?>px; z-index: 2;"
                       onclick="selectBooth(<?= $booth['id_blo'] ?>)">
@@ -73,7 +73,7 @@
     <h2 class="mb-4">Properties</h2>
 
     <div id="boothProperties" class="space-y-4">
-      <div class="text-muted rounded bg-gray-50 p-4 text-center text-sm">
+      <div class="text-muted rounded bg-gray-50 p-4 text-center text-fluid-sm">
         Select a booth to edit
       </div>
     </div>
@@ -94,7 +94,7 @@
         </div>
 
         <div>
-          <label class="flex items-center gap-2 text-xs">
+          <label class="flex items-center gap-2 text-fluid-xs">
             <input type="checkbox" name="is_active" value="1" <?= ($layout['is_active_mla'] ? 'checked' : '') ?> class="form-checkbox">
             <span class="text-gray-700">Active Layout</span>
           </label>
@@ -109,7 +109,7 @@
 
 <div id="boothEditorModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
   <div class="w-full max-w-md rounded-lg bg-white p-6">
-    <h2 class="mb-4 text-lg font-semibold">Edit Booth</h2>
+    <h2 class="mb-4 text-fluid-lg font-semibold">Edit Booth</h2>
 
     <form method="POST" action="<?= url('/admin/booth-location/update') ?>" class="space-y-4">
       <?= csrf_field() ?>
@@ -118,39 +118,39 @@
       <input type="hidden" name="layout_id" value="<?= $layout['id_mla'] ?>">
 
       <div>
-        <label class="mb-1 block text-sm font-medium">Booth Number</label>
+        <label class="mb-1 block text-fluid-sm font-medium">Booth Number</label>
         <input type="text" name="number" id="modalBoothNumber" placeholder="e.g., A1, B2" class="form-control" required>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="mb-1 block text-sm font-medium">X Position (px)</label>
+          <label class="mb-1 block text-fluid-sm font-medium">X Position (px)</label>
           <input type="number" name="x_position" id="modalBoothX" step="5" class="form-control" required>
         </div>
         <div>
-          <label class="mb-1 block text-sm font-medium">Y Position (px)</label>
+          <label class="mb-1 block text-fluid-sm font-medium">Y Position (px)</label>
           <input type="number" name="y_position" id="modalBoothY" step="5" class="form-control" required>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="mb-1 block text-sm font-medium">Width (px)</label>
+          <label class="mb-1 block text-fluid-sm font-medium">Width (px)</label>
           <input type="number" name="width" id="modalBoothWidth" min="40" value="80" step="5" class="form-control" required>
         </div>
         <div>
-          <label class="mb-1 block text-sm font-medium">Height (px)</label>
+          <label class="mb-1 block text-fluid-sm font-medium">Height (px)</label>
           <input type="number" name="height" id="modalBoothHeight" min="40" value="60" step="5" class="form-control" required>
         </div>
       </div>
 
       <div>
-        <label class="mb-1 block text-sm font-medium">Location Description</label>
+        <label class="mb-1 block text-fluid-sm font-medium">Location Description</label>
         <input type="text" name="location_description" id="modalBoothDescription" placeholder="e.g., Near entrance" class="form-control">
       </div>
 
       <div>
-        <label class="mb-1 block text-sm font-medium">Zone</label>
+        <label class="mb-1 block text-fluid-sm font-medium">Zone</label>
         <select name="zone" id="modalBoothZone" class="form-control">
           <option value="">General</option>
           <option value="entrance">Entrance</option>
@@ -165,7 +165,7 @@
         <button type="submit" class="btn-action-blue flex-1">Save</button>
       </div>
 
-      <button type="button" onclick="deleteBooth()" class="btn-action-red w-full text-sm">Delete Booth</button>
+      <button type="button" onclick="deleteBooth()" class="btn-action-red w-full text-fluid-sm">Delete Booth</button>
     </form>
   </div>
 </div>
