@@ -90,10 +90,12 @@ CREATE TABLE `market_mkt` (
   `timezone_mkt` VARCHAR(50) DEFAULT 'America/New_York',
   `currency_mkt` VARCHAR(3) DEFAULT 'USD',
   `is_active_mkt` TINYINT(1) DEFAULT 1,
+  `is_featured_mkt` TINYINT(1) DEFAULT 0,
   `created_at_mkt` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at_mkt` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_mkt`),
-  UNIQUE KEY `idx_slug_mkt_unique` (`slug_mkt`)
+  UNIQUE KEY `idx_slug_mkt_unique` (`slug_mkt`),
+  KEY `idx_featured_mkt` (`is_featured_mkt`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `market_administrator_mad` (
