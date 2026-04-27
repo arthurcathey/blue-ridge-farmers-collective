@@ -33,6 +33,10 @@ A comprehensive web application for managing local farmers markets with vendor m
 - Weather caching integration
 - Vendor profile view analytics
 - Product search with full-text indexing
+- Market hero images for featured listings
+- Interactive market calendar with event details
+- Admin dashboard with real-time metrics and quick actions
+- Comprehensive CSS documentation with Tailwind organization
 
 ## 🗄️ Database
 
@@ -135,6 +139,17 @@ This application implements several security best practices:
 
 ## 🛠️ Configuration
 
+### Tailwind CSS
+The project uses Tailwind CSS with a comprehensive custom configuration:
+
+- **Source file:** `src/assets/tailwind.css` - Well-documented with organized sections
+- **Build output:** `public/css/tailwind.css` - Production minified CSS
+- **Build command:** `npm run tailwind:build`
+- **Watch mode:** `npm run tailwind:watch`
+- **Color system:** Custom brand colors (primary green #1f6b45, accent tan #c9935f) with 13 category-specific colors
+- **Typography:** Fluid typography system with responsive text scaling (text-fluid-xs through text-fluid-3xl)
+- **Components:** Well-documented component classes for buttons, forms, cards, navigation, and dashboard elements
+
 ### Database Connection
 Database credentials are configured in `config/database.php`:
 - Uses environment variables when available (via `getenv()`)
@@ -151,6 +166,23 @@ Routes are defined in `config/routes.php` and handle:
 
 ## 📊 Database Features
 
+### Admin Dashboard
+The admin dashboard provides real-time operational insights:
+- **Metric Cards** - Display key metrics at a glance:
+  - Pending vendors awaiting approval
+  - Pending market applications
+  - Pending reviews for moderation
+  - Active vendor count with monthly trends
+  - Active product inventory
+- **Quick Actions** - Rapid access buttons for common admin tasks:
+  - Review vendor applications
+  - Review market applications
+  - Manage market dates
+  - Create new markets and dates
+  - Manage admin users
+- **Search Analytics** - Track trending searches across the platform
+- **Data Dashboard** - Real-time statistics and system overview
+
 ### Status/Type Enums
 Controlled status fields using ENUM constraints:
 - `vendor_ven.application_status_ven` - pending, approved, rejected, suspended
@@ -158,6 +190,14 @@ Controlled status fields using ENUM constraints:
 - `market_date_mda.weather_status_mda` - clear, cloudy, rainy, stormy, snowy, cancelled_weather
 - `vendor_market_venmkt.membership_status_venmkt` - pending, approved, suspended, inactive
 - And 10+ more for comprehensive data control
+
+### Market Features
+Markets support rich media and event management:
+- **Hero Images** - Upload custom images for market branding and featured listings
+- **Market Calendar** - Interactive calendar showing market dates with event details
+- **Weather Integration** - Real-time weather status tracking for each market date
+- **Featured Markets** - Display selected markets on home page with images
+- **Location Tracking** - DECIMAL coordinates for precise GPS mapping
 
 ### Coordinate System
 DECIMAL(8,2) precision for booth/market locations:
@@ -298,4 +338,4 @@ For questions or issues:
 
 ---
 
-**Last Updated:** April 9, 2026
+**Last Updated:** April 27, 2026

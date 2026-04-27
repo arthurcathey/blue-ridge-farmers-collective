@@ -161,7 +161,7 @@ $availableAccounts = $availableAccounts ?? [];
     </div>
   </div>
 
-  <div id="editAdminModal" class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4">
+  <div id="editAdminModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
     <div class="w-full max-w-md rounded-lg bg-white p-6">
       <h2 class="mb-4 text-fluid-lg font-semibold">Edit Administrator</h2>
 

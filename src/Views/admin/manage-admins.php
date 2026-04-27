@@ -143,7 +143,7 @@
                         <input type="hidden" name="is_active" value="<?= empty($admin['is_active_acc']) ? 1 : 0 ?>">
                         <button type="submit" class="text-fluid-sm px-2 py-1 rounded
                           <?= !empty($admin['is_active_acc'])
-                            ? 'bg-red-100 text-red-800 hover:bg-red-200'
+                            ? 'bg-red-100 hover:bg-red-200'
                             : 'bg-green-100 text-green-800 hover:bg-green-200' ?>"
                           title="<?= !empty($admin['is_active_acc']) ? 'Deactivate account' : 'Activate account' ?>">
                           <?= !empty($admin['is_active_acc']) ? 'Deactivate' : 'Activate' ?>
