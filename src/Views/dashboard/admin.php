@@ -51,6 +51,7 @@
           <?= h((string) ($metrics['active_products'] ?? 0)) ?>
         </p>
       </div>
+      <a href="<?= url('/admin/products') ?>" class="btn-metric">Manage</a>
     </div>
   </div>
 

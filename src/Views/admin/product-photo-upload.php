@@ -24,7 +24,7 @@
     <p><strong>Description:</strong> <?= h($product['description_prd'] ?? '') ?></p>
     <?php if (!empty($product['photo_path_prd'])): ?>
       <div class="mt-4">
-        <p class="font-semibold mb-2">Current Photo:</p>
+        <p class="mb-2 font-semibold">Current Photo:</p>
         <img src="<?= asset_url($product['photo_path_prd']) ?>" alt="<?= h($product['name_prd']) ?>" width="300" height="200" class="h-48 max-w-sm rounded-lg border border-gray-200">
       </div>
     <?php else: ?>
