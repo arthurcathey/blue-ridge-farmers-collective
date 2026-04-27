@@ -26,11 +26,23 @@
         <?php foreach ($products as $product): ?>
           <li class="mb-3">
             <strong><?= h((string) ($product['name_prd'] ?? '')) ?></strong>
-            <div>Category: <?= h((string) ($product['category'] ?? '')) ?></div>
+            <div>
+              Category:
+              <?php
+              $categoryName = strtolower(str_replace(' ', '', $product['category'] ?? ''));
+              $categoryName = preg_replace('/[^a-z0-9]/', '', $categoryName);
+              $badgeClass = in_array($categoryName, ['produce', 'dairy', 'bakedgoods', 'meat', 'seafood', 'pantry', 'beverages', 'flowers', 'preparedfoods', 'honey', 'grains', 'herbs', 'specialty'])
+                ? "badge-category badge-category-{$categoryName}"
+                : 'badge-category';
+              ?>
+              <span class="<?= htmlspecialchars($badgeClass, ENT_QUOTES, 'UTF-8') ?>">
+                <?= h((string) ($product['category'] ?? '')) ?>
+              </span>
+            </div>
             <div>Status: <?= !empty($product['is_active_prd']) ? 'Active' : 'Inactive' ?></div>
             <?php if (!empty($product['seasonal_months'])): ?>
               <div>
-                <span class="inline-flex items-center rounded bg-green-100 px-2 py-1 text-fluid-xs text-white">
+                <span class="badge-category inline-flex items-center rounded px-2 py-1 text-fluid-xs text-white">
                   Seasonal: <?= h(format_seasonal_months($product['seasonal_months'])) ?>
                 </span>
               </div>

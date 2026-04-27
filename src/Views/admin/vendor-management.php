@@ -63,6 +63,8 @@
                       <button type="submit" class="text-brand-primary hover:text-brand-primary-hover hover:underline">Feature</button>
                     <?php endif; ?>
                   </form>
+                  |
+                  <a href="<?= url('/admin/vendors/upload-photo?vendor_id=' . (int)$vendor['id_ven']) ?>" class="text-brand-primary hover:text-brand-primary-hover hover:underline">Upload Photo</a>
                 </td>
               </tr>
             <?php endforeach; ?>

@@ -2371,4 +2371,279 @@ class AdminController extends BaseController
       return json_encode(['error' => 'Database error: ' . $e->getMessage()]);
     }
   }
+
+  /**
+   * Display vendor photo upload form and handle photo upload
+   * 
+   * @return string Rendered upload form view
+   */
+  public function vendorPhotoUpload(): string
+  {
+    $this->requireRole('admin');
+
+    $vendorId = (int) ($_GET['vendor_id'] ?? $_POST['vendor_id'] ?? 0);
+    if (!$vendorId) {
+      $this->redirect('/admin/vendors');
+      return '';
+    }
+
+    $db = $this->db();
+    $stmt = $db->prepare('SELECT id_ven, farm_name_ven, city_ven, state_ven, photo_path_ven FROM vendor_ven WHERE id_ven = :id LIMIT 1');
+    $stmt->execute([':id' => $vendorId]);
+    $vendor = $stmt->fetch() ?: null;
+
+    if (!$vendor) {
+      $this->redirect('/admin/vendors');
+      return '';
+    }
+
+    $errors = [];
+    $message = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+        $errors['csrf'] = 'Invalid session token';
+      }
+
+      if (!$errors) {
+        $photoResult = $this->uploadPhoto('vendors', $_FILES['photo'] ?? null, $vendor['photo_path_ven'] ?? null);
+        if (!empty($photoResult['error'])) {
+          $errors['photo'] = $photoResult['error'];
+        } elseif (!empty($photoResult['path'])) {
+          try {
+            $updateStmt = $db->prepare('UPDATE vendor_ven SET photo_path_ven = :path WHERE id_ven = :id');
+            $updateStmt->execute([
+              ':path' => $photoResult['path'],
+              ':id' => $vendorId,
+            ]);
+            $message = 'Photo uploaded successfully!';
+            $vendor['photo_path_ven'] = $photoResult['path'];
+          } catch (\Throwable $e) {
+            error_log('Vendor photo upload DB error: ' . $e->getMessage());
+            $errors['general'] = 'Failed to save photo to database';
+          }
+        }
+      }
+    }
+
+    return $this->render('admin/vendor-photo-upload', [
+      'vendor' => $vendor,
+      'errors' => $errors,
+      'message' => $message,
+    ]);
+  }
+
+  /**
+   * Delete vendor photo
+   * 
+   * @return void
+   */
+  public function deleteVendorPhoto(): void
+  {
+    $this->requireRole('admin');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/admin/vendors');
+      return;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $_SESSION['error'] = 'Invalid session token';
+      $this->redirect('/admin/vendors');
+      return;
+    }
+
+    $vendorId = (int) ($_POST['vendor_id'] ?? 0);
+    if (!$vendorId) {
+      $this->redirect('/admin/vendors');
+      return;
+    }
+
+    try {
+      $db = $this->db();
+      $stmt = $db->prepare('SELECT photo_path_ven FROM vendor_ven WHERE id_ven = :id LIMIT 1');
+      $stmt->execute([':id' => $vendorId]);
+      $vendor = $stmt->fetch() ?: null;
+
+      if ($vendor && !empty($vendor['photo_path_ven'])) {
+        $photoPath = $_SERVER['DOCUMENT_ROOT'] . $vendor['photo_path_ven'];
+        if (file_exists($photoPath)) {
+          unlink($photoPath);
+        }
+
+        $updateStmt = $db->prepare('UPDATE vendor_ven SET photo_path_ven = NULL WHERE id_ven = :id');
+        $updateStmt->execute([':id' => $vendorId]);
+
+        $_SESSION['message'] = 'Photo deleted successfully';
+      }
+
+      $this->redirect('/admin/vendors/upload-photo?vendor_id=' . $vendorId);
+    } catch (\Throwable $e) {
+      error_log('Delete vendor photo error: ' . $e->getMessage());
+      $_SESSION['error'] = 'Failed to delete photo';
+      $this->redirect('/admin/vendors');
+    }
+  }
+
+  /**
+   * Display product list for admin management
+   * 
+   * @return string Rendered product management view
+   */
+  public function productManagement(): string
+  {
+    $this->requireRole('admin');
+
+    try {
+      $db = $this->db();
+      $stmt = $db->prepare('
+        SELECT 
+          p.id_prd,
+          p.name_prd,
+          p.description_prd,
+          p.photo_path_prd,
+          p.is_active_prd,
+          v.farm_name_ven,
+          c.name_pct as category_name
+        FROM product_prd p
+        LEFT JOIN vendor_ven v ON p.id_ven_prd = v.id_ven
+        LEFT JOIN product_category_pct c ON p.id_pct_prd = c.id_pct
+        ORDER BY p.name_prd ASC
+      ');
+      $stmt->execute();
+      $products = $stmt->fetchAll() ?: [];
+    } catch (\Throwable $e) {
+      error_log('Product management error: ' . $e->getMessage());
+      $products = [];
+    }
+
+    return $this->render('admin/product-management', [
+      'products' => $products,
+    ]);
+  }
+
+  /**
+   * Display product photo upload form and handle photo upload
+   * 
+   * @return string Rendered upload form view
+   */
+  public function productPhotoUpload(): string
+  {
+    $this->requireRole('admin');
+
+    $productId = (int) ($_GET['product_id'] ?? $_POST['product_id'] ?? 0);
+    if (!$productId) {
+      $this->redirect('/admin/products');
+      return '';
+    }
+
+    $db = $this->db();
+    $stmt = $db->prepare('
+      SELECT 
+        p.id_prd,
+        p.name_prd,
+        p.description_prd,
+        p.photo_path_prd,
+        c.name_pct as category_name,
+        v.farm_name_ven
+      FROM product_prd p
+      LEFT JOIN product_category_pct c ON p.id_pct_prd = c.id_pct
+      LEFT JOIN vendor_ven v ON p.id_ven_prd = v.id_ven
+      WHERE p.id_prd = :id LIMIT 1
+    ');
+    $stmt->execute([':id' => $productId]);
+    $product = $stmt->fetch() ?: null;
+
+    if (!$product) {
+      $this->redirect('/admin/products');
+      return '';
+    }
+
+    $errors = [];
+    $message = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+        $errors['csrf'] = 'Invalid session token';
+      }
+
+      if (!$errors) {
+        $photoResult = $this->uploadPhoto('products', $_FILES['photo'] ?? null, $product['photo_path_prd'] ?? null);
+        if (!empty($photoResult['error'])) {
+          $errors['photo'] = $photoResult['error'];
+        } elseif (!empty($photoResult['path'])) {
+          try {
+            $updateStmt = $db->prepare('UPDATE product_prd SET photo_path_prd = :path WHERE id_prd = :id');
+            $updateStmt->execute([
+              ':path' => $photoResult['path'],
+              ':id' => $productId,
+            ]);
+            $message = 'Photo uploaded successfully!';
+            $product['photo_path_prd'] = $photoResult['path'];
+          } catch (\Throwable $e) {
+            error_log('Product photo upload DB error: ' . $e->getMessage());
+            $errors['general'] = 'Failed to save photo to database';
+          }
+        }
+      }
+    }
+
+    return $this->render('admin/product-photo-upload', [
+      'product' => $product,
+      'errors' => $errors,
+      'message' => $message,
+    ]);
+  }
+
+  /**
+   * Delete product photo
+   * 
+   * @return void
+   */
+  public function deleteProductPhoto(): void
+  {
+    $this->requireRole('admin');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      $this->redirect('/admin/products');
+      return;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      $_SESSION['error'] = 'Invalid session token';
+      $this->redirect('/admin/products');
+      return;
+    }
+
+    $productId = (int) ($_POST['product_id'] ?? 0);
+    if (!$productId) {
+      $this->redirect('/admin/products');
+      return;
+    }
+
+    try {
+      $db = $this->db();
+      $stmt = $db->prepare('SELECT photo_path_prd FROM product_prd WHERE id_prd = :id LIMIT 1');
+      $stmt->execute([':id' => $productId]);
+      $product = $stmt->fetch() ?: null;
+
+      if ($product && !empty($product['photo_path_prd'])) {
+        $photoPath = $_SERVER['DOCUMENT_ROOT'] . $product['photo_path_prd'];
+        if (file_exists($photoPath)) {
+          unlink($photoPath);
+        }
+
+        $updateStmt = $db->prepare('UPDATE product_prd SET photo_path_prd = NULL WHERE id_prd = :id');
+        $updateStmt->execute([':id' => $productId]);
+
+        $_SESSION['message'] = 'Photo deleted successfully';
+      }
+
+      $this->redirect('/admin/products/upload-photo?product_id=' . $productId);
+    } catch (\Throwable $e) {
+      error_log('Delete product photo error: ' . $e->getMessage());
+      $_SESSION['error'] = 'Failed to delete photo';
+      $this->redirect('/admin/products');
+    }
+  }
 }
