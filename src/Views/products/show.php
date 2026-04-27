@@ -29,7 +29,8 @@
         <div>
           <?php
           $categoryName = strtolower(str_replace(' ', '', $product['category'] ?? ''));
-          $badgeClass = in_array($categoryName, ['produce', 'dairy', 'baked', 'meat', 'seafood', 'pantry', 'beverages', 'flowers', 'prepared', 'honey', 'grains', 'herbs', 'specialty'])
+          $categoryName = preg_replace('/[^a-z0-9]/', '', $categoryName); // Remove special chars like &
+          $badgeClass = in_array($categoryName, ['produce', 'dairy', 'bakedgoods', 'meat', 'seafood', 'pantry', 'beverages', 'flowers', 'preparedfoods', 'honey', 'grains', 'herbs', 'specialty'])
             ? "badge-category badge-category-{$categoryName}"
             : 'badge-category';
           ?>

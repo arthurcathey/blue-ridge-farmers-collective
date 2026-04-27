@@ -165,49 +165,51 @@
     @apply transition-colors duration-200;
     @apply focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-brand-primary;
   }
-  /* Category badges for product categorization */
+  /* Category badges for product categorization - using brand primary green */
+  /* Note: Category names stripped of spaces and special chars for CSS class matching */
   .badge-category {
     @apply inline-flex items-center rounded px-2 py-1 font-bold text-white;
+    background-color: #1f6b45;
     font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
   }
   .badge-category-produce {
-    @apply bg-category-produce;
+    @apply bg-brand-primary;
   }
   .badge-category-dairy {
-    @apply bg-category-dairy;
+    @apply bg-brand-primary;
   }
-  .badge-category-baked {
-    @apply bg-category-baked;
+  .badge-category-bakedgoods {
+    @apply bg-brand-primary;
   }
   .badge-category-meat {
-    @apply bg-category-meat;
+    @apply bg-brand-primary;
   }
   .badge-category-seafood {
-    @apply bg-category-seafood;
+    @apply bg-brand-primary;
   }
   .badge-category-pantry {
-    @apply bg-category-pantry;
+    @apply bg-brand-primary;
   }
   .badge-category-beverages {
-    @apply bg-category-beverages;
+    @apply bg-brand-primary;
   }
   .badge-category-flowers {
-    @apply bg-category-flowers;
+    @apply bg-brand-primary;
   }
-  .badge-category-prepared {
-    @apply bg-category-prepared;
+  .badge-category-preparedfoods {
+    @apply bg-brand-primary;
   }
   .badge-category-honey {
-    @apply bg-category-honey;
+    @apply bg-brand-primary;
   }
   .badge-category-grains {
-    @apply bg-category-grains;
+    @apply bg-brand-primary;
   }
   .badge-category-herbs {
-    @apply bg-category-herbs;
+    @apply bg-brand-primary;
   }
   .badge-category-specialty {
-    @apply bg-category-specialty;
+    @apply bg-brand-primary;
   }
   .field {
     @apply mb-5;
