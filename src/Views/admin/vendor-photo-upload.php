@@ -23,7 +23,7 @@
     <?php if (!empty($vendor['photo_path_ven'])): ?>
       <div class="mt-4">
         <p class="font-semibold mb-2">Current Photo:</p>
-        <img src="<?= asset_url($vendor['photo_path_ven']) ?>" alt="<?= h($vendor['farm_name_ven']) ?>" width="300" height="200" class="h-48 max-w-sm rounded-lg border border-gray-200">
+        <?= picture_tag($vendor['photo_path_ven'], h($vendor['farm_name_ven']), ['width' => 300, 'height' => 200, 'class' => 'h-48 max-w-sm rounded-lg border border-gray-200']) ?>
       </div>
     <?php else: ?>
       <p class="text-muted mt-4">No photo uploaded yet</p>

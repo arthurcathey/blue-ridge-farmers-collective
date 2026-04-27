@@ -19,9 +19,7 @@ import { Navigation } from './navigation.js';
 import { Forms } from './forms.js';
 import { Products } from './products.js';
 import { ScrollEffects } from './scroll.js';
-import { Admin } from './admin.js';
 import { Carousel } from './carousel.js';
-import { Calendar } from './calendar.js';
 import { initFlashMessages } from './utils.js';
 
 "use strict";
@@ -33,8 +31,21 @@ document.addEventListener("DOMContentLoaded", () => {
   Products.init();
   ScrollEffects.init();
   Carousel.init();
-  Calendar.init();
-  Admin.init();
+
+  // Only initialize admin features if admin elements are present
+  const adminElements = document.querySelector('[data-admin-page]');
+  if (adminElements) {
+    import('./admin.js').then(({ Admin }) => {
+      Admin.init();
+    });
+  }
+
+  // Only initialize calendar if calendar elements are present
+  if (document.querySelector('[data-calendar]')) {
+    import('./calendar.js').then(({ Calendar }) => {
+      Calendar.init();
+    });
+  }
 
   console.log('Blue Ridge Farmers Collective - JavaScript modules initialized');
 });

@@ -26,7 +26,7 @@
                 <div class="carousel-slide" style="flex: 0 0 100%; width: 100%; min-width: 100%; padding: 0;">
                   <div class="card h-auto overflow-hidden rounded-lg">
                     <?php if (!empty($vendor['photo_path_ven'])): ?>
-                      <img src="<?= asset_url($vendor['photo_path_ven']) ?>" alt="<?= h($vendor['farm_name_ven']) ?>" width="400" height="192" class="h-48 w-full object-contain" loading="lazy">
+                      <?= picture_tag($vendor['photo_path_ven'], h($vendor['farm_name_ven']), ['width' => 400, 'height' => 192, 'class' => 'h-48 w-full object-contain', 'loading' => 'lazy']) ?>
                     <?php endif; ?>
                     <div class="p-3 md:p-2 lg:p-1.5">
                       <?php if ((int)$vendor['is_featured_ven'] === 1): ?>
@@ -131,7 +131,7 @@
         <a href="<?= url('/markets?view=' . urlencode($market['slug_mkt'])) ?>" class="card-link no-underline">
           <div class="card h-auto overflow-hidden rounded-lg">
             <?php if (!empty($market['hero_image_path_mkt'])): ?>
-              <img src="<?= asset_url($market['hero_image_path_mkt']) ?>" alt="<?= h($market['name_mkt']) ?>" width="250" height="180" loading="lazy" class="h-48 w-full object-contain">
+              <?= picture_tag($market['hero_image_path_mkt'], h($market['name_mkt']), ['width' => 250, 'height' => 180, 'loading' => 'lazy', 'class' => 'h-48 w-full object-contain']) ?>
             <?php else: ?>
               <div style="height: 12rem; background: linear-gradient(135deg, #3f4f47 0%, #2d3e3a 100%); display: flex; align-items: center; justify-content: center;">
                 <p class="px-4 text-center font-semibold text-white"><?= h($market['name_mkt']) ?></p>
@@ -144,7 +144,7 @@
                   <?= h($market['city_mkt']) ?>, <?= h($market['state_mkt']) ?>
                 </p>
               <?php endif; ?>
-              <p class="mt-2 text-fluid-xs font-semibold text-brand-primary">View Market</p>
+              <p class="mt-2 text-fluid-xs font-semibold text-brand-primary hover:no-underline">View Market</p>
             </div>
           </div>
         </a>

@@ -16,7 +16,7 @@
   <div class="two-column">
     <div>
       <?php if (!empty($vendor['photo'])): ?>
-        <img src="<?= asset_url($vendor['photo']) ?>" alt="<?= h($vendor['name']) ?>" width="500" height="400" class="detail-image detail-image-md" data-lightbox="<?= asset_url($vendor['photo']) ?>" data-caption="<?= h($vendor['name']) ?> farm photo" />
+        <?= picture_tag($vendor['photo'], h($vendor['name']), ['width' => 500, 'height' => 400, 'class' => 'detail-image detail-image-md', 'data-lightbox' => asset_url($vendor['photo']), 'data-caption' => h($vendor['name']) . ' farm photo']) ?>
       <?php else: ?>
         <div class="placeholder-image placeholder-image-md">
           <p class="font-semibold text-gray-700">No image available</p>

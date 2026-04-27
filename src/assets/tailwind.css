@@ -815,6 +815,10 @@
   .card-link {
     @apply block cursor-pointer text-inherit no-underline;
   }
+  .card-link:hover,
+  .card-link:hover * {
+    text-decoration: none !important;
+  }
   .card-link:hover .card,
   .card-link:hover .card-grid-hover {
     @apply shadow-lg;

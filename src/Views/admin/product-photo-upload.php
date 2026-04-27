@@ -25,7 +25,7 @@
     <?php if (!empty($product['photo_path_prd'])): ?>
       <div class="mt-4">
         <p class="mb-2 font-semibold">Current Photo:</p>
-        <img src="<?= asset_url($product['photo_path_prd']) ?>" alt="<?= h($product['name_prd']) ?>" width="300" height="200" class="h-48 max-w-sm rounded-lg border border-gray-200">
+        <?= picture_tag($product['photo_path_prd'], h($product['name_prd']), ['width' => 300, 'height' => 200, 'class' => 'h-48 max-w-sm rounded-lg border border-gray-200']) ?>
       </div>
     <?php else: ?>
       <p class="text-muted mt-4">No photo uploaded yet</p>

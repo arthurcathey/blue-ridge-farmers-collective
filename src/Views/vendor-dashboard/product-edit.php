@@ -113,7 +113,7 @@
       <label for="photo">Photo (optional)</label>
       <?php if (!empty($product['photo_path_prd'])): ?>
         <div class="form-image-preview">
-          <img src="<?= asset_url((string) $product['photo_path_prd']) ?>" alt="<?= h((string) ($product['name_prd'] ?? '')) ?> product photo" width="300" height="200" class="form-image">
+          <?= picture_tag((string) $product['photo_path_prd'], h((string) ($product['name_prd'] ?? '')), ['width' => 300, 'height' => 200, 'class' => 'form-image']) ?>
         </div>
       <?php endif; ?>
       <input id="photo" name="photo" type="file" accept="image/*">

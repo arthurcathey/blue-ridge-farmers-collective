@@ -383,41 +383,6 @@ if (!function_exists('get_month_name')) {
   }
 }
 
-if (!function_exists('picture_tag')) {
-  /**
-   * Generate an HTML <img> tag with attributes
-   * 
-   * Creates a responsive image tag with optional WebP support via <picture> element.
-   * All attributes are properly escaped for HTML output.
-   * 
-   * @param string $imagePath Path to image (relative path, gets converted to full asset URL)
-   * @param string $altText Alt text for accessibility (should already be escaped)
-   * @param string $classes CSS classes to apply to img element
-   * @param array $attributes Additional HTML attributes (data-*, width, height, loading, etc.)
-   * @return string HTML <img> tag with all attributes properly escaped
-   */
-  function picture_tag(string $imagePath, string $altText, string $classes = '', array $attributes = []): string
-  {
-    if (empty($imagePath)) {
-      return '';
-    }
-
-    $imgUrl = asset_url($imagePath);
-    $imgUrl = htmlspecialchars($imgUrl, ENT_QUOTES, 'UTF-8');
-    $altText = htmlspecialchars($altText, ENT_QUOTES, 'UTF-8');
-    $classes = htmlspecialchars($classes, ENT_QUOTES, 'UTF-8');
-
-    $attrString = '';
-    foreach ($attributes as $key => $value) {
-      $key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
-      $value = htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
-      $attrString .= ' ' . $key . '="' . $value . '"';
-    }
-
-    return '<img src="' . $imgUrl . '" alt="' . $altText . '" class="' . $classes . '"' . $attrString . ' />';
-  }
-}
-
 if (!function_exists('validate_text_length')) {
   /**
    * Validate text field length and return error if invalid
@@ -579,5 +544,64 @@ if (!function_exists('send_notification')) {
       error_log('Notification sending error: ' . $e->getMessage());
       return false;
     }
+  }
+}
+
+if (!function_exists('picture_tag')) {
+  /**
+   * Generate optimized picture element with WebP format and fallback
+   * 
+   * Creates a <picture> element that serves WebP format to browsers that support it,
+   * with fallback to original format (JPEG/PNG). Significantly reduces image payload
+   * since WebP is typically 30-50% smaller than JPEG.
+   * 
+   * Supports both signatures for backwards compatibility:
+   * - picture_tag(imagePath, alt, attrs) - new 3-param format
+   * - picture_tag(imagePath, alt, classString, attrs) - legacy 4-param format
+   * 
+   * @param string $imagePath Relative path to image (e.g., /uploads/vendors/image.jpg)
+   * @param string $alt Alternative text for accessibility
+   * @param array|string $classesOrAttrs CSS classes (string) OR attributes array
+   * @param array|null $attrs Optional attributes array (only when 3rd param is string)
+   * @return string HTML picture element string
+   */
+  function picture_tag(string $imagePath, string $alt, array|string $classesOrAttrs = '', ?array $attrs = null): string
+  {
+    $attrs = $attrs ?? [];
+    if (is_string($classesOrAttrs) && $classesOrAttrs !== '') {
+      $attrs['class'] = $classesOrAttrs;
+    } elseif (is_array($classesOrAttrs)) {
+      $attrs = array_merge($classesOrAttrs, $attrs);
+    }
+
+    $ext = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
+
+    if ($ext === 'webp') {
+      $attrStr = '';
+      foreach ($attrs as $key => $value) {
+        $attrStr .= ' ' . htmlspecialchars($key, ENT_QUOTES) . '="' . htmlspecialchars((string) $value, ENT_QUOTES) . '"';
+      }
+      return '<img src="' . htmlspecialchars(asset_url($imagePath), ENT_QUOTES) . '" alt="' . htmlspecialchars($alt, ENT_QUOTES) . '"' . $attrStr . '>';
+    }
+
+    if (!in_array($ext, ['jpg', 'jpeg', 'png'])) {
+      $attrStr = '';
+      foreach ($attrs as $key => $value) {
+        $attrStr .= ' ' . htmlspecialchars($key, ENT_QUOTES) . '="' . htmlspecialchars((string) $value, ENT_QUOTES) . '"';
+      }
+      return '<img src="' . htmlspecialchars(asset_url($imagePath), ENT_QUOTES) . '" alt="' . htmlspecialchars($alt, ENT_QUOTES) . '"' . $attrStr . '>';
+    }
+
+    $webpPath = preg_replace('/\.[^.]+$/', '.webp', $imagePath);
+
+    $attrStr = '';
+    foreach ($attrs as $key => $value) {
+      $attrStr .= ' ' . htmlspecialchars($key, ENT_QUOTES) . '="' . htmlspecialchars((string) $value, ENT_QUOTES) . '"';
+    }
+
+    return '<picture>'
+      . '<source srcset="' . htmlspecialchars(asset_url($webpPath), ENT_QUOTES) . '" type="image/webp">'
+      . '<img src="' . htmlspecialchars(asset_url($imagePath), ENT_QUOTES) . '" alt="' . htmlspecialchars($alt, ENT_QUOTES) . '"' . $attrStr . '>'
+      . '</picture>';
   }
 }

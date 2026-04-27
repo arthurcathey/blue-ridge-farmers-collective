@@ -30,7 +30,7 @@
     <?php endif; ?>
     <?php if (!empty($product['photo_path_prd'])): ?>
       <div class="mt-3">
-        <img src="<?= asset_url((string) $product['photo_path_prd']) ?>" alt="<?= h((string) ($product['name_prd'] ?? '')) ?> product photo" width="300" height="200" class="form-image">
+        <?= picture_tag((string) $product['photo_path_prd'], h((string) ($product['name_prd'] ?? '')), ['width' => 300, 'height' => 200, 'class' => 'form-image']) ?>
       </div>
     <?php endif; ?>
   </div>
