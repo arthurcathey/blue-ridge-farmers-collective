@@ -37,6 +37,7 @@ return [
     '/admin/markets/new' => ['App\\Controllers\\SuperAdminController', 'showCreateMarket'],
     '/admin/markets/edit' => ['App\\Controllers\\SuperAdminController', 'showEditMarket'],
     '/admin/vendor-applications' => ['App\\Controllers\\AdminController', 'vendorApplications'],
+    '/admin/market-applications' => ['App\\Controllers\\AdminController', 'marketApplications'],
     '/admin/vendor-application' => ['App\\Controllers\\AdminController', 'vendorApplicationShow'],
     '/admin/vendors/upload-photo' => ['App\\Controllers\\AdminController', 'vendorPhotoUpload'],
     '/admin/vendors/delete-photo' => ['App\\Controllers\\AdminController', 'deleteVendorPhoto'],

@@ -341,6 +341,7 @@ class AdminController extends BaseController
     $this->redirect('/admin/market-applications');
     return '';
   }
+  }
 
   /**
    * Process vendor application approval or rejection
