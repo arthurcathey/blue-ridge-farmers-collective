@@ -1,3 +1,19 @@
+<?php
+
+/**
+ * Admin Dashboard
+ * 
+ * Displays system overview with key metrics for pending vendors, markets, 
+ * reviews, and active platform statistics.
+ *
+ * @var string $title Page title
+ * @var array $user Authenticated user data
+ * @var DateTime|null $dataRefreshedAt Last data refresh timestamp
+ * @var array $metrics System metrics and counts
+ * @var int $vendorTrend Vendor growth trend for current month
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Admin Dashboard') ?></h1>
   <p class="text-muted mb-2">Welcome <?= h($user['display_name'] ?? $user['username']) ?>. System overview:</p>

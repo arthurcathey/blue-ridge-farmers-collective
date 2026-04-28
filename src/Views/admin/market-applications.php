@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Market Applications View
+ * Review and manage market vendor applications
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $applications Array with vendor/market data: farm_name_ven, username_acc, name_mkt, city_mkt, state_mkt, applied_date_venmkt, id_venmkt
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Market Applications') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>

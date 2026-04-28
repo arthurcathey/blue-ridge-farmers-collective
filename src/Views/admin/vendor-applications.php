@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Vendor Applications View
+ * Review pending vendor applications
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $applications Array with vendor application data
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Vendor Applications') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>

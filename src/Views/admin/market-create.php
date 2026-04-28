@@ -1,3 +1,15 @@
+<?php
+
+/**
+ * Market Create View
+ * Create a new market
+ *
+ * @var string $title
+ * @var array $old
+ * @var array $errors
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Add New Market') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>

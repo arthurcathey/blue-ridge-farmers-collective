@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Vendor Photo Upload View
+ * Upload and manage vendor photos
+ *
+ * @var string $title
+ * @var array $vendors
+ * @var string $message
+ * @var string $error
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($vendor['farm_name_ven'] ?? 'Upload Vendor Photo') ?></h1>

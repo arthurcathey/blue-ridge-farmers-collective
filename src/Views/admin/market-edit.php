@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Market Edit View
+ * Edit market information and settings
+ *
+ * @var string $title
+ * @var array $market Keys: id_mkt, name_mkt, city_mkt, state_mkt, slug_mkt, and all market fields
+ * @var array $errors
+ * @var array $old
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Edit Market') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>
@@ -202,7 +215,7 @@
             <img src="<?= asset_url($market['hero_image_path_mkt']) ?>" alt="<?= h($market['name_mkt']) ?>" width="250" height="180" style="max-width: 250px; height: auto; border-radius: 0.5rem;">
           </div>
           <div class="mb-4">
-            <button type="button" class="text-brand-primary hover:text-brand-primary-hover hover:underline text-fluid-sm font-semibold" onclick="deleteMarketImage(<?= h($market['id_mkt']) ?>)">Delete current image</button>
+            <button type="button" class="text-fluid-sm font-semibold text-brand-primary hover:text-brand-primary-hover hover:underline" onclick="deleteMarketImage(<?= h($market['id_mkt']) ?>)">Delete current image</button>
           </div>
         <?php endif; ?>
         <input id="hero_image" name="hero_image" type="file" accept="image/*">

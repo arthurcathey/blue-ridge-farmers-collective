@@ -1,3 +1,17 @@
+<?php
+
+/**
+ * Market Dates View
+ * Manage upcoming and past market dates
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $dates Array with date data: date_mda, id_mda, name_mkt, city_mkt, state_mkt, id_mkt, start_time_mda, end_time_mda, location_mda, status_mda
+ * @var bool $isAdminPage
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <h1><?= h($title ?? 'Manage Market Dates') ?></h1>

@@ -1,3 +1,23 @@
+<?php
+
+/**
+ * Booth Assignment View
+ * Assign vendors to booths for market dates
+ *
+ * @var string $title
+ * @var array $marketDate
+ * @var array $layout
+ * @var array $marketDates
+ * @var array $selectedDate
+ * @var array $booths
+ * @var array $assignments
+ * @var array $pendingVendors
+ * @var array $vendorOptions
+ * @var string $message
+ * @var string $error
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <div>

@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Product Photo Upload View
+ * Upload and manage product photos
+ *
+ * @var string $title
+ * @var array $products
+ * @var string $message
+ * @var string $error
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($product['name_prd'] ?? 'Upload Product Photo') ?></h1>

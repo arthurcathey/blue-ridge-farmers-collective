@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Vendor Management View
+ * Manage vendors and vendor data
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $vendors Array of vendor data
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <h1><?= h($title ?? 'Vendor Management') ?></h1>

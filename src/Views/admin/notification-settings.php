@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Notification Settings View
+ * Configure notification preferences
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $settings Notification settings configuration
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Admin Notification Settings') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>

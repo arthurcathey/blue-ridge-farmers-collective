@@ -1,3 +1,19 @@
+<?php
+
+/**
+ * Admin Management View
+ * Create and manage admin accounts
+ *
+ * @var string $title
+ * @var array $admins
+ * @var array $user
+ * @var string $message
+ * @var string $error
+ * @var array $old
+ * @var array $errors
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Admin Management') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>

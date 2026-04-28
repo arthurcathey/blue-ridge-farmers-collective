@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Market List View
+ * Display all markets
+ *
+ * @var string $title
+ * @var array $markets
+ * @var string $message
+ * @var string $error
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <h1><?= h($title ?? 'Manage Markets') ?></h1>

@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Market Date Create View
+ * Form to create new market dates
+ *
+ * @var string $title
+ * @var array $markets
+ * @var array $old
+ * @var array $errors
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Add Market Date') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>

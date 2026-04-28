@@ -1,3 +1,15 @@
+<?php
+
+/**
+ * Analytics Dashboard View
+ * Platform health monitoring and performance metrics
+ *
+ * @var string $title
+ * @var array $stats Keys: total_vendors, active_vendors, active_markets, total_market_dates, total_products, total_vendors_with_products, total_reviews, avg_rating
+ * @var array $topSearchedProducts
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($title ?? 'Platform Analytics') ?></h1>
@@ -98,7 +110,6 @@
   </div>
 </section>
 
-
 <section class="card mt-6">
   <h2 class="mb-4">Review Management</h2>
   <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -125,7 +136,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="rounded border border-gray-200 bg-gray-50 p-4">
     <h3 class="mb-4 font-semibold">Rating Distribution (Approved Reviews)</h3>

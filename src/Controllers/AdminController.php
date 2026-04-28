@@ -1279,6 +1279,7 @@ class AdminController extends BaseController
 
     return $this->render('admin/booth-assignment', [
       'title' => 'Booth Assignment',
+      'marketDate' => $selectedDate,
       'layout' => $layout,
       'marketDates' => $marketDates,
       'selectedDate' => $selectedDate,

@@ -1,3 +1,19 @@
+<?php
+
+/**
+ * Member Public Dashboard
+ * 
+ * Displays user dashboard with saved vendors and upcoming market information.
+ * Includes email verification alert if needed.
+ *
+ * @var string $warning Optional warning message
+ * @var array $user Authenticated user data
+ * @var string $title Page title
+ * @var array $metrics User metrics (saved vendors, upcoming markets)
+ * @var array $savedVendors List of saved vendor data
+ */
+?>
+
 <?php if (!empty($warning)): ?>
   <div class="alert-warning" data-flash>
     <?= h($warning) ?>

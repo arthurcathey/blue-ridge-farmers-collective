@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Booth Management View
+ * Manage market booth layouts and assignments
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $markets Array of market objects with nested layouts
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($title ?? 'Booth Management') ?></h1>

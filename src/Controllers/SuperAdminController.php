@@ -101,6 +101,7 @@ class SuperAdminController extends BaseController
     return $this->render('admin/manage-admins', [
       'title' => 'Admin Management',
       'admins' => $admins,
+      'user' => $this->authUser(),
       'message' => $message,
       'error' => $error,
       'old' => $old,

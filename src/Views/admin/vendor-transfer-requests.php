@@ -1,3 +1,18 @@
+<?php
+
+/**
+ * Vendor Transfer Requests View
+ * Manage vendor market transfer requests
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $stats Keys: pending, approved, total
+ * @var string $statusFilter Current status filter
+ * @var array $requests Array of transfer requests
+ */
+?>
+
 <div class="container py-8">
   <div class="max-w-6xl">
     <!-- CSRF Token for AJAX requests -->

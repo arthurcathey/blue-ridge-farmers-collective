@@ -1,3 +1,17 @@
+<?php
+
+/**
+ * Review Management View
+ * Manage vendor reviews and ratings
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $stats Keys: pending, approved, total
+ * @var array $reviews Array with review data: farm_name_ven, customer_name_vre, username_acc, rating_vre, is_approved_vre, is_featured_vre, is_verified_purchase_vre
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex items-center justify-between">
     <h1><?= h($title ?? 'Review Management') ?></h1>

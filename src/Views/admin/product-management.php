@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Product Management View
+ * View and manage all products
+ *
+ * @var string $title
+ * @var string $message
+ * @var string $error
+ * @var array $products Array with product data: name_prd, farm_name_ven, category_name, is_active_prd, id_prd
+ */
+?>
+
 <section class="card">
   <div class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
     <h1><?= h($title ?? 'Product Management') ?></h1>

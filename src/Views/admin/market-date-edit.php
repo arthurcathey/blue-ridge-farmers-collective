@@ -1,3 +1,17 @@
+<?php
+
+/**
+ * Market Date Edit View
+ * Edit an existing market date
+ *
+ * @var string $title
+ * @var array $marketDate
+ * @var array $markets
+ * @var array $old
+ * @var array $errors
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Edit Market Date') ?></h1>
   <p class="mb-4"><a href="<?= url('/admin') ?>" class="link-primary">Back to Dashboard</a></p>

@@ -3,6 +3,15 @@
 /**
  * Market Administrators Management
  * Allow super-admins to assign/remove administrators to specific markets
+ *
+ * @var string $title
+ * @var string|null $currentMarket
+ * @var array $markets
+ * @var array $marketAdmins
+ * @var array $allAdmins
+ * @var array $availableAccounts
+ * @var string $message
+ * @var string $error
  */
 $title = 'Market Administrators';
 $currentMarket = $_GET['market'] ?? null;
