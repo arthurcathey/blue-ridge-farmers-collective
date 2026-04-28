@@ -2,12 +2,15 @@
 
 /**
  * Notification Settings View
- * Configure notification preferences
+ * Configure notification preferences for admin accounts
  *
  * @var string $title
  * @var string $message
  * @var string $error
- * @var array $settings Notification settings configuration
+ * @var array $admins Array of admin user accounts
+ * @var array $adminPreferences Keyed by admin id_acc, contains enabled notification types per admin
+ * @var array $availableTypes Array of available notification type names
+ * @var array $labels Keyed by notification type, contains human-readable labels
  */
 ?>
 

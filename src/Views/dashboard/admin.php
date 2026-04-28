@@ -11,6 +11,14 @@
  * @var DateTime|null $dataRefreshedAt Last data refresh timestamp
  * @var array $metrics System metrics and counts
  * @var int $vendorTrend Vendor growth trend for current month
+ * @var array $weeklySignups Weekly signup data for charting
+ * @var array $vendorGrowthTrend Weekly vendor application trend
+ * @var array $pendingVendors Recent pending vendor applications
+ * @var array $pendingMarketApps Pending market applications
+ * @var array $recentProducts Recently added products
+ * @var array $categoryBreakdown Product counts by category
+ * @var array $marketStats Market statistics with vendor counts
+ * @var array $topSearches Top search terms from product search logs
  */
 ?>
 
