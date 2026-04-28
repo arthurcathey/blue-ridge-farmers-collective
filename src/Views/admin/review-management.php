@@ -52,7 +52,7 @@
   <?php else: ?>
     <div class="space-y-6">
       <?php foreach ($reviews as $review): ?>
-        <div class="card <?= $review['is_approved_vre'] ? 'border-green-200' : 'border-yellow-200' ?> border-2">
+        <div class="card <?= $review['is_approved_vre'] ? 'border-green-200' : 'border-brand-accent' ?> border-2">
           <div class="mb-4 flex items-start justify-between">
             <div class="flex-1">
               <div class="mb-2 flex items-center gap-3">
@@ -66,7 +66,7 @@
                     Approved
                   </span>
                 <?php else: ?>
-                  <span class="inline-flex items-center rounded bg-yellow-100 px-2 py-1 text-fluid-xs text-white">
+                  <span class="inline-flex items-center rounded bg-brand-accent px-2 py-1 text-fluid-xs text-neutral-dark">
                     Pending Approval
                   </span>
                 <?php endif; ?>
