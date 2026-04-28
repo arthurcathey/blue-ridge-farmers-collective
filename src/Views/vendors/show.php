@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Vendor Detail View
+ * 
+ * @var string $title
+ * @var array $vendor
+ * @var array $products
+ * @var array $markets
+ * @var array $reviews
+ * @var array|null $authUser
+ */
+?>
 <section class="card">
   <h1><?= h($title ?? 'Vendor') ?></h1>
 
@@ -83,8 +96,8 @@
                 <?= picture_tag(
                   $product['photo'],
                   h($product['name']),
-                  'card-image',
                   [
+                    'class' => 'card-image',
                     'data-lightbox' => asset_url($product['photo']),
                     'data-caption' => h($product['name']),
                     'width' => '200',
@@ -105,7 +118,7 @@
               </h3>
               <?php
               $categoryName = strtolower(str_replace(' ', '', $product['category'] ?? ''));
-              $categoryName = preg_replace('/[^a-z0-9]/', '', $categoryName); // Remove special chars like &
+              $categoryName = preg_replace('/[^a-z0-9]/', '', $categoryName);
               $badgeClass = in_array($categoryName, ['produce', 'dairy', 'bakedgoods', 'meat', 'seafood', 'pantry', 'beverages', 'flowers', 'preparedfoods', 'honey', 'grains', 'herbs', 'specialty'])
                 ? "badge-category badge-category-{$categoryName}"
                 : 'badge-category';
@@ -233,7 +246,7 @@
                 <div>
                   <div class="mb-1 flex items-center gap-2">
                     <span class="font-semibold">
-                      <?= h($review['customer_name_vre'] ?: $review['username_acc'] ?: 'Anonymous') ?>
+                      <?= h($review['username_acc'] ?? 'Member') ?>
                     </span>
                     <?php if (!empty($review['is_verified_purchase_vre'])): ?>
                       <span class="inline-flex items-center rounded bg-brand-primary px-2 py-1 text-fluid-xs text-white">
@@ -265,7 +278,7 @@
                 </p>
               <?php endif; ?>
 
-              <?php if (!empty($review['response_text_rre'])): ?>
+              <?php if (!empty($review['response_text_rre'] ?? null)): ?>
                 <div class="-mx-4 -mb-4 mt-4 rounded-b border-t border-neutral-light bg-neutral-light px-4 py-3 pt-4">
                   <div class="flex items-start gap-2">
                     <span class="flex-shrink-0 font-semibold text-brand-primary">Vendor Response:</span>
@@ -306,21 +319,21 @@
           </div>
         <?php endif; ?>
 
-        <?php if (!isset($user) || empty($user)): ?>
-          <div class="rounded border border-blue-200 bg-blue-50 p-4">
-            <p class="text-fluid-sm text-gray-700">
+        <?php if (!isset($authUser) || empty($authUser)): ?>
+          <div class="rounded border border-green-200 bg-green-50 p-4">
+            <p class="text-fluid-sm text-green-800">
               You must be logged in to leave a review. <a href="<?= url('/login') ?>" class="font-semibold text-brand-primary hover:underline">Log in here</a> or <a href="<?= url('/register') ?>" class="font-semibold text-brand-primary hover:underline">create an account</a>.
             </p>
           </div>
         <?php else: ?>
           <form method="POST" action="<?= url('/vendor/reviews/submit') ?>" class="space-y-4">
-            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+            <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
             <input type="hidden" name="vendor_id" value="<?= h($vendor['id'] ?? '') ?>">
 
             <div>
               <label id="rating-label" class="form-label">Rating <span class="text-brand-secondary">*</span></label>
               <?php $selectedRating = (int) ($_SESSION['old']['rating'] ?? 0); ?>
-              <div class="flex items-center gap-2" data-rating-stars role="radiogroup" aria-labelledby="rating-label" <?= !empty($errors['rating'] ?? null) ? 'aria-describedby="error-rating"' : '' ?>>
+              <div class="flex items-center gap-2" data-rating-stars role="radiogroup" aria-labelledby="rating-label" <?= !empty(($_SESSION['errors'] ?? [])['rating']) ? 'aria-describedby="error-rating"' : '' ?>>
                 <?php for ($i = 1; $i <= 5; $i++): ?>
                   <label class="cursor-pointer">
                     <input
@@ -328,7 +341,7 @@
                       name="rating"
                       value="<?= $i ?>"
                       class="sr-only"
-                      <?= !empty($errors['rating'] ?? null) ? 'aria-invalid="true"' : '' ?>
+                      <?= !empty(($_SESSION['errors'] ?? [])['rating']) ? 'aria-invalid="true"' : '' ?>
                       <?= ($i === $selectedRating) ? 'checked' : '' ?>
                       required>
                     <span class="text-fluid-3xl text-neutral-medium transition-colors" data-star-value="<?= $i ?>">★</span>
@@ -338,8 +351,8 @@
               <p class="text-muted mt-1 text-fluid-sm" data-rating-feedback aria-live="polite">
                 <?= $selectedRating > 0 ? h((string) $selectedRating) . ' star' . ($selectedRating === 1 ? '' : 's') . ' selected' : 'No rating selected' ?>
               </p>
-              <?php if (!empty($errors['rating'] ?? null)): ?>
-                <small id="error-rating" class="form-error" role="alert"><?= h($errors['rating']) ?></small>
+              <?php if (!empty(($_SESSION['errors'] ?? [])['rating'])): ?>
+                <small id="error-rating" class="form-error" role="alert"><?= h(($_SESSION['errors'] ?? [])['rating']) ?></small>
               <?php endif; ?>
             </div>
 
@@ -349,13 +362,13 @@
                 id="review_text"
                 name="review_text"
                 rows="5"
-                class="form-control <?= !empty($errors['review_text'] ?? null) ? 'border-brand-secondary' : '' ?>"
+                class="form-control <?= !empty(($_SESSION['errors'] ?? [])['review_text']) ? 'border-brand-secondary' : '' ?>"
                 placeholder="Tell us about your experience with this vendor..."
-                <?= !empty($errors['review_text'] ?? null) ? 'aria-describedby="error-review_text" aria-invalid="true"' : '' ?>
+                <?= !empty(($_SESSION['errors'] ?? [])['review_text']) ? 'aria-describedby="error-review_text" aria-invalid="true"' : '' ?>
                 maxlength="2000"><?= h($_SESSION['old']['review_text'] ?? '') ?></textarea>
               <p class="text-muted mt-1 text-fluid-xs">Maximum 2000 characters</p>
-              <?php if (!empty($errors['review_text'] ?? null)): ?>
-                <small id="error-review_text" class="form-error" role="alert"><?= h($errors['review_text']) ?></small>
+              <?php if (!empty(($_SESSION['errors'] ?? [])['review_text'])): ?>
+                <small id="error-review_text" class="form-error" role="alert"><?= h(($_SESSION['errors'] ?? [])['review_text']) ?></small>
               <?php endif; ?>
             </div>
 

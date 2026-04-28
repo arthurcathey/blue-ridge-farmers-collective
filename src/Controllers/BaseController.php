@@ -95,6 +95,7 @@ class BaseController
       $target = url($path);
     }
 
+    session_write_close();
     header('Location: ' . $target);
     exit;
   }

@@ -622,6 +622,12 @@
     @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
     @apply transition-opacity duration-200;
     text-decoration: none;
+    @apply relative pl-3;
+    border-left: 3px solid transparent;
+    transition-property: border-color;
+  }
+  .nav-link.is-active {
+    border-left-color: rgb(201 147 95);
   }
   .nav-link:hover {
     text-decoration: none;

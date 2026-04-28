@@ -180,7 +180,38 @@ export const Navigation = (() => {
       }
     });
 
+    setActiveNavLink();
+
     isInitialized = true;
+  };
+
+  /**
+   * Set active page indicator on current nav link
+   *
+   * Adds 'is-active' class to nav link matching current path
+   *
+   * @returns {void}
+   */
+  const setActiveNavLink = () => {
+    const navLinks = document.querySelector('[data-nav]');
+    if (!navLinks) return;
+
+    const currentPath = navLinks.dataset.currentPath || '';
+    if (!currentPath) return;
+
+    const allLinks = Array.from(navLinks.querySelectorAll('a.nav-link, a.nav-menu-link'));
+
+    allLinks.forEach((link) => {
+      const href = link.getAttribute('href') || '';
+      const normalizedHref = href.replace(/^\/public/, '');
+      
+      if (normalizedHref === currentPath || normalizedHref === currentPath + '/' || currentPath === normalizedHref + '/') {
+        link.classList.add('is-active');
+      }
+      else if (normalizedHref !== '/' && currentPath.startsWith(normalizedHref + '/')) {
+        link.classList.add('is-active');
+      }
+    });
   };
 
   return { init };

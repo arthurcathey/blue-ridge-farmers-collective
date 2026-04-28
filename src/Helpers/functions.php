@@ -56,7 +56,7 @@ if (!function_exists('csrf_verify')) {
    * Verify a CSRF token from user input
    * 
    * Compares the provided token against the session token using constant-time comparison.
-   * Tokens are single-use and are deleted after verification.
+   * After verification, generates a new token to prevent replay attacks.
    * 
    * @param string|null $token The token to verify from user input
    * @return bool True if token is valid, false otherwise
@@ -70,7 +70,8 @@ if (!function_exists('csrf_verify')) {
     $valid = hash_equals((string) $_SESSION['csrf_token'], (string) $token);
 
     if ($valid) {
-      unset($_SESSION['csrf_token']);
+      // Regenerate token for next request instead of deleting it
+      $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 
     return $valid;

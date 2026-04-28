@@ -1,5 +1,9 @@
 <?php
 $user = $_SESSION['user'] ?? null;
+$currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+if (strpos($currentPath, '/public') === 0) {
+  $currentPath = substr($currentPath, 7);
+}
 
 $primaryLinks = [
   ['label' => 'Home', 'href' => url('/')],
@@ -55,7 +59,7 @@ if ($user) {
       <a href="<?= url('/') ?>" class="nav-brand no-underline" aria-label="Blue Ridge Farmers Collective home">
         <img src="<?= asset_url('/images/banners/logo2.png') ?>" alt="Blue Ridge Farmers Collective" width="320" height="50" class="nav-logo h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[280px] md:h-16 md:max-w-[320px]" data-scroll-logo="default" data-logo-default="<?= asset_url('/images/banners/logo2.png') ?>" data-logo-scroll="<?= asset_url('/images/banners/logo.png') ?>" />
       </a>
-      <div class="nav-links" data-nav>
+      <div class="nav-links" data-nav data-current-path="<?= htmlspecialchars($currentPath) ?>">
         <?php foreach ($primaryLinks as $link): ?>
           <a class="nav-link text-fluid-sm sm:text-fluid-base md:text-fluid-lg" href="<?= $link['href'] ?>"><?= h($link['label']) ?></a>
         <?php endforeach; ?>
