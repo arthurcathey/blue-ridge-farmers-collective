@@ -1226,7 +1226,7 @@ class VendorController extends BaseController
       $searchVis = $db->prepare('SELECT 
         psl.search_term_psl as search_term,
         COUNT(*) as frequency,
-        SUM(IF(psl.created_at_psl >= DATE_SUB(NOW(), INTERVAL 30 DAY), 1, 0)) as last_30_days
+        SUM(IF(psl.searched_at_psl >= DATE_SUB(NOW(), INTERVAL 30 DAY), 1, 0)) as last_30_days
         FROM product_search_log_psl psl
         WHERE LOWER(psl.search_term_psl) IN (
           SELECT LOWER(name_prd) FROM product_prd WHERE id_ven_prd = :vendor_id
