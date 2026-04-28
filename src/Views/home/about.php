@@ -1,3 +1,17 @@
+<?php
+
+/**
+ * About Page
+ * 
+ * Displays collective's mission, impact statistics, core values,
+ * and involvement opportunities for community participation.
+ *
+ * @var string $title Page title
+ * @var array $stats Platform statistics (markets, vendors, products)
+ * @var array $highlights Core values and mission highlights
+ */
+?>
+
 <section class="hero">
   <h1><?= h($title ?? 'About How We Make a Difference') ?></h1>
   <p>The Blue Ridge Farmers Collective is a network of growers, makers, and markets focused on local food access and a stronger regional food economy.</p>

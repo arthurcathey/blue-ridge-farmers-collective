@@ -1,3 +1,18 @@
+<?php
+
+/**
+ * Password Recovery Form
+ * 
+ * Email-based password reset initiation form. Sends password reset link
+ * to user's registered email address.
+ *
+ * @var string $title Page title
+ * @var string $message Optional success message
+ * @var array $errors Form validation errors
+ * @var array $old Previous form input values
+ */
+?>
+
 <section class="form-card">
   <h1><?= h($title ?? 'Forgot Password') ?></h1>
 

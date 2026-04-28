@@ -1,3 +1,20 @@
+<?php
+
+/**
+ * Login Form
+ * 
+ * User authentication page with username/password login form,
+ * password recovery link, and account registration link.
+ *
+ * @var string $title Page title
+ * @var string $message Optional success message
+ * @var string $warning Optional warning message
+ * @var string $info Optional information message
+ * @var array $errors Form validation errors
+ * @var array $old Previous form input values
+ */
+?>
+
 <section class="form-card">
   <h1><?= h($title ?? 'Login') ?></h1>
   <p class="mb-6 text-neutral-medium">Sign in to manage your account and access your dashboard.</p>

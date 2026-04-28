@@ -1,3 +1,17 @@
+<?php
+
+/**
+ * Super Admin Dashboard
+ * 
+ * Displays super admin overview with system administration summary including
+ * admin management and system alerts.
+ *
+ * @var string $title Page title
+ * @var array $user Authenticated super admin user data
+ * @var array $metrics Admin count and system alerts
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Super Admin Dashboard') ?></h1>
   <p>Welcome <?= h($user['display_name'] ?? $user['username']) ?>.</p>

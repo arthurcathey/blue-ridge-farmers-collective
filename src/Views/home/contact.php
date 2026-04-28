@@ -1,3 +1,16 @@
+<?php
+
+/**
+ * Contact Page
+ * 
+ * Displays contact information, support options, and ways the collective
+ * can assist with vendor applications, markets, and partnerships.
+ *
+ * @var string $title Page title
+ * @var array $contact Contact details (email, phone, location)
+ */
+?>
+
 <section class="hero">
   <h1><?= h($title ?? 'Contact') ?></h1>
   <p>We'd love to hear from you. Reach out with questions about markets, vendors, products, or partnerships.</p>

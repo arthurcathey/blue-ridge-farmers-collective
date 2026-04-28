@@ -1,3 +1,17 @@
+<?php
+
+/**
+ * User Registration Form
+ * 
+ * Account creation form for new users with username, email, and password
+ * fields. Includes password confirmation validation.
+ *
+ * @var string $title Page title
+ * @var array $errors Form validation errors
+ * @var array $old Previous form input values
+ */
+?>
+
 <section class="form-card">
   <h1><?= h($title ?? 'Create Account') ?></h1>
   <p class="mb-6 text-neutral-medium">Create your account to discover vendors, products, and market updates.</p>

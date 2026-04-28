@@ -1,3 +1,15 @@
+<?php
+
+/**
+ * Home Page
+ * 
+ * Public-facing homepage with mission statement, featured vendors carousel,
+ * and calls-to-action for browsing vendors and markets.
+ *\n * @var string $title Page title
+ * @var array $topVendors Featured vendors for carousel display
+ */
+?>
+
 <section class="hero">
   <h1><?= h($title ?? 'Home') ?></h1>
   <p>Welcome to the Blue Ridge Farmers Collective. Explore markets, discover vendors, and shop seasonal produce.</p>
