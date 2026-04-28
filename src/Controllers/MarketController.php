@@ -82,6 +82,7 @@ class MarketController extends BaseController
             m.city_mkt, 
             m.state_mkt, 
             m.is_active_mkt,
+            m.hero_image_path_mkt,
             COUNT(DISTINCT vm.id_ven_venmkt) as vendor_count
           FROM market_mkt m
           LEFT JOIN vendor_market_venmkt vm 
@@ -303,14 +304,23 @@ class MarketController extends BaseController
         SELECT 
           DATE(mda.date_mda) as date,
           mda.id_mda,
+          m.id_mkt,
           m.name_mkt,
-          mda.weather_status_mda
+          m.city_mkt,
+          m.state_mkt,
+          TIME_FORMAT(mda.start_time_mda, "%h:%i %p") as start_time_mda,
+          TIME_FORMAT(mda.end_time_mda, "%h:%i %p") as end_time_mda,
+          mda.weather_status_mda,
+          COUNT(DISTINCT vm.id_ven_venmkt) as vendor_count
         FROM market_date_mda mda
         JOIN market_mkt m ON m.id_mkt = mda.id_mkt_mda
-        WHERE mda.date_mda >= :start 
-          AND mda.date_mda <= :end
+        LEFT JOIN vendor_market_venmkt vm ON vm.id_mkt_venmkt = m.id_mkt
+          AND vm.membership_status_venmkt = "approved"
+        WHERE DATE(mda.date_mda) >= :start 
+          AND DATE(mda.date_mda) <= :end
           AND m.is_active_mkt = 1
-          AND mda.status_mda NOT IN (\'cancelled\', \'completed\')
+          AND mda.status_mda NOT IN ("cancelled", "completed")
+        GROUP BY DATE(mda.date_mda), mda.id_mda, m.id_mkt, m.name_mkt, m.city_mkt, m.state_mkt, mda.weather_status_mda
         ORDER BY DATE(mda.date_mda) ASC, m.name_mkt ASC
       ');
 
@@ -337,8 +347,14 @@ class MarketController extends BaseController
               ];
             }
             $marketDates[$row['date']]['markets'][] = [
+              'id' => $row['id_mkt'] ?? '',
               'name' => $row['name_mkt'] ?? '',
+              'city' => $row['city_mkt'] ?? '',
+              'state' => $row['state_mkt'] ?? '',
+              'startTime' => $row['start_time_mda'] ?? '',
+              'endTime' => $row['end_time_mda'] ?? '',
               'weather' => $row['weather_status_mda'] ?? null,
+              'vendorCount' => (int)($row['vendor_count'] ?? 0),
             ];
             $marketDates[$row['date']]['event_count']++;
             if (!empty($marketDates[$row['date']]['market_names'])) {

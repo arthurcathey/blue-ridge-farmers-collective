@@ -563,6 +563,7 @@ class AdminController extends BaseController
       'markets' => $markets,
       'message' => $message,
       'error' => $error,
+      'isAdminPage' => true,
     ]);
   }
 
@@ -1856,7 +1857,7 @@ class AdminController extends BaseController
         SELECT id_mda, date_mda, start_time_mda, end_time_mda, m.name_mkt
         FROM market_date_mda md
         JOIN market_mkt m ON m.id_mkt = md.id_mkt_mda
-        WHERE md.date_mda >= CURDATE()
+        WHERE md.date_mda >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
         ORDER BY md.date_mda DESC
         LIMIT 30
       ');

@@ -594,14 +594,34 @@ if (!function_exists('picture_tag')) {
 
     $webpPath = preg_replace('/\.[^.]+$/', '.webp', $imagePath);
 
+    $webpFileExists = false;
+
+    $checkPath = $imagePath;
+    if (strpos($imagePath, '/uploads/') === 0) {
+      $checkPath = '/public' . $imagePath;
+    }
+
+    if (strpos($checkPath, '/') === 0) {
+      $webpFullPath = $_SERVER['DOCUMENT_ROOT'] . preg_replace('/\.[^.]+$/', '.webp', $checkPath);
+    } else {
+      $webpFullPath = __DIR__ . '/../../public/' . preg_replace('/\.[^.]+$/', '.webp', $checkPath);
+    }
+
+    if (file_exists($webpFullPath)) {
+      $webpFileExists = true;
+    }
+
     $attrStr = '';
     foreach ($attrs as $key => $value) {
       $attrStr .= ' ' . htmlspecialchars($key, ENT_QUOTES) . '="' . htmlspecialchars((string) $value, ENT_QUOTES) . '"';
     }
 
-    return '<picture>'
-      . '<source srcset="' . htmlspecialchars(asset_url($webpPath), ENT_QUOTES) . '" type="image/webp">'
-      . '<img src="' . htmlspecialchars(asset_url($imagePath), ENT_QUOTES) . '" alt="' . htmlspecialchars($alt, ENT_QUOTES) . '"' . $attrStr . '>'
-      . '</picture>';
+    if ($webpFileExists) {
+      return '<picture>'
+        . '<source srcset="' . htmlspecialchars(asset_url($webpPath), ENT_QUOTES) . '" type="image/webp">'
+        . '<img src="' . htmlspecialchars(asset_url($imagePath), ENT_QUOTES) . '" alt="' . htmlspecialchars($alt, ENT_QUOTES) . '"' . $attrStr . '>'
+        . '</picture>';
+    }
+    return '<img src="' . htmlspecialchars(asset_url($imagePath), ENT_QUOTES) . '" alt="' . htmlspecialchars($alt, ENT_QUOTES) . '"' . $attrStr . '>';
   }
 }

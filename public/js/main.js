@@ -32,20 +32,121 @@ document.addEventListener("DOMContentLoaded", () => {
   ScrollEffects.init();
   Carousel.init();
 
-  // Only initialize admin features if admin elements are present
+  window.saveVendor = function(vendorId, button) {
+    if (!button) {
+      button = document.getElementById('saveVendorBtn');
+    }
+
+    const csrfField = document.getElementById('csrfToken');
+    if (!csrfField) {
+      alert('Security token missing. Please refresh the page.');
+      return;
+    }
+
+    const csrfToken = csrfField.value;
+    const formData = new FormData();
+    formData.append('vendor_id', vendorId);
+    formData.append('csrf_token', csrfToken);
+
+    fetch('/vendors/save', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          if (button) {
+            button.textContent = 'Saved ✓';
+            button.disabled = true;
+            button.classList.remove('btn-action-green');
+            button.classList.add('btn-disabled');
+            button.onclick = () => window.unsaveVendor(vendorId, button);
+          }
+          alert('Vendor saved successfully!');
+        } else {
+          alert('Error: ' + (data.error || 'Could not save vendor'));
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      });
+  };
+
+  window.unsaveVendor = function(vendorId, button) {
+    if (!button) {
+      button = document.getElementById('saveVendorBtn');
+    }
+
+    const csrfField = document.getElementById('csrfToken');
+    if (!csrfField) {
+      alert('Security token missing. Please refresh the page.');
+      return;
+    }
+
+    const csrfToken = csrfField.value;
+    const formData = new FormData();
+    formData.append('vendor_id', vendorId);
+    formData.append('csrf_token', csrfToken);
+
+    fetch('/vendors/unsave', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          if (button) {
+            button.textContent = 'Save Vendor';
+            button.disabled = false;
+            button.classList.remove('btn-disabled');
+            button.classList.add('btn-action-green');
+            button.onclick = () => window.saveVendor(vendorId, button);
+          }
+          alert('Vendor removed from saved list');
+        } else {
+          alert('Error: ' + (data.error || 'Could not unsave vendor'));
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      });
+  };
+
   const adminElements = document.querySelector('[data-admin-page]');
-  if (adminElements) {
+  // Fallback: if data-admin-page isn't set, check if admin functions like syncWeatherBtn exist
+  const hasAdminContent = adminElements || document.querySelector('#syncWeatherBtn') || document.querySelector('.admin-section');
+  
+  console.log('Admin page detected:', !!adminElements);
+  console.log('Has admin content (fallback):', !!hasAdminContent);
+  
+  if (hasAdminContent) {
+    console.log('Loading admin.js...');
     import('./admin.js').then(({ Admin }) => {
+      console.log('admin.js loaded, calling Admin.init()');
       Admin.init();
+      console.log('Admin.init() completed, syncWeather type:', typeof window.syncWeather);
+    }).catch(err => {
+      console.error('Failed to load Admin module:', err);
     });
   }
 
-  // Only initialize calendar if calendar elements are present
   if (document.querySelector('[data-calendar]')) {
     import('./calendar.js').then(({ Calendar }) => {
       Calendar.init();
     });
   }
 
+  // Create placeholder functions for admin features
+  // These provide immediate access to admin functions even if module hasn't loaded yet
+  if (!window.syncWeather) {
+    window.syncWeather = function(...args) {
+      console.warn('syncWeather called but admin module not ready yet');
+      console.log('Current type:', typeof window.syncWeather);
+    };
+  }
+
   console.log('Blue Ridge Farmers Collective - JavaScript modules initialized');
+  console.log('syncWeather available:', typeof window.syncWeather);
 });

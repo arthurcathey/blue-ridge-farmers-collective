@@ -914,8 +914,6 @@ export const Admin = (() => {
     window.showRejectModal = showRejectModal;
     window.closeRejectModal = closeRejectModal;
     window.submitReject = submittReject;
-    window.saveVendor = saveVendor;
-    window.unsaveVendor = unsaveVendor;
     window.deleteVendorPhoto = deleteVendorPhoto;
     window.deleteMarketImage = deleteMarketImage;
     window.openCreateLayoutModal = openCreateLayoutModal;

@@ -18,16 +18,15 @@
   $mainCssVersion = (string) (file_exists($mainCssFile) ? filemtime($mainCssFile) : time());
   $mainJsVersion = (string) (file_exists($mainJsFile) ? filemtime($mainJsFile) : time());
 
-  // Detect if this is an admin page
   $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
   $isAdminPage = strpos($currentPath, '/admin/') === 0 || strpos($currentPath, '/admin') === 0;
   $hasCalendar = strpos($currentPath, '/market-dates') !== false || strpos($currentPath, '/booth') !== false;
-  ?>
 
   $tailwindSrc = asset_url($tailwindPath . '?v=' . rawurlencode($tailwindVersion));
   $mainCssSrc = asset_url($mainCssPath . '?v=' . rawurlencode($mainCssVersion));
   $mainJsSrc = asset_url($mainJsPath . '?v=' . rawurlencode($mainJsVersion));
   ?>
+
   <link rel="icon" type="image/svg+xml" href="<?= asset_url('/images/favicon.svg') ?>">
   <link rel="stylesheet" href="<?= $tailwindSrc ?>">
   <link rel="stylesheet" href="<?= $mainCssSrc ?>">
@@ -38,7 +37,7 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <?php require __DIR__ . '/../partials/header.php'; ?>
   <main id="main-content" tabindex="-1" class="container pt-6" <?php if ($isAdminPage) echo 'data-admin-page'; ?> <?php if ($hasCalendar) echo 'data-calendar'; ?>>
-    <?= $content ?>
+    <?= $content ?? '' ?>
   </main>
   <?php require __DIR__ . '/../partials/footer.php'; ?>
 

@@ -45,7 +45,7 @@
             <label for="to_market" class="field-label">Transfer To (Target Market)</label>
             <select name="to_market_id" id="to_market" class="form-control" required>
               <option value="" selected disabled>-- Select market --</option>
-              <?php foreach ($availableMarkets as $market): ?>
+              <?php foreach (($availableMarkets ?? []) as $market): ?>
                 <option value="<?= h((string) $market['id_mkt']) ?>"
                   <?= isset($old['to_market_id']) && $old['to_market_id'] == $market['id_mkt'] ? 'selected' : '' ?>>
                   <?= h($market['name_mkt']) ?> - <?= h($market['city_mkt'] . ', ' . $market['state_mkt']) ?>
@@ -70,9 +70,9 @@
             <p class="text-muted mt-1 text-fluid-sm">Max 1000 characters</p>
           </div>
 
-          <div class="rounded border-l-4 border-blue-500 bg-blue-50 p-4">
-            <p class="text-fluid-sm font-semibold text-blue-900">What happens next?</p>
-            <ul class="mt-2 list-inside space-y-1 text-fluid-sm text-blue-800">
+          <div class="rounded border-l-4 border-green-500 bg-green-50 p-4">
+            <p class="text-fluid-sm font-semibold text-green-900">What happens next?</p>
+            <ul class="mt-2 list-inside space-y-1 text-fluid-sm text-green-800">
               <li>• Your request will be reviewed by market administrators</li>
               <li>• You'll receive email notification of approval or rejection</li>
               <li>• Once approved, your booth assignments and products will transfer to the new market</li>

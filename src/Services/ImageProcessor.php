@@ -189,6 +189,11 @@ class ImageProcessor
     }
 
     try {
+      // Apply EXIF orientation if this is a JPEG
+      if ($type === IMAGETYPE_JPEG && function_exists('exif_read_data')) {
+        $image = self::applyExifOrientation($source, $image);
+      }
+
       if ($maxWidth || $maxHeight) {
         list($newWidth, $newHeight) = self::calculateDimensions(
           $width,
@@ -432,6 +437,10 @@ class ImageProcessor
           return ['success' => false, 'error' => 'Could not load image with GD'];
         }
 
+        if ($type === IMAGETYPE_JPEG && function_exists('exif_read_data')) {
+          $image = self::applyExifOrientation($imagePath, $image);
+        }
+
         $width = imagesx($image);
         $height = imagesy($image);
 
@@ -472,6 +481,80 @@ class ImageProcessor
       return ['success' => false, 'error' => 'No image processing library available'];
     } catch (\Exception $e) {
       return ['success' => false, 'error' => 'Resize error: ' . $e->getMessage()];
+    }
+  }
+
+  /**
+   * Apply EXIF orientation to image
+   * 
+   * Reads EXIF orientation data and rotates/flips the image accordingly.
+   * This ensures images taken on phones with auto-rotation are displayed correctly.
+   * 
+   * @param string $imagePath Path to the source image file
+   * @param \GdImage $image GD image resource
+   * @return \GdImage Rotated/flipped image resource
+   */
+  private static function applyExifOrientation(string $imagePath, $image): mixed
+  {
+    try {
+      $exif = @exif_read_data($imagePath);
+      if ($exif === false || empty($exif['Orientation'])) {
+        error_log('EXIF: No orientation found for ' . basename($imagePath));
+        return $image;
+      }
+
+      $orientation = (int) $exif['Orientation'];
+      error_log('EXIF: Applying orientation ' . $orientation . ' to ' . basename($imagePath));
+
+      // Apply transformations based on EXIF orientation
+      // Reference: https://en.wikipedia.org/wiki/Exif#Orientation
+      switch ($orientation) {
+        case 2:
+          error_log('EXIF: Flipping horizontal');
+          imageflip($image, IMG_FLIP_HORIZONTAL);
+          break;
+        case 3:
+          error_log('EXIF: Rotating 180°');
+          $rotated = imagerotate($image, -180, 0);
+          imagedestroy($image);
+          $image = $rotated;
+          break;
+        case 4:
+          error_log('EXIF: Flipping vertical');
+          imageflip($image, IMG_FLIP_VERTICAL);
+          break;
+        case 5:
+          error_log('EXIF: Rotating 90° clockwise + flipping horizontal');
+          $rotated = imagerotate($image, -90, 0);
+          imagedestroy($image);
+          imageflip($rotated, IMG_FLIP_HORIZONTAL);
+          $image = $rotated;
+          break;
+        case 6:
+          error_log('EXIF: Rotating 270° clockwise (-270 or 90°)');
+          $rotated = imagerotate($image, 90, 0);
+          imagedestroy($image);
+          $image = $rotated;
+          break;
+        case 7:
+          error_log('EXIF: Rotating 270° clockwise + flipping horizontal');
+          $rotated = imagerotate($image, 90, 0);
+          imagedestroy($image);
+          imageflip($rotated, IMG_FLIP_HORIZONTAL);
+          $image = $rotated;
+          break;
+        case 8:
+          error_log('EXIF: Rotating 90° clockwise');
+          $rotated = imagerotate($image, -90, 0);
+          imagedestroy($image);
+          $image = $rotated;
+          break;
+      }
+
+      return $image;
+    } catch (\Exception $e) {
+      error_log('EXIF orientation error: ' . $e->getMessage());
+      return $image;
     }
   }
 }

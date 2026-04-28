@@ -229,12 +229,18 @@ export const Forms = (() => {
     const starRatingGroups = document.querySelectorAll("[data-rating-stars]");
 
     starRatingGroups.forEach((group) => {
-      const stars = Array.from(group.querySelectorAll("button[data-rating]"));
+      // Handle button-based rating (legacy)
+      const buttonStars = Array.from(group.querySelectorAll("button[data-rating]"));
+      // Handle radio input-based rating (with star spans)
+      const radioInputs = Array.from(group.querySelectorAll("input[type='radio'][name='rating']"));
+      const starSpans = Array.from(group.querySelectorAll("[data-star-value]"));
+      
       const hiddenInput = group.querySelector("input[type='hidden']");
-      const feedbackElement = group.nextElementSibling;
+      const feedbackElement = group.querySelector("[data-rating-feedback]") || group.nextElementSibling;
 
       const updateRatingDisplay = (selectedRating) => {
-        stars.forEach((star) => {
+        // Update button-based stars
+        buttonStars.forEach((star) => {
           const rating = parseInt(star.getAttribute("data-rating"), 10);
           if (rating <= selectedRating) {
             star.classList.add("selected");
@@ -245,18 +251,31 @@ export const Forms = (() => {
           }
         });
 
+        // Update radio input-based stars
+        starSpans.forEach((span) => {
+          const rating = parseInt(span.getAttribute("data-star-value"), 10);
+          if (rating <= selectedRating) {
+            span.classList.add("text-brand-secondary");
+            span.classList.remove("text-neutral-medium");
+          } else {
+            span.classList.remove("text-brand-secondary");
+            span.classList.add("text-neutral-medium");
+          }
+        });
+
         if (hiddenInput) {
           hiddenInput.value = selectedRating;
         }
 
         if (feedbackElement) {
-          feedbackElement.textContent = `You rated this ${selectedRating} star${selectedRating > 1 ? "s" : ""}`;
+          feedbackElement.textContent = `${selectedRating} star${selectedRating > 1 ? "s" : ""} selected`;
           feedbackElement.setAttribute("role", "status");
           feedbackElement.setAttribute("aria-live", "polite");
         }
       };
 
-      stars.forEach((star) => {
+      // Handle button clicks (legacy)
+      buttonStars.forEach((star) => {
         star.addEventListener("click", () => {
           const rating = parseInt(star.getAttribute("data-rating"), 10);
           updateRatingDisplay(rating);
@@ -267,18 +286,18 @@ export const Forms = (() => {
 
           if (e.key === "ArrowRight" || e.key === "ArrowUp") {
             e.preventDefault();
-            const nextStar = stars[rating] || stars[stars.length - 1];
+            const nextStar = buttonStars[rating] || buttonStars[buttonStars.length - 1];
             nextStar.focus();
           } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
             e.preventDefault();
-            const prevStar = stars[rating - 2] || stars[0];
+            const prevStar = buttonStars[rating - 2] || buttonStars[0];
             prevStar.focus();
           }
         });
 
         star.addEventListener("mouseenter", () => {
           const rating = parseInt(star.getAttribute("data-rating"), 10);
-          stars.forEach((s) => {
+          buttonStars.forEach((s) => {
             const r = parseInt(s.getAttribute("data-rating"), 10);
             if (r <= rating) {
               s.classList.add("hover");
@@ -289,8 +308,65 @@ export const Forms = (() => {
         });
       });
 
-      group.addEventListener("mouseleave", () => {
-        stars.forEach((s) => s.classList.remove("hover"));
+      buttonStars.length && group.addEventListener("mouseleave", () => {
+        buttonStars.forEach((s) => s.classList.remove("hover"));
+      });
+
+      // Handle radio input changes
+      radioInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          const rating = parseInt(input.value, 10);
+          updateRatingDisplay(rating);
+        });
+      });
+
+      // Handle star span clicks for radio inputs
+      starSpans.forEach((span) => {
+        span.addEventListener("click", () => {
+          const rating = parseInt(span.getAttribute("data-star-value"), 10);
+          const correspondingInput = radioInputs.find(input => parseInt(input.value, 10) === rating);
+          if (correspondingInput) {
+            correspondingInput.checked = true;
+            correspondingInput.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        });
+
+        span.addEventListener("mouseenter", () => {
+          const rating = parseInt(span.getAttribute("data-star-value"), 10);
+          starSpans.forEach((s) => {
+            const r = parseInt(s.getAttribute("data-star-value"), 10);
+            if (r <= rating) {
+              s.classList.add("text-brand-secondary");
+              s.classList.remove("text-neutral-medium");
+            } else {
+              s.classList.add("text-neutral-medium");
+              s.classList.remove("text-brand-secondary");
+            }
+          });
+        });
+      });
+
+      starSpans.length && group.addEventListener("mouseleave", () => {
+        // Restore to checked state
+        const checkedInput = radioInputs.find(input => input.checked);
+        if (checkedInput) {
+          const rating = parseInt(checkedInput.value, 10);
+          starSpans.forEach((span) => {
+            const r = parseInt(span.getAttribute("data-star-value"), 10);
+            if (r <= rating) {
+              span.classList.add("text-brand-secondary");
+              span.classList.remove("text-neutral-medium");
+            } else {
+              span.classList.remove("text-brand-secondary");
+              span.classList.add("text-neutral-medium");
+            }
+          });
+        } else {
+          starSpans.forEach(s => {
+            s.classList.remove("text-brand-secondary");
+            s.classList.add("text-neutral-medium");
+          });
+        }
       });
     });
   };

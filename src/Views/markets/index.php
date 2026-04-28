@@ -15,6 +15,9 @@
     <?php foreach (($markets ?? []) as $market): ?>
       <a href="<?= url('/markets?view=' . urlencode($market['slug_mkt'])) ?>" class="card-link" aria-label="View <?= h($market['name_mkt']) ?> market details">
         <div class="card">
+          <?php if (!empty($market['hero_image_path_mkt'])): ?>
+            <?= picture_tag($market['hero_image_path_mkt'], h($market['name_mkt']), ['width' => 250, 'height' => 180, 'loading' => 'lazy', 'class' => 'h-48 w-full object-contain']) ?>
+          <?php endif; ?>
           <h2><?= h($market['name_mkt']) ?></h2>
           <p><?= h(trim(($market['city_mkt'] ?? '') . (!empty($market['state_mkt']) ? ', ' . $market['state_mkt'] : ''))) ?></p>
           <?php if (!(int) ($market['is_active_mkt'] ?? 1)): ?>

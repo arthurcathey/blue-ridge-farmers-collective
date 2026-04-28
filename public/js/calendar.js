@@ -53,12 +53,25 @@ export const Calendar = (() => {
           .map(
             (market) => `
           <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-            <h4 class="mb-2 font-semibold text-fluid-sm text-brand-primary">${market.name || 'Market'}</h4>
+            <h4 class="mb-2 text-fluid-sm font-semibold text-brand-primary">${market.name || 'Market'}</h4>
+            
+            ${market.city || market.state ? `<div class="mb-2 text-fluid-sm text-gray-600">
+              ${market.city || ''}${market.city && market.state ? ', ' : ''}${market.state || ''}
+            </div>` : ''}
+            
+            ${market.startTime || market.endTime ? `<div class="mb-2 text-fluid-sm text-gray-600">
+              ${market.startTime || ''}${market.startTime && market.endTime ? ' - ' : ''}${market.endTime || ''}
+            </div>` : ''}
+            
+            ${market.vendorCount ? `<div class="mb-2">
+              <span class="inline-block rounded-full bg-brand-accent px-3 py-1 text-fluid-sm font-medium text-neutral-dark">${market.vendorCount} vendor${market.vendorCount !== 1 ? 's' : ''}</span>
+            </div>` : ''}
+            
             ${
               market.weather
                 ? `<div class="flex items-center space-x-2">
                     <span class="text-fluid-sm font-medium text-gray-700">Weather:</span>
-                    <span class="inline-block rounded-full bg-blue-100 px-3 py-1 text-fluid-sm text-blue-800">${market.weather}</span>
+                    <span class="inline-block rounded-full bg-brand-accent px-3 py-1 text-fluid-sm font-medium text-neutral-dark">${market.weather}</span>
                   </div>`
                 : '<p class="text-center text-fluid-sm italic text-gray-500">No weather data</p>'
             }
@@ -76,9 +89,9 @@ export const Calendar = (() => {
           <div class="mb-6 flex items-start justify-between border-b border-gray-200 pb-4">
             <div>
               <h3 class="text-fluid-xl font-bold text-gray-900">${formattedDate}</h3>
-              <p class="mt-1 inline-block rounded-full bg-green-100 px-3 py-1 text-fluid-sm font-medium text-green-800">${dateData.event_count || 0} market${dateData.event_count !== 1 ? 's' : ''}</p>
+              <p class="mt-1 inline-block rounded-full bg-brand-accent px-3 py-1 text-fluid-sm font-medium text-neutral-dark">${dateData.event_count || 0} market${dateData.event_count !== 1 ? 's' : ''}</p>
             </div>
-            <button class="text-3xl font-light text-gray-400 transition-colors hover:text-gray-600" onclick="document.getElementById('marketCalendarModal').classList.add('hidden'); document.getElementById('marketCalendarModal').classList.remove('flex');">
+            <button class="text-3xl font-light text-neutral-dark transition-colors hover:text-brand-primary" onclick="document.getElementById('marketCalendarModal').classList.add('hidden'); document.getElementById('marketCalendarModal').classList.remove('flex');">
               ×
             </button>
           </div>
