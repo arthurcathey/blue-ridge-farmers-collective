@@ -306,79 +306,70 @@
           </div>
         <?php endif; ?>
 
-        <form method="POST" action="<?= url('/vendor/reviews/submit') ?>" class="space-y-4">
-          <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-          <input type="hidden" name="vendor_id" value="<?= h($vendor['id'] ?? '') ?>">
+        <?php if (!isset($user) || empty($user)): ?>
+          <div class="rounded border border-blue-200 bg-blue-50 p-4">
+            <p class="text-fluid-sm text-gray-700">
+              You must be logged in to leave a review. <a href="<?= url('/login') ?>" class="font-semibold text-brand-primary hover:underline">Log in here</a> or <a href="<?= url('/register') ?>" class="font-semibold text-brand-primary hover:underline">create an account</a>.
+            </p>
+          </div>
+        <?php else: ?>
+          <form method="POST" action="<?= url('/vendor/reviews/submit') ?>" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+            <input type="hidden" name="vendor_id" value="<?= h($vendor['id'] ?? '') ?>">
 
-          <?php if (!isset($user) || empty($user)): ?>
             <div>
-              <label for="customer_name" class="form-label">Your Name <span class="text-brand-secondary">*</span></label>
-              <input
-                type="text"
-                id="customer_name"
-                name="customer_name"
-                class="form-control <?= !empty($errors['customer_name'] ?? null) ? 'border-brand-secondary' : '' ?>"
-                value="<?= h($_SESSION['old']['customer_name'] ?? '') ?>"
-                <?= !empty($errors['customer_name'] ?? null) ? 'aria-describedby="error-customer_name" aria-invalid="true"' : '' ?>
-                required>
-              <?php if (!empty($errors['customer_name'] ?? null)): ?>
-                <small id="error-customer_name" class="form-error" role="alert"><?= h($errors['customer_name']) ?></small>
+              <label id="rating-label" class="form-label">Rating <span class="text-brand-secondary">*</span></label>
+              <?php $selectedRating = (int) ($_SESSION['old']['rating'] ?? 0); ?>
+              <div class="flex items-center gap-2" data-rating-stars role="radiogroup" aria-labelledby="rating-label" <?= !empty($errors['rating'] ?? null) ? 'aria-describedby="error-rating"' : '' ?>>
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                  <label class="cursor-pointer">
+                    <input
+                      type="radio"
+                      name="rating"
+                      value="<?= $i ?>"
+                      class="sr-only"
+                      <?= !empty($errors['rating'] ?? null) ? 'aria-invalid="true"' : '' ?>
+                      <?= ($i === $selectedRating) ? 'checked' : '' ?>
+                      required>
+                    <span class="text-fluid-3xl text-neutral-medium transition-colors" data-star-value="<?= $i ?>">★</span>
+                  </label>
+                <?php endfor; ?>
+              </div>
+              <p class="text-muted mt-1 text-fluid-sm" data-rating-feedback aria-live="polite">
+                <?= $selectedRating > 0 ? h((string) $selectedRating) . ' star' . ($selectedRating === 1 ? '' : 's') . ' selected' : 'No rating selected' ?>
+              </p>
+              <?php if (!empty($errors['rating'] ?? null)): ?>
+                <small id="error-rating" class="form-error" role="alert"><?= h($errors['rating']) ?></small>
               <?php endif; ?>
             </div>
-          <?php endif; ?>
 
-          <div>
-            <label id="rating-label" class="form-label">Rating <span class="text-brand-secondary">*</span></label>
-            <?php $selectedRating = (int) ($_SESSION['old']['rating'] ?? 0); ?>
-            <div class="flex items-center gap-2" data-rating-stars role="radiogroup" aria-labelledby="rating-label" <?= !empty($errors['rating'] ?? null) ? 'aria-describedby="error-rating"' : '' ?>>
-              <?php for ($i = 1; $i <= 5; $i++): ?>
-                <label class="cursor-pointer">
-                  <input
-                    type="radio"
-                    name="rating"
-                    value="<?= $i ?>"
-                    class="sr-only"
-                    <?= !empty($errors['rating'] ?? null) ? 'aria-invalid="true"' : '' ?>
-                    <?= ($i === $selectedRating) ? 'checked' : '' ?>
-                    required>
-                  <span class="text-fluid-3xl text-neutral-medium transition-colors" data-star-value="<?= $i ?>">★</span>
-                </label>
-              <?php endfor; ?>
+            <div>
+              <label for="review_text" class="form-label">Your Review</label>
+              <textarea
+                id="review_text"
+                name="review_text"
+                rows="5"
+                class="form-control <?= !empty($errors['review_text'] ?? null) ? 'border-brand-secondary' : '' ?>"
+                placeholder="Tell us about your experience with this vendor..."
+                <?= !empty($errors['review_text'] ?? null) ? 'aria-describedby="error-review_text" aria-invalid="true"' : '' ?>
+                maxlength="2000"><?= h($_SESSION['old']['review_text'] ?? '') ?></textarea>
+              <p class="text-muted mt-1 text-fluid-xs">Maximum 2000 characters</p>
+              <?php if (!empty($errors['review_text'] ?? null)): ?>
+                <small id="error-review_text" class="form-error" role="alert"><?= h($errors['review_text']) ?></small>
+              <?php endif; ?>
             </div>
-            <p class="text-muted mt-1 text-fluid-sm" data-rating-feedback aria-live="polite">
-              <?= $selectedRating > 0 ? h((string) $selectedRating) . ' star' . ($selectedRating === 1 ? '' : 's') . ' selected' : 'No rating selected' ?>
+
+            <div class="flex gap-3">
+              <button type="submit" class="btn-action-green">
+                Submit Review
+              </button>
+            </div>
+
+            <p class="text-muted text-fluid-xs">
+              Your review will be reviewed by our team before being published.
             </p>
-            <?php if (!empty($errors['rating'] ?? null)): ?>
-              <small id="error-rating" class="form-error" role="alert"><?= h($errors['rating']) ?></small>
-            <?php endif; ?>
-          </div>
-
-          <div>
-            <label for="review_text" class="form-label">Your Review</label>
-            <textarea
-              id="review_text"
-              name="review_text"
-              rows="5"
-              class="form-control <?= !empty($errors['review_text'] ?? null) ? 'border-brand-secondary' : '' ?>"
-              placeholder="Tell us about your experience with this vendor..."
-              <?= !empty($errors['review_text'] ?? null) ? 'aria-describedby="error-review_text" aria-invalid="true"' : '' ?>
-              maxlength="2000"><?= h($_SESSION['old']['review_text'] ?? '') ?></textarea>
-            <p class="text-muted mt-1 text-fluid-xs">Maximum 2000 characters</p>
-            <?php if (!empty($errors['review_text'] ?? null)): ?>
-              <small id="error-review_text" class="form-error" role="alert"><?= h($errors['review_text']) ?></small>
-            <?php endif; ?>
-          </div>
-
-          <div class="flex gap-3">
-            <button type="submit" class="btn-action-green">
-              Submit Review
-            </button>
-          </div>
-
-          <p class="text-muted text-fluid-xs">
-            Your review will be reviewed by our team before being published.
-          </p>
-        </form>
+          </form>
+        <?php endif; ?>
       </div>
     </div>
   <?php endif; ?>

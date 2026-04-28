@@ -970,6 +970,8 @@ class VendorController extends BaseController
    */
   public function submitReview(): string
   {
+    $this->requireAuth();
+
     if (!csrf_verify($_POST['csrf_token'] ?? null)) {
       $this->flash('error', 'Invalid session token. Please try again.');
       $this->redirect($_SERVER['HTTP_REFERER'] ?? '/vendors');
@@ -995,15 +997,7 @@ class VendorController extends BaseController
     }
 
     $user = $this->authUser();
-    $accountId = $user ? (int) ($user['id'] ?? 0) : null;
-
-    if (!$accountId && empty($customerName)) {
-      $errors['customer_name'] = 'Please provide your name.';
-    }
-
-    if ($customerName !== '' && (strlen($customerName) < 2 || strlen($customerName) > 100)) {
-      $errors['customer_name'] = 'Name must be between 2 and 100 characters.';
-    }
+    $accountId = (int) ($user['id'] ?? 0);
 
     $vendorCheck = $this->db()->prepare('SELECT id_ven FROM vendor_ven WHERE id_ven = :id AND application_status_ven = "approved" LIMIT 1');
     $vendorCheck->execute([':id' => $vendorId]);
@@ -1016,7 +1010,6 @@ class VendorController extends BaseController
       $_SESSION['old'] = [
         'rating' => $rating,
         'review_text' => $reviewText,
-        'customer_name' => $customerName,
       ];
       $this->redirect($_SERVER['HTTP_REFERER'] ?? '/vendors');
     }
@@ -1024,14 +1017,13 @@ class VendorController extends BaseController
     try {
       $insert = $this->db()->prepare('
         INSERT INTO vendor_review_vre 
-        (id_ven_vre, id_acc_vre, customer_name_vre, rating_vre, review_text_vre, is_approved_vre, created_at_vre)
+        (id_ven_vre, id_acc_vre, rating_vre, review_text_vre, is_approved_vre, created_at_vre)
         VALUES 
-        (:vendor, :account, :name, :rating, :text, 0, NOW())
+        (:vendor, :account, :rating, :text, 0, NOW())
       ');
       $insert->execute([
         ':vendor' => $vendorId,
         ':account' => $accountId,
-        ':name' => $customerName ?: null,
         ':rating' => $rating,
         ':text' => $reviewText ?: null,
       ]);

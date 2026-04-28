@@ -132,9 +132,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (document.querySelector('[data-calendar]')) {
+  const calendarElement = document.querySelector('[data-calendar]');
+  const calendarWidgets = document.querySelectorAll('[data-market-calendar]');
+  
+  console.log('data-calendar element:', !!calendarElement);
+  console.log('data-market-calendar containers found:', calendarWidgets.length);
+  
+  // Load calendar if either the data-calendar attribute is set OR we find market-calendar widgets
+  if (calendarElement || calendarWidgets.length > 0) {
+    console.log('Loading calendar module...');
     import('./calendar.js').then(({ Calendar }) => {
+      console.log('Calendar module loaded');
       Calendar.init();
+      console.log('Calendar initialized');
+    }).catch(err => {
+      console.error('Failed to load Calendar module:', err);
     });
   }
 

@@ -20,7 +20,11 @@
 
   $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
   $isAdminPage = strpos($currentPath, '/admin/') === 0 || strpos($currentPath, '/admin') === 0;
-  $hasCalendar = strpos($currentPath, '/market-dates') !== false || strpos($currentPath, '/booth') !== false;
+  $hasCalendar = strpos($currentPath, '/vendor') === 0
+    || strpos($currentPath, '/markets') === 0
+    || strpos($currentPath, '/booth') !== false
+    || strpos($currentPath, '/market-dates') !== false
+    || strpos($currentPath, '/admin/market-dates') !== false;
 
   $tailwindSrc = asset_url($tailwindPath . '?v=' . rawurlencode($tailwindVersion));
   $mainCssSrc = asset_url($mainCssPath . '?v=' . rawurlencode($mainCssVersion));

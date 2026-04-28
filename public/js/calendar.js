@@ -23,6 +23,7 @@ export const Calendar = (() => {
    * @returns {void}
    */
   const initCalendar = (container) => {
+    console.log('initCalendar called for container:', container);
     const now = new Date();
     let currentYear = now.getFullYear();
     let currentMonth = now.getMonth() + 1;
@@ -124,19 +125,24 @@ export const Calendar = (() => {
       container.innerHTML = '';
 
       try {
+        console.log(`Fetching calendar for ${currentYear}-${currentMonth}`);
         const response = await fetch(
           `/api/markets/calendar?year=${currentYear}&month=${currentMonth}`
         );
 
+        console.log('Calendar API response status:', response.status);
         if (!response.ok) {
+          console.error('Calendar API failed with status', response.status);
           container.innerHTML =
             '<div class="rounded border border-red-200 bg-red-50 p-4 text-red-700">Failed to load calendar</div>';
           return;
         }
 
         const data = await response.json();
+        console.log('Calendar API response data:', data);
 
         if (!data.success) {
+          console.warn('Calendar API returned success: false');
           container.innerHTML =
             '<div class="rounded border border-yellow-200 bg-yellow-50 p-4 text-yellow-700">No calendar data available</div>';
           return;
@@ -251,13 +257,17 @@ export const Calendar = (() => {
   const init = () => {
     if (isInitialized) return;
 
+    console.log('Calendar.init() called');
     const containers = document.querySelectorAll('[data-market-calendar]');
+    console.log('Found calendar containers:', containers.length);
     containers.forEach((container) => {
+      console.log('Initializing calendar container');
       initCalendar(container);
       calendarWidgets.push(container);
     });
 
     isInitialized = true;
+    console.log('Calendar initialization complete');
   };
 
   return { init };
