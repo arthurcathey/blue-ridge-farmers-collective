@@ -19,6 +19,10 @@
   $mainJsVersion = (string) (file_exists($mainJsFile) ? filemtime($mainJsFile) : time());
 
   $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+  // Remove /public prefix if present (for servers where /public is in the URL path)
+  if (strpos($currentPath, '/public/') === 0) {
+    $currentPath = substr($currentPath, 7); // Remove '/public'
+  }
   $isAdminPage = strpos($currentPath, '/admin/') === 0 || strpos($currentPath, '/admin') === 0;
   $hasCalendar = strpos($currentPath, '/vendor') === 0
     || strpos($currentPath, '/markets') === 0

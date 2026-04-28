@@ -341,7 +341,6 @@ class AdminController extends BaseController
     $this->redirect('/admin/market-applications');
     return '';
   }
-  }
 
   /**
    * Process vendor application approval or rejection
@@ -1656,6 +1655,7 @@ class AdminController extends BaseController
     $message = '';
     $error = '';
     $currentMarket = $_GET['market'] ?? null;
+    $markets = [];
     $marketAdmins = [];
     $availableAccounts = [];
 
