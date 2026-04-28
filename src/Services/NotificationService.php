@@ -69,7 +69,6 @@ class NotificationService
       return (int) $stmt->fetchColumn() > 0;
     } catch (\Throwable $e) {
       error_log('Notification preference check error: ' . $e->getMessage());
-      // Default to enabled if there's an error
       return true;
     }
   }

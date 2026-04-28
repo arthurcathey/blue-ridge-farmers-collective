@@ -189,7 +189,6 @@ class ImageProcessor
     }
 
     try {
-      // Apply EXIF orientation if this is a JPEG
       if ($type === IMAGETYPE_JPEG && function_exists('exif_read_data')) {
         $image = self::applyExifOrientation($source, $image);
       }

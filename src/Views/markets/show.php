@@ -1,3 +1,17 @@
+<?php
+
+/**
+ * Market Details View
+ * Display market information with dates and vendors
+ *
+ * @var string $title
+ * @var array $market
+ * @var array $vendors
+ * @var array $marketDates
+ * @var array $vendorPagination
+ */
+?>
+
 <section class="card">
   <h1><?= h($title ?? 'Market') ?></h1>
   <p><?= h(format_location_mkt($market)) ?></p>
@@ -20,10 +34,10 @@
     <h2>Upcoming Market Dates</h2>
     <div class="space-y-4">
       <?php foreach ($marketDates as $date): ?>
-        <div class="border-l-4 border-brand-primary pl-4 py-2">
+        <div class="border-l-4 border-brand-primary py-2 pl-4">
           <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p class="font-semibold text-fluid-lg">
+              <p class="text-fluid-lg font-semibold">
                 <?= h(date('l, F j, Y', strtotime($date['date_mda']))) ?>
               </p>
               <p class="text-neutral-medium">
@@ -32,17 +46,17 @@
                 <?= h(date('g:i A', strtotime($date['end_time_mda']))) ?>
               </p>
               <?php if (!empty($date['location_mda'])): ?>
-                <p class="text-fluid-sm text-neutral-medium mt-1">
+                <p class="mt-1 text-fluid-sm text-neutral-medium">
                   Location: <?= h($date['location_mda']) ?>
                 </p>
               <?php endif; ?>
               <?php if (!empty($date['weather_status_mda'])): ?>
-                <p class="text-fluid-sm mt-1">
+                <p class="mt-1 text-fluid-sm">
                   Weather: <?= h(ucfirst(str_replace('_', ' ', $date['weather_status_mda']))) ?>
                 </p>
               <?php endif; ?>
               <?php if (!empty($date['notes_mda'])): ?>
-                <p class="text-fluid-sm text-neutral-medium mt-2 italic">
+                <p class="mt-2 text-fluid-sm italic text-neutral-medium">
                   <?= h($date['notes_mda']) ?>
                 </p>
               <?php endif; ?>
@@ -59,7 +73,7 @@
 
 <section class="card mt-8">
   <h2>Vendors</h2>
-  <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] md:gap-6">
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4 md:gap-6">
     <?php foreach (($vendors ?? []) as $vendor): ?>
       <?php require __DIR__ . '/../partials/vendor-card.php'; ?>
     <?php endforeach; ?>
