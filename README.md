@@ -47,6 +47,11 @@ The database features 35+ tables with a well-structured relational design:
 - Full-text indexes for search optimization
 - Comprehensive indexing for performance
 
+### Database Diagram
+**View the complete database schema:** [Blue Ridge Farmers Collective Database Schema](https://dbdiagram.io/d/Blue-Ridge-Farmers-Collective-DATABASE-SCHEMA-67daf14775d75cc844b65113)
+
+This interactive diagram shows all 35+ tables, their relationships, and field definitions.
+
 ### Database Files
 - `src/Database/schema.sql` - Complete database schema with seed data
 - `src/Database/blueridge_farmers_db_dump.sql` - SQL dump for database recreation
@@ -107,6 +112,19 @@ The database seed data includes test accounts (Password: `Test123!`):
 | vendor | vendor@example.com | Vendor | 2 |
 | member | member@example.com | Public | 1 |
 
+## � Documentation
+
+For detailed system architecture and how all components work together:
+- **[SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)** - Complete technical documentation covering:
+  - System overview and technology stack
+  - Request flow through the application
+  - Folder structure and component responsibilities
+  - Controllers, Services, Models, and Views
+  - JavaScript frontend architecture
+  - CSS styling with Tailwind
+  - Authentication and security
+  - Integration examples
+
 ## 📁 Project Structure
 
 ```
@@ -117,14 +135,17 @@ blue_ridge_farmers_collective/
 │   ├── js/
 │   └── uploads/
 ├── src/
-│   ├── Controllers/     # Application controllers
+│   ├── Controllers/     # Application controllers (10 controllers)
 │   ├── Database/        # Schema and dump files
 │   ├── Helpers/         # Helper functions and utilities
-│   ├── Models/          # Data models
-│   └── Views/           # Template files
+│   ├── Models/          # Data models (BaseModel)
+│   ├── Services/        # Business logic (7 specialized services)
+│   └── Views/           # Template files (40+ PHP templates)
 ├── storage/             # Cache, sessions, temp files
 ├── package.json         # NPM dependencies
-└── tailwind.config.js   # Tailwind CSS configuration
+├── tailwind.config.js   # Tailwind CSS configuration
+├── SYSTEM_ARCHITECTURE.md # Technical architecture documentation
+└── README.md            # This file
 ```
 
 ## 🔐 Security
@@ -338,4 +359,4 @@ For questions or issues:
 
 ---
 
-**Last Updated:** April 27, 2026
+**Last Updated:** May 1, 2026
