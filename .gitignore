@@ -11,6 +11,7 @@
 # IDE and Editor
 .vscode/
 .idea/
+.php-stubs/
 *.sublime-project
 *.sublime-workspace
 *.swp
