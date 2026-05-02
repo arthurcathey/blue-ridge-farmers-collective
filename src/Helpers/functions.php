@@ -70,7 +70,6 @@ if (!function_exists('csrf_verify')) {
     $valid = hash_equals((string) $_SESSION['csrf_token'], (string) $token);
 
     if ($valid) {
-      // Regenerate token for next request instead of deleting it
       $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 

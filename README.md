@@ -14,10 +14,9 @@ A comprehensive web application for managing local farmers markets with vendor m
 ### Core Functionality
 - **Multi-Market Management** - Support for multiple independent farmers markets
 - **Vendor Management** - Vendor profiles, applications, and market assignments
-- **Product Catalog** - Comprehensive product management with seasonality tracking
-- **Market Scheduling** - Market dates with weather tracking
-- **Booth Management** - Interactive booth assignment and market layout
-- **Customer Engagement** - Vendor reviews, notifications, and profiles
+- **Product Catalog** - Comprehensive product management with images and details
+- **Market Scheduling** - Market dates with weather tracking and attendance
+- **Customer Engagement** - Vendor reviews, notifications, and vendor profiles
 
 ### Authentication & Security
 - Role-based access control (Public, Vendor, Admin, Super Admin)
@@ -27,16 +26,15 @@ A comprehensive web application for managing local farmers markets with vendor m
 - Audit logging for compliance
 
 ### Advanced Features
-- Analytics and trending searches
+- Full-text product search with category and price filtering
 - Real-time vendor attendance tracking
-- Email notification system with Twilio SMS
-- Weather caching integration
-- Vendor profile view analytics
-- Product search with full-text indexing
+- Email notification system
+- Weather integration for market conditions
+- Vendor profile analytics
 - Market hero images for featured listings
 - Interactive market calendar with event details
-- Admin dashboard with real-time metrics and quick actions
-- Comprehensive CSS documentation with Tailwind organization
+- Comprehensive admin dashboard with real-time metrics
+- Responsive design for mobile and desktop
 
 ## 🗄️ Database
 
@@ -218,13 +216,14 @@ Markets support rich media and event management:
 - **Market Calendar** - Interactive calendar showing market dates with event details
 - **Weather Integration** - Real-time weather status tracking for each market date
 - **Featured Markets** - Display selected markets on home page with images
-- **Location Tracking** - DECIMAL coordinates for precise GPS mapping
+- **Location Tracking** - GPS coordinates for precise market mapping
+- **Vendor Assignments** - Assign vendors to markets with attendance tracking
 
 ### Coordinate System
-DECIMAL(8,2) precision for booth/market locations:
-- Accurate GPS coordinates: DECIMAL(10,8) for latitude, DECIMAL(11,8) for longitude
-- SVG rendering coordinates in booth_location_blo table
-- Enables precise interactive market maps
+DECIMAL precision for accurate location data:
+- Market coordinates: DECIMAL(10,8) for latitude, DECIMAL(11,8) for longitude
+- GPS-accurate mapping for market locations
+- Enables precise market location tracking
 
 ## 🧪 Testing
 
