@@ -48,8 +48,13 @@ if (!is_array($selectedMethods)) {
 }
 ?>
 <section class="form-card">
-  <h1><?= h($title ?? $pageHeading) ?></h1>
-  <p class="mb-6 text-fluid-sm text-neutral-medium">Share your farm details to apply as a vendor or keep your profile up to date.</p>
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1><?= h($title ?? $pageHeading) ?></h1>
+      <p class="text-fluid-sm text-neutral-medium">Share your farm details to apply as a vendor or keep your profile up to date.</p>
+    </div>
+    <a href="<?= url('/vendors') ?>" class="link-primary">Back to Vendors</a>
+  </div>
 
   <?php if (!empty($message)): ?>
     <div class="alert-success" data-flash>

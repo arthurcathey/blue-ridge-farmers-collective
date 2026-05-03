@@ -13,11 +13,16 @@
 ?>
 
 <section class="card">
-  <h1><?= h($title ?? 'Market') ?></h1>
-  <p><?= h(format_location_mkt($market)) ?></p>
-  <?php if (!empty($market['default_location_mkt'])): ?>
-    <p><?= h($market['default_location_mkt']) ?></p>
-  <?php endif; ?>
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1><?= h($title ?? 'Market') ?></h1>
+      <p><?= h(format_location_mkt($market)) ?></p>
+      <?php if (!empty($market['default_location_mkt'])): ?>
+        <p><?= h($market['default_location_mkt']) ?></p>
+      <?php endif; ?>
+    </div>
+    <a href="<?= url('/markets') ?>" class="link-primary">Back to Markets</a>
+  </div>
   <?php if (!empty($market['contact_name_mkt'])): ?>
     <p>Contact: <?= h($market['contact_name_mkt']) ?></p>
   <?php endif; ?>
