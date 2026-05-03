@@ -714,6 +714,12 @@
     @apply transition-colors duration-150;
     @apply no-underline;
     text-decoration: none;
+    @apply relative pl-6;
+    border-left: 3px solid transparent;
+    transition-property: border-color;
+  }
+  .nav-menu-link.is-active {
+    border-left-color: rgb(201 147 95);
   }
   .nav-menu-link:hover {
     text-decoration: none;

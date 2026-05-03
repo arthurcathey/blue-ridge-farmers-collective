@@ -58,3 +58,6 @@ public/uploads/*
 !public/uploads/.gitkeep
 public/images/uploads/*
 !public/images/uploads/.gitkeep
+
+# Documentation
+SYSTEM_ARCHITECTURE.md
