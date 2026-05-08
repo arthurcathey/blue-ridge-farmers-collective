@@ -282,11 +282,16 @@ class MarketController extends BaseController
     $year = (int) ($_GET['year'] ?? date('Y'));
     $month = (int) ($_GET['month'] ?? date('n'));
 
+    // SECURITY: Validate year and month ranges strictly
     if ($month < 1 || $month > 12) {
-      $month = (int) date('n');
+      http_response_code(400);
+      echo json_encode(['error' => 'Invalid month (must be 1-12)']);
+      return '';
     }
-    if ($year < 2020 || $year > 2030) {
-      $year = (int) date('Y');
+    if ($year < 1900 || $year > 2100) {
+      http_response_code(400);
+      echo json_encode(['error' => 'Invalid year (must be 1900-2100)']);
+      return '';
     }
 
     try {

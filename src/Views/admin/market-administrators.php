@@ -14,7 +14,7 @@
  * @var string $error
  */
 $title = 'Market Administrators';
-$currentMarket = $_GET['market'] ?? null;
+$currentMarket = isset($_GET['market']) ? (int)$_GET['market'] : null;
 $markets = $markets ?? [];
 $marketAdmins = $marketAdmins ?? [];
 $allAdmins = $allAdmins ?? [];
@@ -65,7 +65,7 @@ $availableAccounts = $availableAccounts ?? [];
       <section class="card">
         <h2 class="mb-4">Market Administrators</h2>
         <p class="text-muted mb-4 text-fluid-sm">
-          <?php $market = array_filter($markets, fn($m) => $m['id_mkt'] == $currentMarket)[0] ?? []; ?>
+          <?php $market = array_filter($markets, fn($m) => $m['id_mkt'] === $currentMarket)[0] ?? []; ?>
           <?= h($market['name_mkt'] ?? 'Selected Market') ?>
         </p>
 

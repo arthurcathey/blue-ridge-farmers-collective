@@ -195,6 +195,16 @@ class WeatherController extends BaseController
     header('Content-Type: application/json');
 
     $this->requireRole('admin', 'super_admin');
+    
+    // SECURITY: Verify CSRF token to prevent CSRF attacks on state-changing endpoint
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      http_response_code(403);
+      echo json_encode([
+        'success' => false,
+        'error' => 'Invalid CSRF token',
+      ]);
+      return '';
+    }
 
     $weatherService = new WeatherService($this->db());
     if (!$weatherService->isConfigured()) {
@@ -278,6 +288,16 @@ class WeatherController extends BaseController
     header('Content-Type: application/json');
 
     $this->requireRole('admin', 'super_admin');
+    
+    // SECURITY: Verify CSRF token to prevent CSRF attacks on state-changing endpoint
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+      http_response_code(403);
+      echo json_encode([
+        'success' => false,
+        'error' => 'Invalid CSRF token',
+      ]);
+      return '';
+    }
 
     $marketDateId = (int) ($_POST['market_date_id'] ?? 0);
 

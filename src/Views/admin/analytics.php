@@ -280,7 +280,7 @@
         $approved = $stats['approved_reviews'] ?? 0;
         $responded = $stats['vendor_responses'] ?? 0;
         $rate = $approved > 0 ? round(($responded / $approved) * 100) : 0;
-        echo $rate;
+        echo (int)$rate;
         ?>%
       </span>
     </div>

@@ -39,7 +39,7 @@
             class="search-form-select">
             <option value="">All Categories</option>
             <?php foreach (($categories ?? []) as $cat): ?>
-              <option value="<?= h($cat['id_pct']) ?>" <?= ($_GET['category'] ?? '') == $cat['id_pct'] ? 'selected' : '' ?>>
+              <option value="<?= h($cat['id_pct']) ?>" <?= (int)($_GET['category'] ?? 0) == $cat['id_pct'] ? 'selected' : '' ?>>
                 <?= h($cat['name_pct']) ?>
               </option>
             <?php endforeach; ?>
@@ -56,7 +56,7 @@
             class="search-form-select">
             <option value="">All Vendors</option>
             <?php foreach (($vendors ?? []) as $v): ?>
-              <option value="<?= h($v['id_ven']) ?>" <?= ($_GET['vendor'] ?? '') == $v['id_ven'] ? 'selected' : '' ?>>
+              <option value="<?= h($v['id_ven']) ?>" <?= (int)($_GET['vendor'] ?? 0) == $v['id_ven'] ? 'selected' : '' ?>>
                 <?= h($v['farm_name_ven']) ?>
               </option>
             <?php endforeach; ?>
@@ -73,7 +73,7 @@
             class="search-form-select">
             <option value="">All Markets</option>
             <?php foreach (($markets ?? []) as $m): ?>
-              <option value="<?= h($m['id_mkt']) ?>" <?= ($_GET['market'] ?? '') == $m['id_mkt'] ? 'selected' : '' ?>>
+              <option value="<?= h($m['id_mkt']) ?>" <?= (int)($_GET['market'] ?? 0) == $m['id_mkt'] ? 'selected' : '' ?>>
                 <?= h($m['name_mkt']) ?>
               </option>
             <?php endforeach; ?>
@@ -88,8 +88,8 @@
             id="sort"
             name="sort"
             class="search-form-select">
-            <option value="name" <?= ($_GET['sort'] ?? 'name') == 'name' ? 'selected' : '' ?>>Product Name</option>
-            <option value="newest" <?= ($_GET['sort'] ?? '') == 'newest' ? 'selected' : '' ?>>Newest First</option>
+            <option value="name" <?= in_array(($_GET['sort'] ?? 'name'), ['name', 'newest'], true) && ($_GET['sort'] ?? 'name') === 'name' ? 'selected' : '' ?>>Product Name</option>
+            <option value="newest" <?= in_array(($_GET['sort'] ?? ''), ['name', 'newest'], true) && ($_GET['sort'] ?? '') === 'newest' ? 'selected' : '' ?>>Newest First</option>
           </select>
         </div>
       </div>
@@ -211,7 +211,15 @@
       'page' => $pagination['current_page'],
       'pages' => $pagination['total_pages']
     ]);
-    $baseUrlBuilder = fn($page) => url('/products?' . http_build_query(array_merge($_GET, ['page' => $page])));
+    // SECURITY: Only pass known safe parameters to pagination URLs
+    $safeParams = array_filter([
+      'search' => $_GET['search'] ?? null,
+      'category' => $_GET['category'] ?? null,
+      'vendor' => $_GET['vendor'] ?? null,
+      'market' => $_GET['market'] ?? null,
+      'sort' => $_GET['sort'] ?? null,
+    ]);
+    $baseUrlBuilder = fn($page) => url('/products?' . http_build_query(array_merge($safeParams, ['page' => $page])));
     $ariaLabel = 'Products pagination';
     require __DIR__ . '/../partials/pagination.php';
     ?>

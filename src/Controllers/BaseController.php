@@ -46,7 +46,13 @@ class BaseController
    */
   protected function render(string $view, array $data = []): string
   {
-    $viewFile = $this->basePath . '/src/Views/' . ltrim($view, '/') . '.php';
+    // SECURITY: Prevent directory traversal attacks
+    $view = ltrim($view, '/');
+    if (strpos($view, '..') !== false || strpos($view, './') === 0) {
+      throw new RuntimeException('Invalid view path: ' . $view);
+    }
+    
+    $viewFile = $this->basePath . '/src/Views/' . $view . '.php';
     $layout = $data['layout'] ?? 'layouts/main';
     unset($data['layout']);
 
@@ -70,7 +76,14 @@ class BaseController
       return $content;
     }
 
-    $layoutFile = $this->basePath . '/src/Views/' . ltrim((string) $layout, '/') . '.php';
+    // SECURITY: Prevent directory traversal in layout paths
+    $layout = (string) $layout;
+    $layout = ltrim($layout, '/');
+    if (strpos($layout, '..') !== false || strpos($layout, './') === 0) {
+      throw new RuntimeException('Invalid layout path: ' . $layout);
+    }
+
+    $layoutFile = $this->basePath . '/src/Views/' . $layout . '.php';
 
     if (!is_file($layoutFile)) {
       throw new RuntimeException('Layout not found: ' . $layoutFile);
@@ -84,17 +97,19 @@ class BaseController
   /**
    * Redirect to a different URL
    *
-   * @param string $path URL path to redirect to
+   * @param string $path URL path to redirect to (must be absolute path starting with /)
    * @return void
    */
   protected function redirect(string $path): void
   {
-    $target = $path;
-
-    if (strpos($path, '/') === 0) {
-      $target = url($path);
+    // SECURITY: Only allow absolute paths starting with / to prevent open redirect attacks
+    if (strpos($path, '/') !== 0) {
+      // Non-absolute paths are rejected - redirect to home instead
+      $this->redirect('/');
+      return;
     }
 
+    $target = url($path);
     session_write_close();
     header('Location: ' . $target);
     exit;

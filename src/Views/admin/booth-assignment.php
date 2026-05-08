@@ -49,7 +49,7 @@
       <select name="date_id" class="form-control" onchange="this.form.submit()">
         <option value="">Choose a date...</option>
         <?php foreach ($marketDates as $date): ?>
-          <option value="<?= $date['id_mda'] ?>" <?= (isset($_GET['date_id']) && $_GET['date_id'] == $date['id_mda']) ? 'selected' : '' ?>>
+          <option value="<?= $date['id_mda'] ?>" <?= (isset($_GET['date_id']) && (int)$_GET['date_id'] === (int)$date['id_mda']) ? 'selected' : '' ?>>
             <?= date('F j, Y', strtotime($date['date_mda'])) ?>
           </option>
         <?php endforeach; ?>
