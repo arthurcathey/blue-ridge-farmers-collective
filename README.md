@@ -59,7 +59,6 @@ This interactive diagram shows all 35+ tables, their relationships, and field de
 ### Prerequisites
 - PHP 7.4 or higher
 - MySQL 5.7 or higher
-- Composer (for dependencies)
 - Node.js 14+ (for Tailwind CSS)
 
 ### Installation
@@ -83,9 +82,8 @@ This interactive diagram shows all 35+ tables, their relationships, and field de
      - Port: 3306
      - Database: blueridge_farmers_db
 
-4. **Install dependencies**
+4. **Install npm dependencies**
    ```bash
-   composer install
    npm install
    ```
 
